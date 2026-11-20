@@ -77,42 +77,42 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <>
       <div
-        className="group relative flex flex-col bg-ivory dark:bg-[#171411] border border-[#E8DFC8]/70 dark:border-[#2C2620] rounded-sm p-3 hover:border-[#D49542] dark:hover:border-[#D49542] hover:shadow-xl transition-all duration-300"
+        className="group relative flex flex-col bg-ivory dark:bg-[#171411] border border-[#E8DFC8]/70 dark:border-[#2C2620] rounded-sm p-2 sm:p-3 hover:border-[#D49542] dark:hover:border-[#D49542] hover:shadow-xl transition-all duration-300"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Product Image Frame */}
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xs bg-[#EAE0D0]/20 dark:bg-[#1E1A16] border border-[#E8DFC8]/40 dark:border-[#2A241F]">
           {/* Editorial Badges */}
-          <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1.5 pointer-events-none">
+          <div className="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 z-10 flex flex-col gap-1 pointer-events-none">
             {product.bestSeller && (
-              <span className="bg-[#211D1A] dark:bg-[#D49542] text-[#FAF6F0] dark:text-[#0E0C0A] text-[9px] font-sans font-bold uppercase tracking-wideDisplay px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
+              <span className="bg-[#211D1A] dark:bg-[#D49542] text-[#FAF6F0] dark:text-[#0E0C0A] text-[8px] sm:text-[9px] font-sans font-bold uppercase tracking-wideDisplay px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow-md flex items-center gap-1">
                 <Sparkles className="w-2.5 h-2.5 text-[#D49542] dark:text-[#0E0C0A]" />
                 Most Loved
               </span>
             )}
             {product.newArrival && !product.bestSeller && (
-              <span className="bg-[#B87932] text-white text-[9px] font-sans font-bold uppercase tracking-wideDisplay px-2.5 py-1 rounded-full shadow-md">
+              <span className="bg-[#B87932] text-white text-[8px] sm:text-[9px] font-sans font-bold uppercase tracking-wideDisplay px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow-md">
                 New Release
               </span>
             )}
             {isDiscounted && (
-              <span className="bg-[#D49542] text-[#0E0C0A] text-[9px] font-sans font-bold uppercase tracking-wideDisplay px-2 py-0.5 rounded-full shadow-sm">
+              <span className="bg-[#D49542] text-[#0E0C0A] text-[8px] sm:text-[9px] font-sans font-bold uppercase tracking-wideDisplay px-2 py-0.5 rounded-full shadow-sm">
                 Artisan Price
               </span>
             )}
             {isOutOfStock && (
-              <span className="bg-[#0E0C0A]/85 text-white text-[9px] font-sans font-medium uppercase tracking-wideDisplay px-2.5 py-0.5 rounded-full">
+              <span className="bg-[#0E0C0A]/85 text-white text-[8px] sm:text-[9px] font-sans font-medium uppercase tracking-wideDisplay px-2 py-0.5 rounded-full">
                 Sold Out
               </span>
             )}
           </div>
 
           {/* Action Icon Overlays (Wishlist & Quick View) */}
-          <div className="absolute top-2.5 right-2.5 z-10 flex flex-col gap-1.5">
+          <div className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-10 flex flex-col gap-1.5">
             <button
               onClick={handleWishlistToggle}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+              className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
                 isSaved
                   ? "bg-[#D49542] text-[#0E0C0A] shadow-md scale-105"
                   : "bg-white/85 dark:bg-[#1E1A16]/85 text-[#211D1A] dark:text-[#F5EFE8] backdrop-blur-sm hover:bg-white dark:hover:bg-[#2A241F]"
@@ -120,14 +120,14 @@ export function ProductCard({ product }: ProductCardProps) {
               aria-label={isSaved ? "Remove from wishlist" : "Add to wishlist"}
             >
               <Heart
-                className={`w-3.5 h-3.5 transition-transform ${
+                className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform ${
                   isSaved ? "fill-[#0E0C0A] dark:fill-[#0E0C0A]" : ""
                 }`}
               />
             </button>
             <button
               onClick={handleOpenQuickView}
-              className="w-8 h-8 rounded-full bg-white/85 dark:bg-[#1E1A16]/85 text-[#211D1A] dark:text-[#F5EFE8] backdrop-blur-sm hover:bg-white dark:hover:bg-[#2A241F] hover:text-[#D49542] flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 shadow-md"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/85 dark:bg-[#1E1A16]/85 text-[#211D1A] dark:text-[#F5EFE8] backdrop-blur-sm hover:bg-white dark:hover:bg-[#2A241F] hover:text-[#D49542] hidden sm:flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 shadow-md"
               aria-label="Quick preview"
             >
               <Eye className="w-3.5 h-3.5" />
@@ -162,22 +162,22 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Content Section */}
-        <div className="pt-3 pb-1 flex flex-col justify-between flex-1">
+        <div className="pt-2.5 pb-0.5 sm:pt-3 sm:pb-1 flex flex-col justify-between flex-1">
           <div>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-[#80644B] dark:text-[#D49542] block mb-1">
+            <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-[#80644B] dark:text-[#D49542] block mb-0.5 sm:mb-1 truncate">
               {product.categorySlug?.replace("-", " ") || "Handcrafted Textile"}
             </span>
 
             <Link href={`/product/${product.slug}`}>
-              <h3 className="font-serif text-sm sm:text-base text-[#211D1A] dark:text-[#F5EFE8] font-medium leading-snug line-clamp-1 group-hover:text-[#D49542] transition-colors">
+              <h3 className="font-serif text-xs sm:text-base text-[#211D1A] dark:text-[#F5EFE8] font-medium leading-snug line-clamp-1 group-hover:text-[#D49542] transition-colors">
                 {product.name}
               </h3>
             </Link>
           </div>
 
-          <div className="pt-3 border-t border-[#E8DFC8]/60 dark:border-[#2C2620] mt-3 flex items-center justify-between">
-            <div className="flex items-baseline gap-2">
-              <span className="font-serif text-sm font-bold text-[#211D1A] dark:text-[#FAF6F0]">
+          <div className="pt-2 sm:pt-3 border-t border-[#E8DFC8]/60 dark:border-[#2C2620] mt-2 sm:mt-3 flex items-center justify-between gap-1">
+            <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-1.5 min-w-0">
+              <span className="font-serif text-xs sm:text-sm font-bold text-[#211D1A] dark:text-[#FAF6F0] truncate">
                 {formatPrice(
                   product.salePrice && product.salePrice > 0
                     ? product.salePrice
@@ -185,7 +185,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 )}
               </span>
               {isDiscounted && (
-                <span className="font-serif text-xs text-charcoal-muted dark:text-[#A39789] line-through">
+                <span className="font-serif text-[10px] sm:text-xs text-charcoal-muted dark:text-[#A39789] line-through">
                   {formatPrice(product.price)}
                 </span>
               )}
@@ -194,7 +194,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <button
               onClick={handleQuickAdd}
               disabled={isOutOfStock}
-              className={`py-1.5 px-3 rounded-full text-[11px] font-sans uppercase tracking-editorial transition-all flex items-center gap-1.5 ${
+              className={`py-1 sm:py-1.5 px-2 sm:px-3 rounded-full text-[10px] sm:text-[11px] font-sans uppercase tracking-editorial transition-all flex items-center gap-1 shrink-0 ${
                 isAdded
                   ? "bg-emerald-600 text-white font-bold"
                   : isOutOfStock
@@ -202,7 +202,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   : "bg-[#211D1A] dark:bg-[#2A241F] text-ivory hover:bg-[#D49542] hover:text-[#0E0C0A] font-medium shadow-sm"
               }`}
             >
-              <ShoppingBag className="w-3 h-3" />
+              <ShoppingBag className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
               <span>{isAdded ? "Added" : isOutOfStock ? "Sold" : "Add"}</span>
             </button>
           </div>

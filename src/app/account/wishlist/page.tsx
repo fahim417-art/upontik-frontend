@@ -94,8 +94,8 @@ export default function AccountWishlistPage() {
       <Navbar />
 
       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        {/* Navigation Tabs */}
-        <div className="flex border-b border-[#E8DFC8]/70 dark:border-[#2C2620] mb-8 gap-6 text-xs uppercase tracking-editorial font-bold">
+        {/* Navigation Tabs (scrollable on mobile) */}
+        <div className="flex overflow-x-auto scrollbar-none border-b border-[#E8DFC8]/70 dark:border-[#2C2620] mb-8 gap-4 sm:gap-6 text-xs uppercase tracking-editorial font-bold whitespace-nowrap">
           <Link
             href="/account"
             className="pb-3 border-b-2 border-transparent text-[#80644B] dark:text-[#A39789] hover:text-[#211D1A] dark:hover:text-[#F5EFE8] flex items-center gap-2 transition-colors"
@@ -173,7 +173,7 @@ export default function AccountWishlistPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {products.map((product) => (
               <ProductCard key={product.slug || product._id} product={product} />
             ))}

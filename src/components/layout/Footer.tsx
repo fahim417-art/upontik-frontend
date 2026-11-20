@@ -26,8 +26,8 @@ export function Footer() {
     <footer className="bg-[#120F0C] dark:bg-[#070605] text-[#FAF6F0] pt-16 pb-12 border-t border-[#2C2620] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Top Trust Badges Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-14 border-b border-[#2C2620]">
+        {/* Top Trust Badges Bar (2 cols on mobile, 4 on desktop) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pb-10 sm:pb-14 border-b border-[#2C2620]">
           <div className="flex items-center gap-3.5">
             <div className="w-10 h-10 rounded-full bg-[#1E1A16] flex items-center justify-center text-[#D49542] flex-shrink-0 border border-[#D49542]/20">
               <ShieldCheck className="w-5 h-5" />

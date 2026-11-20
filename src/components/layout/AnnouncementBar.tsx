@@ -44,22 +44,22 @@ export function AnnouncementBar({
           className="relative bg-[#1C1816] text-[#F3EBDD] text-[11px] font-sans tracking-wide py-2 px-4 sm:px-8 border-b border-[#2D2723] z-40"
           aria-label="Announcement & Social Header"
         >
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
             {/* Left: Message with sprout icon */}
-            <div className="flex items-center gap-2">
-              <svg className="w-3.5 h-3.5 text-mustard" viewBox="0 0 24 24" fill="currentColor">
+            <div className="flex items-center gap-2 min-w-0">
+              <svg className="w-3.5 h-3.5 text-mustard shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" opacity="0.2"/>
                 <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66C7.8 17 9.8 12.8 17 11V8zm0-6C7 4 3 13 3 13s2-2 7-3c5-1 7-8 7-8z"/>
               </svg>
               {link ? (
                 <Link
                   href={link}
-                  className="hover:text-mustard transition-colors font-medium flex items-center gap-1.5"
+                  className="hover:text-mustard transition-colors font-medium flex items-center gap-1.5 truncate text-[10px] sm:text-[11px]"
                 >
-                  <span>{text}</span>
+                  <span className="truncate">{text}</span>
                 </Link>
               ) : (
-                <span className="font-medium text-ivory/90">{text}</span>
+                <span className="font-medium text-ivory/90 truncate text-[10px] sm:text-[11px]">{text}</span>
               )}
             </div>
 

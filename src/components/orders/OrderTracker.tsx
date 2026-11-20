@@ -223,8 +223,8 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
         </div>
       </div>
 
-      {/* 5-Step Stepper */}
-      <div className="py-4">
+      {/* 5-Step Stepper - Desktop/Tablet Horizontal Layout */}
+      <div className="py-4 hidden sm:block">
         <div className="grid grid-cols-5 gap-2 relative">
           
           {/* Background Connecting Bar */}
@@ -262,9 +262,55 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
                 }`}>
                   {step.title}
                 </span>
-                <span className="text-[9px] uppercase tracking-wider text-[#80644B] dark:text-[#A39789] font-mono mt-0.5 hidden sm:block">
+                <span className="text-[9px] uppercase tracking-wider text-[#80644B] dark:text-[#A39789] font-mono mt-0.5">
                   {step.sub}
                 </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 5-Step Stepper - Mobile Vertical Timeline Layout */}
+      <div className="py-2 block sm:hidden">
+        <div className="space-y-4 relative pl-4 border-l-2 border-[#E8DFC8] dark:border-[#2C2620]">
+          {STEPS.map((step, idx) => {
+            const Icon = step.icon;
+            const isCompleted = idx < currentIndex;
+            const isCurrent = idx === currentIndex;
+
+            return (
+              <div key={step.key} className="relative flex items-center gap-3">
+                {/* Timeline node */}
+                <div
+                  className={`absolute -left-[25px] w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                    isCompleted
+                      ? "bg-[#D49542] text-[#0E0C0A] shadow-sm"
+                      : isCurrent
+                      ? "bg-[#211D1A] dark:bg-[#D49542] text-white dark:text-[#0E0C0A] ring-4 ring-[#D49542]/30 scale-105 shadow-md"
+                      : "bg-[#EAE0D0] dark:bg-[#1E1A16] text-[#80644B] dark:text-[#A39789] border border-[#E8DFC8] dark:border-[#2C2620]"
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                </div>
+
+                <div className="ml-2">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-serif font-medium ${
+                      isCurrent ? "text-[#D49542] font-bold" : "text-[#211D1A] dark:text-[#F5EFE8]"
+                    }`}>
+                      {step.title}
+                    </span>
+                    {isCurrent && (
+                      <span className="px-2 py-0.5 rounded-full bg-[#D49542]/20 text-[#D49542] text-[9px] font-mono font-bold">
+                        চলমান (Current)
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[10px] uppercase tracking-wider text-[#80644B] dark:text-[#A39789] font-mono block">
+                    {step.sub} • {step.desc}
+                  </span>
+                </div>
               </div>
             );
           })}

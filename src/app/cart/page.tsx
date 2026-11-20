@@ -41,8 +41,8 @@ export default function CartPage() {
   } | null>(null);
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
-  // Free shipping rule: >= 5000 BDT
-  const FREE_SHIPPING_THRESHOLD = 5000;
+  // Free shipping rule: >= 3000 BDT
+  const FREE_SHIPPING_THRESHOLD = 3000;
   const isFreeDelivery = cartSubtotal >= FREE_SHIPPING_THRESHOLD;
   const remainingForFree = Math.max(0, FREE_SHIPPING_THRESHOLD - cartSubtotal);
   const progressPercent = Math.min(100, Math.round((cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100));
@@ -198,11 +198,11 @@ export default function CartPage() {
                   {cart.map((item) => (
                     <div
                       key={`${item.productId}-${item.selectedVariant || "std"}`}
-                      className="py-5 flex flex-col sm:grid sm:grid-cols-12 items-center gap-4"
+                      className="py-4 sm:py-5 flex flex-col sm:grid sm:grid-cols-12 items-start sm:items-center gap-3 sm:gap-4"
                     >
                       {/* Item Image and Title */}
-                      <div className="col-span-6 flex items-center gap-4 w-full">
-                        <div className="relative w-20 h-24 rounded bg-sand/20 overflow-hidden shrink-0 border border-sand/40">
+                      <div className="col-span-6 flex items-center gap-3 sm:gap-4 w-full">
+                        <div className="relative w-16 h-20 sm:w-20 sm:h-24 rounded bg-sand/20 overflow-hidden shrink-0 border border-sand/40">
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -211,10 +211,10 @@ export default function CartPage() {
                             className="object-cover"
                           />
                         </div>
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <Link
                             href={`/product/${item.slug}`}
-                            className="font-serif text-base text-charcoal font-medium hover:text-mustard transition-colors line-clamp-1"
+                            className="font-serif text-sm sm:text-base text-charcoal font-medium hover:text-mustard transition-colors line-clamp-1"
                           >
                             {item.name}
                           </Link>
@@ -223,64 +223,67 @@ export default function CartPage() {
                               Variant: <span className="text-charcoal font-medium">{item.selectedVariant}</span>
                             </p>
                           )}
-                          <p className="text-[11px] text-earth uppercase tracking-wider mt-1">
+                          <p className="text-[10px] sm:text-[11px] text-earth uppercase tracking-wider mt-0.5">
                             SKU: {item.sku}
                           </p>
                           <button
                             onClick={() =>
                               removeFromCart(item.productId, item.selectedVariant)
                             }
-                            className="text-xs text-charcoal-muted hover:text-red-500 transition-colors flex items-center gap-1 mt-2"
+                            className="text-xs text-charcoal-muted hover:text-red-500 transition-colors flex items-center gap-1 mt-1.5"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Trash2 className="w-3 h-3" />
                             <span>Remove</span>
                           </button>
                         </div>
                       </div>
 
-                      {/* Quantity Stepper */}
-                      <div className="col-span-2 flex items-center justify-center">
-                        <div className="flex items-center border border-sand rounded bg-ivory">
-                          <button
-                            onClick={() =>
-                              updateCartQuantity(
-                                item.productId,
-                                item.quantity - 1,
-                                item.selectedVariant
-                              )
-                            }
-                            aria-label="Decrease quantity"
-                            className="p-2 text-charcoal hover:text-earth transition-colors"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="w-8 text-center text-xs font-bold text-charcoal">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() =>
-                              updateCartQuantity(
-                                item.productId,
-                                item.quantity + 1,
-                                item.selectedVariant
-                              )
-                            }
-                            aria-label="Increase quantity"
-                            className="p-2 text-charcoal hover:text-earth transition-colors"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </button>
+                      {/* Responsive Quantity & Price Row on Mobile / Columns on Desktop */}
+                      <div className="flex sm:contents items-center justify-between w-full pt-2 sm:pt-0 border-t sm:border-0 border-sand/30">
+                        {/* Quantity Stepper */}
+                        <div className="col-span-2 flex items-center justify-start sm:justify-center">
+                          <div className="flex items-center border border-sand rounded bg-ivory">
+                            <button
+                              onClick={() =>
+                                updateCartQuantity(
+                                  item.productId,
+                                  item.quantity - 1,
+                                  item.selectedVariant
+                                )
+                              }
+                              aria-label="Decrease quantity"
+                              className="p-1.5 sm:p-2 text-charcoal hover:text-earth transition-colors"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <span className="w-7 sm:w-8 text-center text-xs font-bold text-charcoal">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                updateCartQuantity(
+                                  item.productId,
+                                  item.quantity + 1,
+                                  item.selectedVariant
+                                )
+                              }
+                              aria-label="Increase quantity"
+                              className="p-1.5 sm:p-2 text-charcoal hover:text-earth transition-colors"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Unit Price */}
-                      <div className="col-span-2 text-right text-xs font-serif text-charcoal">
-                        {formatPrice(item.price)}
-                      </div>
+                        {/* Unit Price (hidden on mobile, visible on desktop) */}
+                        <div className="col-span-2 text-right text-xs font-serif text-charcoal hidden sm:block">
+                          {formatPrice(item.price)}
+                        </div>
 
-                      {/* Item Subtotal */}
-                      <div className="col-span-2 text-right font-serif text-sm font-bold text-charcoal">
-                        {formatPrice(item.price * item.quantity)}
+                        {/* Item Subtotal */}
+                        <div className="col-span-2 text-right font-serif text-sm sm:text-base font-bold text-[#D49542]">
+                          {formatPrice(item.price * item.quantity)}
+                        </div>
                       </div>
                     </div>
                   ))}

@@ -214,36 +214,36 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {/* Top Header Bar */}
-        <header className="bg-ivory dark:bg-[#120F0C] border-b border-[#E8DFC8]/70 dark:border-[#2C2620] px-6 sm:px-10 py-4 flex items-center justify-between shrink-0 transition-colors">
+        <header className="bg-ivory dark:bg-[#120F0C] border-b border-[#E8DFC8]/70 dark:border-[#2C2620] px-4 sm:px-10 py-3 sm:py-4 flex items-center justify-between shrink-0 transition-colors">
           <div>
-            <span className="text-[11px] font-mono text-[#80644B] dark:text-[#D49542] uppercase tracking-editorial font-bold">
-              UPONTIK Atelier Management Portal
+            <span className="text-[10px] sm:text-[11px] font-mono text-[#80644B] dark:text-[#D49542] uppercase tracking-editorial font-bold">
+              UPONTIK Atelier Portal
             </span>
           </div>
-          <div className="flex items-center gap-4 text-xs font-sans">
+          <div className="flex items-center gap-3 sm:gap-4 text-xs font-sans">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full bg-[#EAE0D0]/50 dark:bg-[#1E1A16] border border-[#E8DFC8] dark:border-[#2C2620] text-[#D49542] hover:scale-105 transition-all shadow-sm"
+              className="p-1.5 sm:p-2 rounded-full bg-[#EAE0D0]/50 dark:bg-[#1E1A16] border border-[#E8DFC8] dark:border-[#2C2620] text-[#D49542] hover:scale-105 transition-all shadow-sm"
               title="Toggle Day/Night Mode"
             >
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
-            <span className="hidden sm:inline text-charcoal dark:text-[#F5EFE8] font-medium">
+            <span className="hidden md:inline text-charcoal dark:text-[#F5EFE8] font-medium">
               Administrator: <strong className="font-serif text-[#B87932] dark:text-[#D49542]">{user.name}</strong>
             </span>
             <Link
               href="/"
               target="_blank"
-              className="py-1.5 px-3.5 rounded-full bg-[#EAE0D0]/40 dark:bg-[#1E1A16] border border-[#E8DFC8] dark:border-[#2C2620] text-[#211D1A] dark:text-[#F5EFE8] hover:border-[#D49542] transition-colors flex items-center gap-1.5 text-xs font-medium"
+              className="py-1 sm:py-1.5 px-2.5 sm:px-3.5 rounded-full bg-[#EAE0D0]/40 dark:bg-[#1E1A16] border border-[#E8DFC8] dark:border-[#2C2620] text-[#211D1A] dark:text-[#F5EFE8] hover:border-[#D49542] transition-colors flex items-center gap-1.5 text-xs font-medium"
             >
-              <span>View Storefront</span>
+              <span>Storefront</span>
               <ExternalLink className="w-3 h-3 text-[#D49542]" />
             </Link>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-6 sm:p-10">{children}</main>
+        <main className="flex-1 p-3.5 sm:p-6 lg:p-10 min-w-0">{children}</main>
       </div>
     </div>
   );

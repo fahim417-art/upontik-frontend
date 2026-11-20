@@ -304,18 +304,18 @@ export function Navbar() {
             </nav>
 
             {/* Right: Action Icons (Day/Night, Search, Wishlist, Cart, Account) */}
-            <div className="flex items-center gap-2 sm:gap-3.5">
+            <div className="flex items-center gap-1 sm:gap-2.5">
               {/* Day / Night Mode Toggle */}
               <button
                 onClick={toggleTheme}
-                className="p-2 text-[#F3EBDD]/90 hover:text-mustard focus:outline-none transition-all rounded-full hover:bg-white/10"
+                className="p-1.5 sm:p-2 text-[#F3EBDD]/90 hover:text-mustard focus:outline-none transition-all rounded-full hover:bg-white/10"
                 aria-label={theme === "dark" ? "Switch to Day Mode" : "Switch to Night Mode"}
                 title={theme === "dark" ? "Switch to Day Mode • দিনের মোড" : "Switch to Night Mode • রাতের মোড"}
               >
                 {theme === "dark" ? (
-                  <Sun className="w-4.5 h-4.5 text-[#E5A855] transition-transform rotate-0 hover:rotate-90 duration-300" />
+                  <Sun className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#E5A855] transition-transform rotate-0 hover:rotate-90 duration-300" />
                 ) : (
-                  <Moon className="w-4.5 h-4.5 transition-transform hover:-rotate-12 duration-300" />
+                  <Moon className="w-4 h-4 sm:w-4.5 sm:h-4.5 transition-transform hover:-rotate-12 duration-300" />
                 )}
               </button>
 
@@ -325,7 +325,7 @@ export function Navbar() {
                 className="text-[#F3EBDD]/90 hover:text-mustard p-1.5 focus:outline-none transition-colors"
                 aria-label="Open search dialog"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
               </button>
 
               {/* Wishlist Icon with Jewelry Badge */}
@@ -334,9 +334,9 @@ export function Navbar() {
                 className="relative text-[#F3EBDD]/90 hover:text-mustard p-1.5 focus:outline-none transition-colors"
                 aria-label={`Saved pieces (${wishlistCount})`}
               >
-                <Heart className="w-5 h-5" />
+                <Heart className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-mustard text-charcoal text-[10px] font-bold flex items-center justify-center shadow-sm">
+                  <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-mustard text-charcoal text-[9px] sm:text-[10px] font-bold flex items-center justify-center shadow-sm">
                     {wishlistCount}
                   </span>
                 )}
@@ -348,18 +348,18 @@ export function Navbar() {
                 className="relative text-[#F3EBDD]/90 hover:text-mustard p-1.5 focus:outline-none transition-colors"
                 aria-label={`Shopping bag (${cartCount})`}
               >
-                <ShoppingBag className="w-5 h-5" />
+                <ShoppingBag className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-mustard text-charcoal text-[10px] font-bold flex items-center justify-center shadow-sm">
+                  <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-mustard text-charcoal text-[9px] sm:text-[10px] font-bold flex items-center justify-center shadow-sm">
                     {cartCount}
                   </span>
                 )}
               </button>
 
-              {/* Customer Account / Sign In Icon */}
+              {/* Customer Account / Sign In Icon (hidden on small mobile to prevent header squish) */}
               <Link
                 href={user ? (user.role === "admin" ? "/admin" : "/account") : "/auth/login"}
-                className="text-[#F3EBDD]/90 hover:text-mustard p-1.5 focus:outline-none transition-colors"
+                className="hidden sm:inline-flex text-[#F3EBDD]/90 hover:text-mustard p-1.5 focus:outline-none transition-colors"
                 aria-label={user ? `Signed in as ${user.name}` : "Sign in to account"}
               >
                 <UserIcon className="w-5 h-5" />
@@ -368,10 +368,10 @@ export function Navbar() {
               {/* Mobile Menu Hamburger */}
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="text-[#F3EBDD] hover:text-mustard p-1.5 lg:hidden focus:outline-none transition-colors ml-1"
+                className="text-[#F3EBDD] hover:text-mustard p-1.5 lg:hidden focus:outline-none transition-colors"
                 aria-label="Open navigation menu"
               >
-                <Menu className="w-6 h-6" />
+                <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
           </div>
@@ -409,7 +409,22 @@ export function Navbar() {
                     </button>
                   </div>
 
-                  <nav className="space-y-4 text-sm font-sans">
+                  <nav className="space-y-3.5 text-sm font-sans">
+                    {/* Quick Search Bar in Mobile Menu */}
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        setIsSearchOpen(true);
+                      }}
+                      className="w-full flex items-center justify-between px-3.5 py-2.5 bg-[#28221E] border border-sand/20 rounded text-xs text-sand/80 hover:text-mustard transition-colors text-left"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Search className="w-3.5 h-3.5 text-mustard" />
+                        <span>Search collection...</span>
+                      </span>
+                      <span className="text-[10px] uppercase font-mono text-sand/50">Explore</span>
+                    </button>
+
                     <Link
                       href="/"
                       onClick={() => setIsMobileMenuOpen(false)}
@@ -443,6 +458,38 @@ export function Navbar() {
                     </div>
 
                     <Link
+                      href="/account/wishlist"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-between py-2 text-ivory hover:text-mustard font-medium border-b border-sand/10"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Heart className="w-4 h-4 text-mustard" />
+                        <span>Saved Pieces (Wishlist)</span>
+                      </span>
+                      {wishlistCount > 0 && (
+                        <span className="px-2 py-0.5 rounded-full bg-mustard text-charcoal text-[10px] font-bold">
+                          {wishlistCount}
+                        </span>
+                      )}
+                    </Link>
+
+                    <Link
+                      href="/cart"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-between py-2 text-ivory hover:text-mustard font-medium border-b border-sand/10"
+                    >
+                      <span className="flex items-center gap-2">
+                        <ShoppingBag className="w-4 h-4 text-mustard" />
+                        <span>Shopping Bag</span>
+                      </span>
+                      {cartCount > 0 && (
+                        <span className="px-2 py-0.5 rounded-full bg-mustard text-charcoal text-[10px] font-bold">
+                          {cartCount}
+                        </span>
+                      )}
+                    </Link>
+
+                    <Link
                       href="/story"
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="block py-2 text-ivory hover:text-mustard font-medium border-b border-sand/10"
@@ -470,11 +517,11 @@ export function Navbar() {
                     </button>
 
                     <Link
-                      href={user ? "/account" : "/auth/login"}
+                      href={user ? (user.role === "admin" ? "/admin" : "/account") : "/auth/login"}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="block py-2 text-mustard hover:text-mustard-light font-medium"
                     >
-                      {user ? "Patron Account" : "Sign In to Atelier"}
+                      {user ? (user.role === "admin" ? "Admin Console" : "Patron Account") : "Sign In to Atelier"}
                     </Link>
                   </nav>
                 </div>

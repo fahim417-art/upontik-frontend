@@ -66,7 +66,7 @@ export default function LoginPage() {
       <Navbar />
 
       <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-        <div className="max-w-md w-full bg-ivory-light border border-sand/80 shadow-elevated rounded-sm p-8 sm:p-10">
+        <div className="max-w-md w-full bg-ivory-light border border-sand/80 shadow-elevated rounded-sm p-5 sm:p-10">
           <div className="text-center mb-8">
             <span className="text-[10px] uppercase tracking-wideDisplay text-earth font-bold block mb-1">
               Patron & Collector Portal

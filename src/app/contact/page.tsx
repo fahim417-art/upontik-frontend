@@ -50,7 +50,7 @@ export default function ContactPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start max-w-5xl mx-auto">
           {/* Studio Contact Card (5 Cols) */}
-          <div className="lg:col-span-5 bg-charcoal text-ivory p-8 rounded-sm shadow-elevated space-y-8">
+          <div className="lg:col-span-5 bg-charcoal text-ivory p-5 sm:p-8 rounded-sm shadow-elevated space-y-8">
             <div>
               <span className="font-serif text-2xl tracking-wideDisplay text-ivory block">
                 UPONTIK
@@ -90,7 +90,7 @@ export default function ContactPage() {
           </div>
 
           {/* Form (7 Cols) */}
-          <div className="lg:col-span-7 bg-ivory-light border border-sand/60 p-8 rounded-sm shadow-sm">
+          <div className="lg:col-span-7 bg-ivory-light border border-sand/60 p-5 sm:p-8 rounded-sm shadow-sm">
             <h2 className="font-serif text-2xl text-charcoal font-medium mb-6 pb-3 border-b border-sand/40">
               Send a Note
             </h2>

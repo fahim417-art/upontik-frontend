@@ -176,40 +176,40 @@ export function HeroSection({ slides, cms }: HeroSectionProps) {
       </div>
 
       {/* Main Content Composition */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 sm:py-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 pb-24 sm:py-20 lg:py-24">
         <div className="max-w-xl text-left relative">
           
           {/* Subtle Ambient Card Frame */}
-          <div className="relative bg-[#1A1613]/70 dark:bg-[#120F0C]/85 backdrop-blur-md p-6 sm:p-10 rounded-sm border border-[#D49542]/25 shadow-2xl">
+          <div className="relative bg-[#1A1613]/70 dark:bg-[#120F0C]/85 backdrop-blur-md p-5 sm:p-10 rounded-sm border border-[#D49542]/25 shadow-2xl">
             {/* Corner Floral Motifs */}
-            <FloralCorner position="top-right" className="text-[#D49542]/60 w-10 h-10 -top-2 -right-2" />
-            <FloralCorner position="bottom-left" className="text-[#D49542]/60 w-10 h-10 -bottom-2 -left-2" />
+            <FloralCorner position="top-right" className="text-[#D49542]/60 w-8 h-8 sm:w-10 sm:h-10 -top-2 -right-2" />
+            <FloralCorner position="bottom-left" className="text-[#D49542]/60 w-8 h-8 sm:w-10 sm:h-10 -bottom-2 -left-2" />
 
             {/* Eyebrow with fine accent gold line */}
-            <div className="flex items-center gap-3 mb-4 sm:mb-6">
-              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.25em] text-[#E8D8C4] font-semibold flex items-center gap-1.5">
+            <div className="flex items-center gap-2.5 sm:gap-3 mb-3 sm:mb-6">
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#E8D8C4] font-semibold flex items-center gap-1.5">
                 <Sparkles className="w-3 h-3 text-[#D49542]" />
                 {currentSlide.eyebrow || "ARTISAN BAGS • TIMELESS DESIGN"}
               </span>
-              <span className="w-10 sm:w-16 h-[1.5px] bg-[#D49542]" />
+              <span className="w-8 sm:w-16 h-[1.5px] bg-[#D49542]" />
             </div>
 
             {/* Cormorant Garamond Main Headline */}
-            <h1 className="font-serif text-3.5xl sm:text-6xl lg:text-7xl text-[#FAF6F0] font-normal leading-[1.1] sm:leading-[1.06] tracking-tight mb-4 sm:mb-6 drop-shadow-sm">
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-7xl text-[#FAF6F0] font-normal leading-[1.1] sm:leading-[1.06] tracking-tight mb-3 sm:mb-6 drop-shadow-sm">
               {renderHeadline(currentSlide.title)}
             </h1>
 
             {/* Editorial Description */}
-            <p className="text-xs sm:text-base font-sans text-[#EAE2D7]/90 font-normal leading-relaxed max-w-lg mb-6 sm:mb-10 line-clamp-3 sm:line-clamp-none">
+            <p className="text-xs sm:text-base font-sans text-[#EAE2D7]/90 font-normal leading-relaxed max-w-lg mb-5 sm:mb-10 line-clamp-3 sm:line-clamp-none">
               {currentSlide.subtitle}
             </p>
 
             {/* Dual CTAs matching reference */}
-            <div className="flex flex-wrap items-center gap-3 sm:gap-5">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5">
               {/* Primary Amber-Gold Button */}
               <Link
                 href={currentSlide.ctaLink || "/shop"}
-                className="group inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#B87932] hover:bg-[#A36827] text-[#FAF6F0] text-xs sm:text-[13px] font-sans uppercase tracking-editorial font-medium rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                className="group inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 bg-[#B87932] hover:bg-[#A36827] text-[#FAF6F0] text-xs sm:text-[13px] font-sans uppercase tracking-editorial font-medium rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 w-full sm:w-auto text-center"
               >
                 <span>{currentSlide.ctaText || "Explore Our Collection"}</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -218,7 +218,7 @@ export function HeroSection({ slides, cms }: HeroSectionProps) {
               {/* Secondary Translucent Pill Button with Play Icon */}
               <button
                 onClick={() => setIsVideoModalOpen(true)}
-                className="group inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-3.5 sm:py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/35 text-[#FAF6F0] text-xs sm:text-[13px] font-sans uppercase tracking-editorial font-medium rounded-full transition-all hover:border-[#D49542]"
+                className="group inline-flex items-center justify-center gap-2.5 px-5 sm:px-7 py-3.5 sm:py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/35 text-[#FAF6F0] text-xs sm:text-[13px] font-sans uppercase tracking-editorial font-medium rounded-full transition-all hover:border-[#D49542] w-full sm:w-auto text-center"
               >
                 <Play className="w-3.5 h-3.5 fill-[#D49542] text-[#D49542] transition-transform group-hover:scale-110" />
                 <span>{currentSlide.secondaryCtaText || "Watch Our Story"}</span>
@@ -229,7 +229,7 @@ export function HeroSection({ slides, cms }: HeroSectionProps) {
       </div>
 
       {/* Bottom Left: Reference Pagination Counter `01 / 03  —  ←  →` */}
-      <div className="absolute left-6 sm:left-12 bottom-6 sm:bottom-10 z-20 flex items-center gap-4 text-xs font-mono tracking-widest text-[#FAF6F0]/90 bg-[#1A1613]/80 dark:bg-[#100D0B]/80 backdrop-blur-md py-2 px-4 rounded-full border border-[#D49542]/30">
+      <div className="absolute left-4 sm:left-12 bottom-4 sm:bottom-10 z-20 flex items-center gap-3 sm:gap-4 text-xs font-mono tracking-widest text-[#FAF6F0]/90 bg-[#1A1613]/85 dark:bg-[#100D0B]/85 backdrop-blur-md py-1.5 sm:py-2 px-3 sm:px-4 rounded-full border border-[#D49542]/30">
         <span className="text-sm font-serif font-bold text-[#D49542]">
           {`0${currentSlideIndex + 1}`}
         </span>

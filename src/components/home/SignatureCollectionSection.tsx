@@ -107,17 +107,17 @@ export function SignatureCollectionSection({ cms }: SignatureCollectionProps) {
               {description}
             </p>
 
-            <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <Link
                 href={ctaLink}
-                className="px-8 py-4 bg-[#B87932] hover:bg-[#A36827] text-white text-xs uppercase tracking-editorial rounded-full font-medium inline-flex items-center gap-2.5 shadow-lg transition-all transform hover:-translate-y-0.5"
+                className="px-8 py-4 bg-[#B87932] hover:bg-[#A36827] text-white text-xs uppercase tracking-editorial rounded-full font-medium inline-flex items-center justify-center gap-2.5 shadow-lg transition-all transform hover:-translate-y-0.5 w-full sm:w-auto text-center"
               >
                 <span>{ctaText}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/story"
-                className="text-xs uppercase tracking-editorial text-[#D49542] hover:text-white transition-colors underline underline-offset-4 py-2"
+                className="text-xs uppercase tracking-editorial text-[#D49542] hover:text-white transition-colors underline underline-offset-4 py-2 text-center"
               >
                 Learn How It&apos;s Crafted
               </Link>

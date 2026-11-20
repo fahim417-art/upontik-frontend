@@ -116,17 +116,17 @@ export function BrandStorySection({ cms }: BrandStoryProps) {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
               <Link
                 href={ctaLink}
-                className="py-3.5 px-8 bg-[#211D1A] dark:bg-[#D49542] text-ivory dark:text-[#0E0C0A] text-xs uppercase tracking-wideDisplay font-medium rounded-full hover:bg-[#B87932] dark:hover:bg-[#E8B878] transition-colors flex items-center gap-2 shadow-md group"
+                className="py-3.5 px-8 bg-[#211D1A] dark:bg-[#D49542] text-ivory dark:text-[#0E0C0A] text-xs uppercase tracking-wideDisplay font-medium rounded-full hover:bg-[#B87932] dark:hover:bg-[#E8B878] transition-colors flex items-center justify-center gap-2 shadow-md group w-full sm:w-auto text-center"
               >
                 <span>{ctaText}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <button
                 onClick={() => setIsVideoOpen(true)}
-                className="py-3.5 px-6 border border-[#D7C7AE] dark:border-[#2C2620] bg-ivory dark:bg-[#1A1613] text-[#211D1A] dark:text-[#F5EFE8] text-xs uppercase tracking-editorial font-medium rounded-full hover:border-[#D49542] flex items-center gap-2 transition-colors"
+                className="py-3.5 px-6 border border-[#D7C7AE] dark:border-[#2C2620] bg-ivory dark:bg-[#1A1613] text-[#211D1A] dark:text-[#F5EFE8] text-xs uppercase tracking-editorial font-medium rounded-full hover:border-[#D49542] flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-center"
               >
                 <Play className="w-3 h-3 fill-current text-[#D49542]" />
                 <span>Watch Studio Film</span>

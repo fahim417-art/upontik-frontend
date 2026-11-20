@@ -463,7 +463,7 @@ export default function AdminOrdersPage() {
       {/* Inspect & Status Modal */}
       {selectedOrder && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] rounded-sm max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative">
+          <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] rounded-sm max-w-2xl w-full p-4 sm:p-8 shadow-2xl relative">
             <button
               onClick={() => setSelectedOrder(null)}
               className="absolute top-4 right-4 p-1.5 text-[#80644B] dark:text-[#A39789] hover:text-[#211D1A] dark:hover:text-white"

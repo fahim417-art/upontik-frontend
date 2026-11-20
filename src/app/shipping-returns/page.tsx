@@ -55,7 +55,7 @@ export default function ShippingReturnsPage() {
                 <Check className="w-3.5 h-3.5 text-mustard shrink-0 mt-0.5" />
                 <span>
                   <strong>Complimentary Shipping:</strong> Orders with a merchandise subtotal
-                  exceeding ৳5,000 qualify for complimentary delivery.
+                  exceeding ৳3,000 qualify for complimentary delivery.
                 </span>
               </li>
             </ul>

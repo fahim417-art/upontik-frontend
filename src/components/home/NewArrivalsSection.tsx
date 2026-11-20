@@ -46,8 +46,8 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
           </Link>
         </div>
 
-        {/* 4-Column Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        {/* 4-Column Layout (2 columns on mobile, 4 on desktop) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {newArrivals.map((product) => {
             const mainImg = product.images?.[0]?.url || product.images?.[0] || "/images/placeholder.jpg";
             const isFav = isInWishlist(product._id || product.id);

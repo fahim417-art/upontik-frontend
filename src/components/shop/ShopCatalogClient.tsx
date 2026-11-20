@@ -176,13 +176,13 @@ export function ShopCatalogClient({
           {/* Live Search Bar with Instant Autocomplete */}
           <div className="relative">
             <div className="flex items-center bg-ivory dark:bg-[#171411] border border-sand/80 dark:border-[#2C2620] rounded-full px-3 py-1.5 shadow-sm">
-              <Search className="w-3.5 h-3.5 text-[#80644B] dark:text-[#D49542] mr-2" />
+              <Search className="w-3.5 h-3.5 text-[#80644B] dark:text-[#D49542] mr-2 shrink-0" />
               <input
                 type="text"
                 value={liveSearchQuery}
                 onChange={(e) => setLiveSearchQuery(e.target.value)}
                 placeholder="Live search bags..."
-                className="w-36 sm:w-48 bg-transparent text-xs text-[#211D1A] dark:text-[#F5EFE8] placeholder:text-charcoal-muted/60 dark:placeholder:text-[#A39789]/60 focus:outline-none"
+                className="w-28 xs:w-36 sm:w-48 bg-transparent text-xs text-[#211D1A] dark:text-[#F5EFE8] placeholder:text-charcoal-muted/60 dark:placeholder:text-[#A39789]/60 focus:outline-none"
               />
               {liveSearchQuery && (
                 <button
@@ -196,7 +196,7 @@ export function ShopCatalogClient({
 
             {/* Autocomplete Dropdown Preview */}
             {autocompleteMatches.length > 0 && (
-              <div className="absolute top-full right-0 mt-2 w-72 bg-ivory dark:bg-[#171411] border border-[#D49542]/40 rounded-sm shadow-xl p-2 z-30 space-y-1">
+              <div className="absolute top-full right-0 mt-2 w-[calc(100vw-2.5rem)] max-w-xs sm:w-72 bg-ivory dark:bg-[#171411] border border-[#D49542]/40 rounded-sm shadow-xl p-2 z-30 space-y-1">
                 <span className="text-[10px] uppercase tracking-wider text-[#80644B] dark:text-[#D49542] font-mono block px-2 py-1">
                   Matching Pieces ({autocompleteMatches.length})
                 </span>
@@ -523,10 +523,10 @@ export function ShopCatalogClient({
             </div>
           ) : (
             <div
-              className={`grid gap-6 sm:gap-7 transition-opacity duration-200 ${
+              className={`grid gap-3 sm:gap-6 lg:gap-7 transition-opacity duration-200 ${
                 viewMode === "editorial"
                   ? "grid-cols-1 sm:grid-cols-2"
-                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  : "grid-cols-2 lg:grid-cols-3"
               } ${isPending ? "opacity-60" : "opacity-100"}`}
             >
               {displayedProducts.map((p) => (
@@ -534,9 +534,9 @@ export function ShopCatalogClient({
                   <ProductCard product={p} />
                   {/* Stock scarcity alert on catalog card */}
                   {p.stock !== undefined && p.stock > 0 && p.stock <= 3 && (
-                    <div className="absolute bottom-20 left-6 z-10 pointer-events-none">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1A1613]/90 text-[#D49542] text-[10px] font-mono font-bold shadow-md border border-[#D49542]/40">
-                        <Flame className="w-3 h-3 text-[#D49542] animate-pulse" />
+                    <div className="absolute bottom-14 sm:bottom-20 left-2 sm:left-6 z-10 pointer-events-none">
+                      <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full bg-[#1A1613]/90 text-[#D49542] text-[8px] sm:text-[10px] font-mono font-bold shadow-md border border-[#D49542]/40">
+                        <Flame className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#D49542] animate-pulse" />
                         Only {p.stock} left in studio
                       </span>
                     </div>

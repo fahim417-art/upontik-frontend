@@ -151,7 +151,7 @@ export function ProductDetailsClient({
   };
 
   return (
-    <div className="py-8 lg:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="py-8 lg:py-16 pb-28 lg:pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       {/* Top Editorial Breadcrumbs */}
       <nav className="flex items-center gap-2 text-[11px] font-sans text-charcoal-muted dark:text-[#A39789] uppercase tracking-wideDisplay mb-8">

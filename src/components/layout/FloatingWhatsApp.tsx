@@ -26,7 +26,7 @@ export function FloatingWhatsApp({
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40">
       {/* WhatsApp Dialog Window */}
       <AnimatePresence>
         {isOpen && (
@@ -35,7 +35,7 @@ export function FloatingWhatsApp({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 15, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-16 right-0 w-80 sm:w-88 bg-ivory rounded-sm shadow-elevated border border-sand overflow-hidden z-50 text-charcoal"
+            className="absolute bottom-16 right-0 w-[calc(100vw-2.5rem)] max-w-sm bg-ivory dark:bg-[#1A1613] rounded-sm shadow-elevated border border-sand dark:border-[#2C2620] overflow-hidden z-50 text-charcoal dark:text-[#F5EFE8]"
           >
             {/* Header */}
             <div className="bg-[#075E54] text-white p-4 flex items-center justify-between">

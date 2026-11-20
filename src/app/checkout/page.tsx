@@ -313,10 +313,10 @@ export default function CheckoutPage() {
       <AnnouncementBar />
       <Navbar />
 
-      <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+      <div className="flex-1 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10 w-full">
 
         {/* Breadcrumb Bar */}
-        <nav className="flex items-center gap-2 text-[11px] font-sans text-charcoal-muted dark:text-[#A39789] uppercase tracking-wideDisplay mb-6">
+        <nav className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] font-sans text-charcoal-muted dark:text-[#A39789] uppercase tracking-wideDisplay mb-4 sm:mb-6">
           <Link href="/" className="hover:text-[#D49542] transition-colors">
             Home
           </Link>
@@ -328,35 +328,35 @@ export default function CheckoutPage() {
           <span className="text-charcoal dark:text-[#F5EFE8] font-semibold">Studio Checkout</span>
         </nav>
 
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-8 pb-4 border-b border-sand/60 dark:border-[#2C2620]">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-6 sm:mb-8 pb-4 border-b border-sand/60 dark:border-[#2C2620]">
           <div>
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal">
+            <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-normal">
               Studio Checkout
             </h1>
-            <p className="text-xs text-[#80644B] dark:text-[#D49542] mt-1 font-mono">
+            <p className="text-[11px] sm:text-xs text-[#80644B] dark:text-[#D49542] mt-1 font-mono">
               Direct Gazipur Atelier Handcraft & Express Dispatch
             </p>
           </div>
-          <span className="text-xs font-mono text-[#80644B] dark:text-[#D49542] flex items-center gap-1.5 mt-2 sm:mt-0 bg-[#EAE0D0]/40 dark:bg-[#1E1A16] px-3 py-1 rounded-full border border-[#D49542]/20">
+          <span className="text-[11px] sm:text-xs font-mono text-[#80644B] dark:text-[#D49542] flex items-center gap-1.5 mt-2 sm:mt-0 bg-[#EAE0D0]/40 dark:bg-[#1E1A16] px-3 py-1 rounded-full border border-[#D49542]/20 self-start sm:self-auto">
             <Lock className="w-3.5 h-3.5 text-[#D49542]" />
             256-Bit SSL Encrypted Ledger Checkout
           </span>
         </div>
 
         {formError && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-sm text-xs text-red-700 dark:text-red-300 flex items-center gap-2">
+          <div className="mb-6 p-3.5 sm:p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-sm text-xs text-red-700 dark:text-red-300 flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{formError}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmitOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <form onSubmit={handleSubmitOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
 
           {/* Left Form: Patron & Delivery Information (7 Cols) */}
-          <div className="lg:col-span-7 space-y-7">
+          <div className="lg:col-span-7 space-y-6 sm:space-y-7">
 
             {/* Step 1: Patron Information */}
-            <div className="bg-ivory dark:bg-[#171411] border border-sand/70 dark:border-[#2C2620] rounded-sm p-6 sm:p-7 shadow-sm space-y-4">
+            <div className="bg-ivory dark:bg-[#171411] border border-sand/70 dark:border-[#2C2620] rounded-sm p-4 sm:p-7 shadow-sm space-y-4">
               <div className="flex items-center gap-2.5 pb-3 border-b border-sand/60 dark:border-[#2C2620]">
                 <span className="w-6 h-6 rounded-full bg-[#211D1A] dark:bg-[#D49542] text-ivory dark:text-[#0E0C0A] text-xs font-mono font-bold flex items-center justify-center">
                   1
@@ -420,7 +420,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Step 2: Studio Dispatch Address */}
-            <div className="bg-ivory dark:bg-[#171411] border border-sand/70 dark:border-[#2C2620] rounded-sm p-6 sm:p-7 shadow-sm space-y-4">
+            <div className="bg-ivory dark:bg-[#171411] border border-sand/70 dark:border-[#2C2620] rounded-sm p-4 sm:p-7 shadow-sm space-y-4">
               <div className="flex items-center gap-2.5 pb-3 border-b border-sand/60 dark:border-[#2C2620]">
                 <span className="w-6 h-6 rounded-full bg-[#211D1A] dark:bg-[#D49542] text-ivory dark:text-[#0E0C0A] text-xs font-mono font-bold flex items-center justify-center">
                   2
@@ -528,7 +528,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Step 3: Payment Method */}
-            <div className="bg-ivory dark:bg-[#171411] border border-sand/70 dark:border-[#2C2620] rounded-sm p-6 sm:p-7 shadow-sm space-y-4">
+            <div className="bg-ivory dark:bg-[#171411] border border-sand/70 dark:border-[#2C2620] rounded-sm p-4 sm:p-7 shadow-sm space-y-4">
               <div className="flex items-center gap-2.5 pb-3 border-b border-sand/60 dark:border-[#2C2620]">
                 <span className="w-6 h-6 rounded-full bg-[#211D1A] dark:bg-[#D49542] text-ivory dark:text-[#0E0C0A] text-xs font-mono font-bold flex items-center justify-center">
                   3
@@ -603,7 +603,7 @@ export default function CheckoutPage() {
 
           {/* Right Summary Panel: Sticky Order Summary (5 Cols) */}
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
-            <div className="bg-ivory dark:bg-[#171411] border border-sand/80 dark:border-[#2C2620] rounded-sm p-6 sm:p-7 shadow-xl space-y-5">
+            <div className="bg-ivory dark:bg-[#171411] border border-sand/80 dark:border-[#2C2620] rounded-sm p-4 sm:p-7 shadow-xl space-y-5">
               <h3 className="font-serif text-xl sm:text-2xl font-normal pb-3 border-b border-sand/60 dark:border-[#2C2620]">
                 Order Summary ({cart.reduce((tot, i) => tot + i.quantity, 0)})
               </h3>

@@ -88,7 +88,7 @@ export function BrandBenefitsStrip({ benefits }: BrandBenefitsStripProps) {
   return (
     <div className="w-full bg-[#F3EBDD] dark:bg-[#14110E] border-b border-[#D7C7AE]/60 dark:border-[#2C2620] py-6 sm:py-7 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#D7C7AE]/80 dark:divide-[#2C2620]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:divide-x divide-[#D7C7AE]/80 dark:divide-[#2C2620]">
           {items.map((item, idx) => (
             <motion.div
               key={item.id || idx}
@@ -96,7 +96,7 @@ export function BrandBenefitsStrip({ benefits }: BrandBenefitsStripProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="flex items-center justify-center gap-3.5 py-3 sm:py-2 px-3 text-center sm:text-left group cursor-default"
+              className="flex items-center gap-2.5 sm:gap-3.5 py-2 px-2 sm:px-3 text-left group cursor-default"
             >
               <div className="p-2.5 rounded-full bg-[#EAE0D0] dark:bg-[#1E1A16] group-hover:bg-[#E3D6C1] dark:group-hover:bg-[#2A241F] transition-colors shrink-0 shadow-sm border border-[#D7C7AE]/30 dark:border-[#383028]">
                 {renderIcon(item.icon || item.title)}

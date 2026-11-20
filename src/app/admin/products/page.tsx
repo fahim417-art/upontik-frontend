@@ -365,7 +365,7 @@ export default function AdminProductsPage() {
           />
 
           <div className="relative max-w-2xl mx-auto my-8 px-4">
-            <div className="bg-ivory border border-sand shadow-elevated rounded-sm p-6 sm:p-8">
+            <div className="bg-ivory border border-sand shadow-elevated rounded-sm p-4 sm:p-8">
               <div className="flex items-center justify-between pb-4 border-b border-sand mb-6">
                 <h3 className="font-serif text-2xl text-charcoal font-normal">
                   {editingProduct ? "Edit Product" : "Create New Artisan Piece"}

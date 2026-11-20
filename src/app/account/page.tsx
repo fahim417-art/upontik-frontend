@@ -145,8 +145,8 @@ export default function AccountOverviewPage() {
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="flex border-b border-[#E8DFC8]/70 dark:border-[#2C2620] mb-8 gap-6 text-xs uppercase tracking-editorial font-bold">
+        {/* Navigation Tabs (scrollable on mobile) */}
+        <div className="flex overflow-x-auto scrollbar-none border-b border-[#E8DFC8]/70 dark:border-[#2C2620] mb-8 gap-4 sm:gap-6 text-xs uppercase tracking-editorial font-bold whitespace-nowrap">
           <Link
             href="/account"
             className="pb-3 border-b-2 border-[#211D1A] dark:border-[#D49542] text-[#211D1A] dark:text-[#D49542] flex items-center gap-2"
