@@ -14,6 +14,8 @@ import {
   AlertTriangle,
   ChevronDown,
   ChevronUp,
+  Printer,
+  Calendar,
 } from "lucide-react";
 
 interface StatusHistoryItem {
@@ -122,6 +124,21 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
         : `https://www.google.com/search?q=${encodeURIComponent((order.courierName || "courier") + " tracking " + order.trackingNumber)}`
       : undefined);
 
+  // Delivery timeframe estimate
+  const isDhakaZone =
+    order.shippingAddress?.district?.toLowerCase().includes("dhaka") ||
+    order.shippingAddress?.district?.toLowerCase().includes("gazipur");
+  const estimatedWindow =
+    order.orderStatus === "delivered"
+      ? "ডেলিভারি সফলভাবে সম্পন্ন হয়েছে"
+      : isDhakaZone
+      ? "সম্ভাব্য ডেলিভারি: ২৪ থেকে ৪৮ ঘণ্টার মধ্যে"
+      : "সম্ভাব্য ডেলিভারি: ৪৮ থেকে ৭২ ঘণ্টার মধ্যে (Steadfast Express)";
+
+  const whatsappInquiryUrl = `https://wa.me/8801917720875?text=${encodeURIComponent(
+    `হ্যালো UPONTIK স্টুডিও, আমার অর্ডার #${order.orderNumber} সম্পর্কে সরাসরি আপডেট জানতে চাচ্ছি।`
+  )}`;
+
   if (isCancelled) {
     return (
       <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-sm">
@@ -130,17 +147,17 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
           <span>অর্ডার বাতিল করা হয়েছে (Order Cancelled)</span>
         </div>
         <p className="text-xs text-red-700 dark:text-red-400 mt-1 font-sans">
-          This order was cancelled. If you believe this is an error or wish to re-order, please contact our Gazipur studio via WhatsApp.
+          This order was cancelled. If you wish to re-order, please contact our Gazipur studio via WhatsApp.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8]/80 dark:border-[#2C2620] rounded-sm p-5 sm:p-7 shadow-sm transition-colors duration-300">
+    <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8]/80 dark:border-[#2C2620] rounded-sm p-5 sm:p-7 shadow-sm transition-colors duration-300 space-y-6">
       
       {/* Top Banner with Tracking Code & Courier */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-[#E8DFC8]/60 dark:border-[#2C2620] gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-[#E8DFC8]/60 dark:border-[#2C2620] gap-4">
         <div>
           <span className="text-[10px] font-mono uppercase tracking-widest text-[#80644B] dark:text-[#D49542] font-semibold block">
             LIVE TRACKING CONCIERGE
@@ -148,40 +165,66 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
           <h4 className="font-serif text-lg sm:text-xl text-[#211D1A] dark:text-[#F5EFE8] font-normal">
             Order #{order.orderNumber}
           </h4>
+          <span className="text-xs text-[#80644B] dark:text-[#A39789] flex items-center gap-1.5 mt-1 font-mono">
+            <Calendar className="w-3.5 h-3.5 text-[#D49542]" />
+            {estimatedWindow}
+          </span>
         </div>
 
-        {order.trackingNumber && (
-          <div className="flex items-center gap-2 bg-[#FAF7F2] dark:bg-[#1E1A16] border border-[#E8DFC8] dark:border-[#2C2620] px-3.5 py-1.5 rounded-full">
-            <span className="text-[11px] font-mono text-[#80644B] dark:text-[#D49542]">
-              {order.courierName || "Courier"}:
-            </span>
-            <span className="font-mono text-xs font-bold text-[#211D1A] dark:text-[#FAF6F0]">
-              {order.trackingNumber}
-            </span>
-            <button
-              onClick={copyTracking}
-              className="p-1 hover:text-[#D49542] text-[#80644B] dark:text-[#A39789] transition-colors"
-              title="Copy tracking code"
-            >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-            </button>
-            {courierUrl && (
-              <a
-                href={courierUrl}
-                target="_blank"
-                rel="noreferrer"
+        <div className="flex flex-wrap items-center gap-2">
+          {order.trackingNumber && (
+            <div className="flex items-center gap-2 bg-[#FAF7F2] dark:bg-[#1E1A16] border border-[#E8DFC8] dark:border-[#2C2620] px-3.5 py-1.5 rounded-full">
+              <span className="text-[11px] font-mono text-[#80644B] dark:text-[#D49542]">
+                {order.courierName || "Courier"}:
+              </span>
+              <span className="font-mono text-xs font-bold text-[#211D1A] dark:text-[#FAF6F0]">
+                {order.trackingNumber}
+              </span>
+              <button
+                onClick={copyTracking}
                 className="p-1 hover:text-[#D49542] text-[#80644B] dark:text-[#A39789] transition-colors"
-                title="Open live tracking page"
+                title="Copy tracking code"
               >
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            )}
-          </div>
-        )}
+                {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+              </button>
+              {courierUrl && (
+                <a
+                  href={courierUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-1 hover:text-[#D49542] text-[#80644B] dark:text-[#A39789] transition-colors"
+                  title="Open live tracking page"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
+            </div>
+          )}
+
+          {/* WhatsApp Direct Support Button */}
+          <a
+            href={whatsappInquiryUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-colors shadow-sm"
+          >
+            <MessageCircle className="w-3.5 h-3.5" />
+            <span>স্টুডিও সাপোর্ট</span>
+          </a>
+
+          {/* Print Cash Memo */}
+          <button
+            onClick={() => window.print()}
+            className="p-1.5 rounded-full border border-sand dark:border-[#2C2620] hover:border-[#D49542] text-[#80644B] dark:text-[#A39789] transition-colors"
+            title="ইনভয়েস প্রিন্ট করুন"
+          >
+            <Printer className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
 
       {/* 5-Step Stepper */}
-      <div className="py-8">
+      <div className="py-4">
         <div className="grid grid-cols-5 gap-2 relative">
           
           {/* Background Connecting Bar */}

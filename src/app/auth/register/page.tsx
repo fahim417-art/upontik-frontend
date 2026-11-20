@@ -29,11 +29,17 @@ export default function RegisterPage() {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ name, email, phone, password }),
       });
       const data = await res.json();
 
       if (data.success) {
+        if (data.token || data.data?.token) {
+          try {
+            localStorage.setItem("upontik_token", data.token || data.data?.token);
+          } catch {}
+        }
         setUser(data.data);
         showToast("Your account has been created. Welcome to UPONTIK.", "success");
         router.push("/account");

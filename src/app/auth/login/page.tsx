@@ -27,11 +27,17 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
 
       if (data.success) {
+        if (data.token || data.data?.token) {
+          try {
+            localStorage.setItem("upontik_token", data.token || data.data?.token);
+          } catch {}
+        }
         setUser(data.data);
         showToast("Welcome back to UPONTIK.", "success");
         if (data.data.role === "admin") {
