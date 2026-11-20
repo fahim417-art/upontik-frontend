@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useStore } from "@/context/StoreContext";
 import { ArrowRight, CheckCircle2, Loader2, Sparkles } from "lucide-react";
+import { FloralHeaderOrnament } from "../ui/FloralMotif";
 
 interface NewsletterSectionProps {
   cms?: {
@@ -57,26 +58,28 @@ export function NewsletterSection({ cms }: NewsletterSectionProps) {
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-[#FAF6F0] border-b border-sand/60">
+    <section className="py-20 lg:py-28 bg-[#FAF7F2] dark:bg-[#0E0C0A] border-b border-[#E8DFC8]/60 dark:border-[#2C2620] relative transition-colors duration-300">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <FloralHeaderOrnament className="text-[#D49542] mx-auto mb-2" />
+        
         <div className="inline-flex items-center gap-2 mb-3">
-          <Sparkles className="w-3.5 h-3.5 text-[#B87932]" />
-          <span className="text-[11px] uppercase tracking-wideDisplay text-[#80644B] font-bold font-mono">
+          <Sparkles className="w-3.5 h-3.5 text-[#D49542]" />
+          <span className="text-[11px] uppercase tracking-wideDisplay text-[#80644B] dark:text-[#D49542] font-bold font-mono">
             DISPATCHES FROM THE LOOM
           </span>
         </div>
 
-        <h2 className="font-serif text-3xl sm:text-5xl text-[#211D1A] font-normal mb-4 tracking-tight">
+        <h2 className="font-serif text-3xl sm:text-5xl text-[#211D1A] dark:text-[#F5EFE8] font-normal mb-4 tracking-tight">
           {title}
         </h2>
 
-        <p className="text-xs sm:text-sm font-sans text-[#80644B] max-w-lg mx-auto mb-8 leading-relaxed">
+        <p className="text-xs sm:text-sm font-sans text-[#80644B] dark:text-[#A39789] max-w-lg mx-auto mb-8 leading-relaxed">
           {subtitle}
         </p>
 
         {isSubscribed ? (
-          <div className="inline-flex items-center gap-2.5 px-6 py-4 bg-ivory border border-[#B87932] rounded-xs text-[#211D1A] text-xs sm:text-sm font-sans shadow-elevated">
-            <CheckCircle2 className="w-4 h-4 text-[#B87932] flex-shrink-0" />
+          <div className="inline-flex items-center gap-2.5 px-6 py-4 bg-ivory dark:bg-[#1A1613] border border-[#D49542] rounded-full text-[#211D1A] dark:text-[#F5EFE8] text-xs sm:text-sm font-sans shadow-lg">
+            <CheckCircle2 className="w-4 h-4 text-[#D49542] flex-shrink-0" />
             <span>Thank you. Your address is warmly inscribed in our studio ledger.</span>
           </div>
         ) : (
@@ -88,33 +91,33 @@ export function NewsletterSection({ cms }: NewsletterSectionProps) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="w-full px-4 py-3 bg-ivory border border-sand/80 rounded-xs text-xs sm:text-sm text-charcoal placeholder:text-charcoal-muted/60 focus:outline-none focus:border-[#B87932] transition-colors shadow-subtle"
+                  className="w-full px-5 py-3.5 bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] rounded-full text-xs sm:text-sm text-[#211D1A] dark:text-[#F5EFE8] placeholder:text-[#80644B]/60 dark:placeholder:text-[#A39789]/60 focus:outline-none focus:border-[#D49542] transition-colors shadow-sm"
                   required
                 />
               </div>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="py-3 px-6 bg-[#211D1A] hover:bg-[#B87932] text-ivory text-xs uppercase tracking-wideDisplay font-semibold rounded-xs shadow-subtle transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60"
+                className="py-3.5 px-7 bg-[#211D1A] dark:bg-[#D49542] hover:bg-[#B87932] dark:hover:bg-[#E8B878] text-ivory dark:text-[#0E0C0A] text-xs uppercase tracking-wideDisplay font-semibold rounded-full shadow-md transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60"
               >
                 {isSubmitting ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-mustard" />
+                  <Loader2 className="w-4 h-4 animate-spin text-[#D49542]" />
                 ) : (
                   <>
                     <span>Subscribe</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-mustard" />
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </>
                 )}
               </button>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-[11px] text-charcoal-muted/80">
+            <div className="flex items-center justify-center gap-2 text-[11px] text-[#80644B] dark:text-[#A39789]">
               <input
                 type="checkbox"
                 id="newsletterConsent"
                 checked={consent}
                 onChange={(e) => setConsent(e.target.checked)}
-                className="accent-[#B87932] rounded-xs w-3.5 h-3.5"
+                className="accent-[#D49542] rounded-xs w-3.5 h-3.5"
               />
               <label htmlFor="newsletterConsent" className="cursor-pointer">
                 I agree to receive occasional artisan collection notes. No spam.

@@ -51,7 +51,7 @@ export default async function HomePage() {
   const allProducts = SEED_PRODUCTS;
 
   return (
-    <main className="flex-1 flex flex-col bg-ivory text-charcoal">
+    <main className="flex-1 flex flex-col bg-ivory dark:bg-[#0E0C0A] text-charcoal dark:text-[#F5EFE8] transition-colors duration-300">
       {/* Global: Top Announcement Bar with Social Links */}
       <AnnouncementBar
         text={cms?.announcementBar?.text}

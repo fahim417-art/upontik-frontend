@@ -15,6 +15,8 @@ import {
   X,
   ChevronDown,
   ArrowRight,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { SearchModal } from "./SearchModal";
 import { CartDrawer } from "../cart/CartDrawer";
@@ -78,6 +80,8 @@ export function Navbar() {
     setIsCartDrawerOpen,
     setIsSearchOpen,
     user,
+    theme,
+    toggleTheme,
   } = useStore();
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -110,9 +114,13 @@ export function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Left: Brand Logo Wordmark */}
+            {/* Left: Brand Logo Wordmark with Artisan Floral Lotus */}
             <div className="flex items-center gap-6">
-              <Link href="/" className="inline-block group focus:outline-none">
+              <Link href="/" className="inline-flex items-center gap-2 sm:gap-2.5 group focus:outline-none">
+                <svg className="w-6 h-6 sm:w-7 sm:h-7 text-[#B87932] group-hover:text-mustard transition-colors shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C11 5 8 8 4 10C8 11 11 14 12 22C13 14 16 11 20 10C16 8 13 5 12 2Z" />
+                  <circle cx="12" cy="11" r="1.5" fill="#FAF6F0" />
+                </svg>
                 <span className="font-serif text-2xl sm:text-3xl lg:text-[2rem] tracking-[0.18em] text-[#F3EBDD] font-normal group-hover:text-mustard transition-colors">
                   UPONTIK
                 </span>
@@ -295,8 +303,22 @@ export function Navbar() {
               </Link>
             </nav>
 
-            {/* Right: Action Icons (Search, Wishlist, Cart, Account) */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            {/* Right: Action Icons (Day/Night, Search, Wishlist, Cart, Account) */}
+            <div className="flex items-center gap-2 sm:gap-3.5">
+              {/* Day / Night Mode Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-[#F3EBDD]/90 hover:text-mustard focus:outline-none transition-all rounded-full hover:bg-white/10"
+                aria-label={theme === "dark" ? "Switch to Day Mode" : "Switch to Night Mode"}
+                title={theme === "dark" ? "Switch to Day Mode • দিনের মোড" : "Switch to Night Mode • রাতের মোড"}
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-4.5 h-4.5 text-[#E5A855] transition-transform rotate-0 hover:rotate-90 duration-300" />
+                ) : (
+                  <Moon className="w-4.5 h-4.5 transition-transform hover:-rotate-12 duration-300" />
+                )}
+              </button>
+
               {/* Search Icon */}
               <button
                 onClick={() => setIsSearchOpen(true)}
@@ -434,6 +456,19 @@ export function Navbar() {
                     >
                       Contact
                     </Link>
+                    {/* Mobile Day/Night Mode Switch */}
+                    <button
+                      onClick={toggleTheme}
+                      className="w-full flex items-center justify-between py-2.5 text-ivory/90 hover:text-mustard font-medium border-b border-sand/10 text-xs uppercase tracking-editorial"
+                    >
+                      <span>Theme Mode: {theme === "dark" ? "Night (রাত)" : "Day (দিন)"}</span>
+                      {theme === "dark" ? (
+                        <Sun className="w-4 h-4 text-[#E5A855]" />
+                      ) : (
+                        <Moon className="w-4 h-4 text-mustard" />
+                      )}
+                    </button>
+
                     <Link
                       href={user ? "/account" : "/auth/login"}
                       onClick={() => setIsMobileMenuOpen(false)}

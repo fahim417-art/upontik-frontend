@@ -103,7 +103,6 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
   };
 
   const isCancelled = order.orderStatus === "cancelled";
-  const isReturned = order.orderStatus === "returned";
   const currentIndex = getStepIndex(order.orderStatus);
 
   const copyTracking = () => {
@@ -125,12 +124,12 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
 
   if (isCancelled) {
     return (
-      <div className="p-4 bg-red-50 border border-red-200 rounded-sm">
-        <div className="flex items-center gap-2 text-red-800 text-xs font-bold uppercase tracking-editorial">
+      <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-sm">
+        <div className="flex items-center gap-2 text-red-800 dark:text-red-300 text-xs font-bold uppercase tracking-editorial">
           <AlertTriangle className="w-4 h-4 text-red-600" />
           <span>অর্ডার বাতিল করা হয়েছে (Order Cancelled)</span>
         </div>
-        <p className="text-xs text-red-700 mt-1 font-sans">
+        <p className="text-xs text-red-700 dark:text-red-400 mt-1 font-sans">
           This order was cancelled. If you believe this is an error or wish to re-order, please contact our Gazipur studio via WhatsApp.
         </p>
       </div>
@@ -138,188 +137,122 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
   }
 
   return (
-    <div className="bg-ivory-light border border-sand/70 rounded-sm p-4 sm:p-6 space-y-5">
-      {/* Tracker Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-sand/40">
-        <div className="flex items-center gap-2">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
+    <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8]/80 dark:border-[#2C2620] rounded-sm p-5 sm:p-7 shadow-sm transition-colors duration-300">
+      
+      {/* Top Banner with Tracking Code & Courier */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-[#E8DFC8]/60 dark:border-[#2C2620] gap-3">
+        <div>
+          <span className="text-[10px] font-mono uppercase tracking-widest text-[#80644B] dark:text-[#D49542] font-semibold block">
+            LIVE TRACKING CONCIERGE
           </span>
-          <h4 className="font-serif text-sm sm:text-base font-bold text-charcoal tracking-wide">
-            Live Order Tracking • লাইভ ট্র্যাকিং
+          <h4 className="font-serif text-lg sm:text-xl text-[#211D1A] dark:text-[#F5EFE8] font-normal">
+            Order #{order.orderNumber}
           </h4>
         </div>
 
-        <div className="flex items-center gap-2 text-xs">
-          <span className="text-charcoal-muted">Current State:</span>
-          <span className="px-2 py-0.5 bg-mustard/20 text-mustard border border-mustard/30 rounded font-bold uppercase text-[11px] font-mono">
-            {STEPS[currentIndex]?.sub || order.orderStatus}
-          </span>
-        </div>
+        {order.trackingNumber && (
+          <div className="flex items-center gap-2 bg-[#FAF7F2] dark:bg-[#1E1A16] border border-[#E8DFC8] dark:border-[#2C2620] px-3.5 py-1.5 rounded-full">
+            <span className="text-[11px] font-mono text-[#80644B] dark:text-[#D49542]">
+              {order.courierName || "Courier"}:
+            </span>
+            <span className="font-mono text-xs font-bold text-[#211D1A] dark:text-[#FAF6F0]">
+              {order.trackingNumber}
+            </span>
+            <button
+              onClick={copyTracking}
+              className="p-1 hover:text-[#D49542] text-[#80644B] dark:text-[#A39789] transition-colors"
+              title="Copy tracking code"
+            >
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+            </button>
+            {courierUrl && (
+              <a
+                href={courierUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="p-1 hover:text-[#D49542] text-[#80644B] dark:text-[#A39789] transition-colors"
+                title="Open live tracking page"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* 5-Step Visual Stepper */}
-      <div className="py-2">
-        <div className="grid grid-cols-5 relative gap-1 sm:gap-2">
-          {/* Background Connecting Line */}
-          <div className="absolute top-5 left-4 right-4 h-0.5 bg-sand/60 -z-0 hidden sm:block" />
+      {/* 5-Step Stepper */}
+      <div className="py-8">
+        <div className="grid grid-cols-5 gap-2 relative">
           
-          {/* Completed Connecting Line */}
+          {/* Background Connecting Bar */}
+          <div className="absolute top-5 left-[10%] right-[10%] h-[2px] bg-[#E8DFC8] dark:bg-[#2C2620] z-0" />
+          
+          {/* Active Filled Connecting Bar */}
           <div
-            className="absolute top-5 left-4 h-0.5 bg-mustard transition-all duration-700 -z-0 hidden sm:block"
-            style={{
-              width: `${(Math.min(currentIndex, 4) / 4) * 88}%`,
-            }}
+            className="absolute top-5 left-[10%] h-[2px] bg-[#D49542] z-0 transition-all duration-500"
+            style={{ width: `${(currentIndex / 4) * 80}%` }}
           />
 
           {STEPS.map((step, idx) => {
             const Icon = step.icon;
-            const isDone = idx < currentIndex;
+            const isCompleted = idx < currentIndex;
             const isCurrent = idx === currentIndex;
-            const isPending = idx > currentIndex;
 
             return (
               <div key={step.key} className="flex flex-col items-center text-center relative z-10">
+                {/* Node Circle */}
                 <div
-                  className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all duration-300 border ${
-                    isCurrent
-                      ? "bg-mustard text-ivory border-mustard ring-4 ring-mustard/20 scale-105 shadow-md"
-                      : isDone
-                      ? "bg-earth text-ivory border-earth"
-                      : "bg-ivory border-sand text-sand-dark"
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                    isCompleted
+                      ? "bg-[#D49542] text-[#0E0C0A] shadow-md"
+                      : isCurrent
+                      ? "bg-[#211D1A] dark:bg-[#D49542] text-white dark:text-[#0E0C0A] ring-4 ring-[#D49542]/30 scale-110 shadow-lg"
+                      : "bg-[#EAE0D0] dark:bg-[#1E1A16] text-[#80644B] dark:text-[#A39789] border border-[#E8DFC8] dark:border-[#2C2620]"
                   }`}
                 >
-                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Icon className="w-4 h-4" />
                 </div>
 
-                <div className="mt-2 space-y-0.5">
-                  <span
-                    className={`block text-[10px] sm:text-xs font-bold leading-tight ${
-                      isCurrent
-                        ? "text-mustard"
-                        : isDone
-                        ? "text-charcoal"
-                        : "text-charcoal-muted"
-                    }`}
-                  >
-                    {step.title}
-                  </span>
-                  <span className="block text-[9px] sm:text-[10px] text-charcoal-muted font-mono leading-none">
-                    {step.sub}
-                  </span>
-                </div>
+                {/* Step Labels */}
+                <span className={`text-[11px] sm:text-xs font-serif mt-2.5 font-medium leading-tight ${
+                  isCurrent ? "text-[#D49542] font-bold" : "text-[#211D1A] dark:text-[#F5EFE8]"
+                }`}>
+                  {step.title}
+                </span>
+                <span className="text-[9px] uppercase tracking-wider text-[#80644B] dark:text-[#A39789] font-mono mt-0.5 hidden sm:block">
+                  {step.sub}
+                </span>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Courier & Tracking Details Card */}
-      {(order.courierName || order.trackingNumber || currentIndex >= 3) && (
-        <div className="p-3.5 sm:p-4 bg-sand/20 border border-sand rounded flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
-          <div className="flex items-start sm:items-center gap-3">
-            <div className="w-9 h-9 rounded bg-mustard/20 text-mustard flex items-center justify-center shrink-0">
-              <Truck className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] uppercase font-bold tracking-editorial text-earth">
-                  Courier Partner:
-                </span>
-                <span className="font-bold text-charcoal font-sans">
-                  {order.courierName || "Steadfast Courier"}
-                </span>
-              </div>
-              {order.trackingNumber ? (
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-charcoal-muted font-mono text-[11px]">
-                    Consignment ID: <strong className="text-charcoal">{order.trackingNumber}</strong>
-                  </span>
-                  <button
-                    onClick={copyTracking}
-                    className="p-1 hover:bg-sand/40 rounded transition-colors text-charcoal-muted hover:text-charcoal"
-                    title="Copy Consignment ID"
-                  >
-                    {copied ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    ) : (
-                      <Copy className="w-3.5 h-3.5" />
-                    )}
-                  </button>
-                </div>
-              ) : (
-                <p className="text-[11px] text-charcoal-muted mt-0.5">
-                  Dispatched from studio hub. Courier tracking ID will sync shortly.
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            {courierUrl && (
-              <a
-                href={courierUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-charcoal text-ivory text-[11px] uppercase font-bold tracking-editorial rounded hover:bg-mustard transition-colors"
-              >
-                <span>Track on Courier</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
-            )}
-            <a
-              href={`https://wa.me/8801917720875?text=Hello%20Upontik%20Studio,%20inquiring%20about%20my%20Order%20%23${encodeURIComponent(order.orderNumber)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-1.5 py-1.5 px-3 bg-emerald-700 text-ivory text-[11px] uppercase font-bold tracking-editorial rounded hover:bg-emerald-800 transition-colors"
-            >
-              <MessageCircle className="w-3 h-3" />
-              <span>WhatsApp Support</span>
-            </a>
-          </div>
-        </div>
-      )}
-
-      {/* Status History Accordion */}
+      {/* Status History Collapsible */}
       {order.statusHistory && order.statusHistory.length > 0 && (
-        <div className="pt-2">
+        <div className="pt-4 border-t border-[#E8DFC8]/60 dark:border-[#2C2620]">
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className="flex items-center justify-between w-full text-xs font-bold uppercase tracking-editorial text-earth hover:text-mustard py-1"
+            className="flex items-center gap-1.5 text-xs text-[#80644B] dark:text-[#D49542] hover:text-[#211D1A] dark:hover:text-white font-mono uppercase tracking-wider transition-colors"
           >
-            <span>Timeline Audit Log ({order.statusHistory.length} events)</span>
-            {showHistory ? (
-              <ChevronUp className="w-4 h-4" />
-            ) : (
-              <ChevronDown className="w-4 h-4" />
-            )}
+            <span>Timeline Log ({order.statusHistory.length})</span>
+            {showHistory ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </button>
 
           {showHistory && (
-            <div className="mt-3 space-y-2 border-l-2 border-sand/80 pl-3 ml-2">
-              {order.statusHistory.map((item, idx) => (
-                <div key={idx} className="relative pb-2 last:pb-0">
-                  <div className="absolute -left-[19px] top-1.5 w-2 h-2 rounded-full bg-mustard ring-2 ring-ivory" />
-                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                    <span className="text-xs font-bold uppercase text-charcoal">
+            <div className="mt-3 space-y-2 pl-3 border-l-2 border-[#D49542]/40 text-xs">
+              {order.statusHistory.map((item, i) => (
+                <div key={i} className="py-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-[#211D1A] dark:text-[#F5EFE8] capitalize">
                       {item.status}
                     </span>
-                    <span className="text-[10px] text-charcoal-muted font-mono">
-                      {new Date(item.updatedAt).toLocaleDateString("en-BD", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}{" "}
-                      at{" "}
-                      {new Date(item.updatedAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                    <span className="text-[10px] text-[#80644B] dark:text-[#A39789] font-mono">
+                      {new Date(item.updatedAt).toLocaleString()}
                     </span>
                   </div>
                   {item.note && (
-                    <p className="text-[11px] text-charcoal-muted font-sans mt-0.5">
+                    <p className="text-[11px] text-[#80644B] dark:text-[#A39789] italic mt-0.5">
                       {item.note}
                     </p>
                   )}

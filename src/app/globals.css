@@ -5,10 +5,22 @@
 :root {
   --background: #F3EBDD;
   --foreground: #211D1A;
+  --card-bg: #FAF6F0;
+  --border-color: rgba(215, 199, 174, 0.6);
+  --accent-gold: #B87932;
+}
+
+.dark {
+  --background: #0E0C0A;
+  --foreground: #F5EFE8;
+  --card-bg: #171411;
+  --border-color: rgba(215, 199, 174, 0.15);
+  --accent-gold: #D49542;
 }
 
 html {
   scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -31,12 +43,24 @@ body {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #F3EBDD;
+  background: var(--background);
 }
+
 ::-webkit-scrollbar-thumb {
   background: #D7C7AE;
   border-radius: 3px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3A322A;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #80644B;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #B87932;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #80644B;
@@ -48,6 +72,7 @@ body {
     opacity: 0;
     transform: translateY(14px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -58,6 +83,7 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -91,12 +117,33 @@ body {
 }
 
 .luxury-card {
-  background-color: #FAF6F0;
-  border: 1px solid rgba(215, 199, 174, 0.6);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .luxury-card:hover {
-  border-color: rgba(184, 121, 50, 0.4);
+  border-color: rgba(184, 121, 50, 0.5);
   box-shadow: 0 10px 30px -10px rgba(33, 29, 26, 0.08);
+}
+.dark .luxury-card:hover {
+  border-color: rgba(212, 149, 66, 0.5);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Floral Motifs & Accents */
+.floral-embroidery-glow {
+  filter: drop-shadow(0 2px 8px rgba(184, 121, 50, 0.25));
+}
+.dark .floral-embroidery-glow {
+  filter: drop-shadow(0 2px 12px rgba(212, 149, 66, 0.4));
+}
+
+.floral-pattern-bg {
+  background-image: radial-gradient(rgba(184, 121, 50, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.dark .floral-pattern-bg {
+  background-image: radial-gradient(rgba(212, 149, 66, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
 }

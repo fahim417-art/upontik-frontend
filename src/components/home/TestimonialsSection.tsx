@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { Star, CheckCircle, Quote } from "lucide-react";
+import { FloralHeaderOrnament, FloralDivider } from "../ui/FloralMotif";
 
 interface TestimonialsSectionProps {
   reviews?: Array<{
@@ -57,21 +57,22 @@ export function TestimonialsSection({ reviews }: TestimonialsSectionProps) {
   const displayReviews = reviews && reviews.length > 0 ? reviews : DEFAULT_CURATED_REVIEWS;
 
   return (
-    <section className="py-20 lg:py-28 bg-ivory-light border-b border-sand/50">
+    <section className="py-20 lg:py-28 bg-[#FAF6F0] dark:bg-[#120F0C] border-b border-[#E8DFC8]/60 dark:border-[#2C2620] relative transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14">
+          <FloralHeaderOrnament className="text-[#D49542] mx-auto mb-2" />
           <div className="flex items-center justify-center gap-2 mb-2">
-            <span className="w-1.5 h-1.5 bg-[#B87932] rounded-full" />
-            <span className="text-[11px] font-mono uppercase tracking-widest text-[#80644B] font-semibold">
+            <span className="w-1.5 h-1.5 bg-[#B87932] dark:bg-[#D49542] rounded-full" />
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#80644B] dark:text-[#D49542] font-semibold">
               COLLECTOR VOICES
             </span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#211D1A] font-normal tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#211D1A] dark:text-[#F5EFE8] font-normal tracking-tight">
             Real Stories. Real UPONTIK.
           </h2>
-          <p className="text-xs sm:text-sm font-sans text-[#80644B] mt-3 max-w-lg mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm font-sans text-[#80644B] dark:text-[#A39789] mt-3 max-w-lg mx-auto leading-relaxed">
             Unsolicited reflections from collectors and patrons who carry UPONTIK pieces in their daily movements.
           </p>
         </div>
@@ -81,7 +82,7 @@ export function TestimonialsSection({ reviews }: TestimonialsSectionProps) {
           {displayReviews.map((rev) => (
             <div
               key={rev._id}
-              className="bg-ivory border border-sand/70 p-7 sm:p-8 rounded-sm shadow-subtle flex flex-col justify-between hover:border-mustard/50 hover:shadow-luxury transition-all duration-300 relative"
+              className="bg-ivory dark:bg-[#1A1613] border border-[#E8DFC8]/80 dark:border-[#2C2620] p-7 sm:p-8 rounded-sm shadow-subtle flex flex-col justify-between hover:border-[#D49542] hover:shadow-xl transition-all duration-300 relative"
             >
               <div>
                 {/* 5-Star Rating */}
@@ -90,36 +91,36 @@ export function TestimonialsSection({ reviews }: TestimonialsSectionProps) {
                     <Star
                       key={i}
                       className={`w-3.5 h-3.5 ${
-                        i < rev.rating ? "fill-mustard text-mustard" : "text-sand"
+                        i < rev.rating ? "fill-[#D49542] text-[#D49542]" : "text-sand dark:text-[#383028]"
                       }`}
                     />
                   ))}
                 </div>
 
                 {/* Review Heading */}
-                <h3 className="font-serif text-lg sm:text-xl text-charcoal font-normal mb-3 leading-snug">
+                <h3 className="font-serif text-lg sm:text-xl text-[#211D1A] dark:text-[#F5EFE8] font-normal mb-3 leading-snug">
                   &ldquo;{rev.title}&rdquo;
                 </h3>
 
                 {/* Review Body */}
-                <p className="text-xs sm:text-sm font-sans text-charcoal-muted leading-relaxed mb-6">
+                <p className="text-xs sm:text-sm font-sans text-[#80644B] dark:text-[#A39789] leading-relaxed mb-6">
                   {rev.comment}
                 </p>
               </div>
 
               {/* Reviewer Meta Footer */}
-              <div className="pt-4 border-t border-sand/60 flex items-center justify-between">
+              <div className="pt-4 border-t border-[#E8DFC8]/70 dark:border-[#2C2620] flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-semibold text-charcoal block">
+                  <span className="text-xs font-semibold text-[#211D1A] dark:text-[#F5EFE8] block">
                     {rev.customerName}
                   </span>
-                  <span className="text-[11px] text-earth font-mono block">
+                  <span className="text-[11px] text-[#80644B] dark:text-[#D49542] font-mono block">
                     {rev.location || "Verified Patron"}
                   </span>
                 </div>
                 {rev.isVerifiedPurchase && (
-                  <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-earth font-mono bg-sand/30 px-2 py-0.5 rounded-xs">
-                    <CheckCircle className="w-3 h-3 text-mustard" />
+                  <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-[#80644B] dark:text-[#D49542] font-mono bg-[#EAE0D0]/40 dark:bg-[#2A241F] px-2.5 py-0.5 rounded-full border border-[#D49542]/20">
+                    <CheckCircle className="w-3 h-3 text-[#D49542]" />
                     Verified
                   </span>
                 )}
@@ -128,6 +129,10 @@ export function TestimonialsSection({ reviews }: TestimonialsSectionProps) {
           ))}
         </div>
 
+        {/* Floral Divider */}
+        <div className="mt-16">
+          <FloralDivider className="text-[#D49542]" />
+        </div>
       </div>
     </section>
   );

@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Instagram, Facebook, Heart, ShieldCheck, Truck, RotateCcw, MapPin, Phone, Mail } from "lucide-react";
+import { ArrowRight, Instagram, Facebook, Heart, ShieldCheck, Truck, RotateCcw, MapPin, Phone, Mail, Sparkles } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
+import { FloralDivider } from "../ui/FloralMotif";
 
 export function Footer() {
   const { showToast } = useStore();
@@ -22,62 +23,62 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-charcoal text-ivory/90 pt-16 pb-12 border-t border-charcoal-light">
+    <footer className="bg-[#120F0C] dark:bg-[#070605] text-[#FAF6F0] pt-16 pb-12 border-t border-[#2C2620] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Top Trust Badges Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-14 border-b border-charcoal-light/60">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-14 border-b border-[#2C2620]">
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-charcoal-light flex items-center justify-center text-mustard flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-[#1E1A16] flex items-center justify-center text-[#D49542] flex-shrink-0 border border-[#D49542]/20">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h5 className="text-xs uppercase tracking-wideDisplay text-ivory font-semibold">
+              <h5 className="text-xs uppercase tracking-wideDisplay text-[#FAF6F0] font-semibold">
                 Authentic Craftsmanship
               </h5>
-              <p className="text-[11px] text-ivory/60">
+              <p className="text-[11px] text-[#FAF6F0]/60">
                 100% hand-loomed textiles & turned wood
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-charcoal-light flex items-center justify-center text-mustard flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-[#1E1A16] flex items-center justify-center text-[#D49542] flex-shrink-0 border border-[#D49542]/20">
               <Truck className="w-5 h-5" />
             </div>
             <div>
-              <h5 className="text-xs uppercase tracking-wideDisplay text-ivory font-semibold">
+              <h5 className="text-xs uppercase tracking-wideDisplay text-[#FAF6F0] font-semibold">
                 Reliable Courier
               </h5>
-              <p className="text-[11px] text-ivory/60">
+              <p className="text-[11px] text-[#FAF6F0]/60">
                 Nationwide express dispatch to your door
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-charcoal-light flex items-center justify-center text-mustard flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-[#1E1A16] flex items-center justify-center text-[#D49542] flex-shrink-0 border border-[#D49542]/20">
               <RotateCcw className="w-5 h-5" />
             </div>
             <div>
-              <h5 className="text-xs uppercase tracking-wideDisplay text-ivory font-semibold">
+              <h5 className="text-xs uppercase tracking-wideDisplay text-[#FAF6F0] font-semibold">
                 Studio Inspection
               </h5>
-              <p className="text-[11px] text-ivory/60">
+              <p className="text-[11px] text-[#FAF6F0]/60">
                 Every piece quality verified before packaging
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-charcoal-light flex items-center justify-center text-mustard flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-[#1E1A16] flex items-center justify-center text-[#D49542] flex-shrink-0 border border-[#D49542]/20">
               <Phone className="w-5 h-5" />
             </div>
             <div>
-              <h5 className="text-xs uppercase tracking-wideDisplay text-ivory font-semibold">
+              <h5 className="text-xs uppercase tracking-wideDisplay text-[#FAF6F0] font-semibold">
                 Patron Concierge
               </h5>
-              <p className="text-[11px] text-ivory/60">
+              <p className="text-[11px] text-[#FAF6F0]/60">
                 Personal assistance for orders & inquiries
               </p>
             </div>
@@ -85,28 +86,36 @@ export function Footer() {
         </div>
 
         {/* Main 5-Column Navigation Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 py-14 border-b border-charcoal-light/60">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 py-14 border-b border-[#2C2620]">
 
           {/* Brand Atelier Col */}
           <div className="lg:col-span-2 pr-0 lg:pr-8">
-            <Link href="/" className="inline-block mb-4">
-              <span className="font-serif text-3xl tracking-widestEditorial text-ivory block">
-                UPONTIK
-              </span>
-              <span className="block text-[8px] uppercase tracking-[0.3em] text-mustard font-sans font-semibold">
-                Artisan Fashion Studio
-              </span>
+            <Link href="/" className="inline-flex items-center gap-2 mb-4 group">
+              {/* Blooming lotus mark */}
+              <svg className="w-7 h-7 text-[#D49542] transition-transform group-hover:scale-110" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+                <path d="M16 4C16 11 11 16 11 22C11 25.5 13.5 28 16 28C18.5 28 21 25.5 21 22C21 16 16 4 16 4Z" fill="currentColor" fillOpacity="0.25" strokeWidth="1.6" />
+                <path d="M16 12C12 14 6 18 6 22C6 25 8.5 27 12 27C15 27 16 24 16 22" strokeWidth="1.6" strokeLinecap="round" />
+                <path d="M16 12C20 14 26 18 26 22C26 25 23.5 27 20 27C17 27 16 24 16 22" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+              <div>
+                <span className="font-serif text-3xl tracking-widestEditorial text-[#FAF6F0] block">
+                  UPONTIK
+                </span>
+                <span className="block text-[8px] uppercase tracking-[0.3em] text-[#D49542] font-sans font-semibold">
+                  Artisan Fashion Studio
+                </span>
+              </div>
             </Link>
-            <p className="text-xs sm:text-sm font-sans text-ivory/70 leading-relaxed max-w-sm mb-6">
+            <p className="text-xs sm:text-sm font-sans text-[#FAF6F0]/70 leading-relaxed max-w-sm mb-6">
               Handcrafted bags and textile accessories bringing cultural heritage, intricate loom textures, and contemporary silhouette design together.
             </p>
 
-            <div className="flex items-center gap-4 text-ivory/80">
+            <div className="flex items-center gap-3 text-[#FAF6F0]/80">
               <a
                 href="https://www.facebook.com/share/1CYhYuFu83/"
                 target="_blank"
                 rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-charcoal-light/80 hover:bg-mustard hover:text-charcoal flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-full bg-[#1E1A16] hover:bg-[#D49542] hover:text-[#0E0C0A] flex items-center justify-center transition-colors border border-[#2C2620]"
                 aria-label="UPONTIK Facebook Page"
               >
                 <Facebook className="w-4 h-4" />
@@ -115,151 +124,134 @@ export function Footer() {
                 href="https://wa.me/8801917720875"
                 target="_blank"
                 rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-charcoal-light/80 hover:bg-mustard hover:text-charcoal flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-full bg-[#1E1A16] hover:bg-[#D49542] hover:text-[#0E0C0A] flex items-center justify-center transition-colors border border-[#2C2620]"
                 aria-label="UPONTIK WhatsApp"
               >
                 <Phone className="w-4 h-4" />
+              </a>
+              <a
+                href="https://instagram.com/upontik"
+                target="_blank"
+                rel="noreferrer"
+                className="w-9 h-9 rounded-full bg-[#1E1A16] hover:bg-[#D49542] hover:text-[#0E0C0A] flex items-center justify-center transition-colors border border-[#2C2620]"
+                aria-label="UPONTIK Instagram"
+              >
+                <Instagram className="w-4 h-4" />
               </a>
             </div>
           </div>
 
           {/* 5 Fixed Categories */}
           <div>
-            <h4 className="text-[11px] uppercase tracking-wideDisplay font-bold text-sand mb-4">
+            <h4 className="text-[11px] uppercase tracking-wideDisplay font-bold text-[#D49542] mb-4">
               Silhouettes
             </h4>
-            <ul className="space-y-2.5 text-xs font-sans text-ivory/75">
+            <ul className="space-y-2.5 text-xs font-sans text-[#FAF6F0]/75">
               <li>
-                <Link href="/category/side-bag" className="hover:text-mustard transition-colors">
+                <Link href="/category/side-bag" className="hover:text-[#D49542] transition-colors">
                   Side Bag
                 </Link>
               </li>
               <li>
-                <Link href="/category/pouch-bag" className="hover:text-mustard transition-colors">
+                <Link href="/category/pouch-bag" className="hover:text-[#D49542] transition-colors">
                   Pouch Bag
                 </Link>
               </li>
               <li>
-                <Link href="/category/dhol-bag" className="hover:text-mustard transition-colors flex items-center gap-1.5 font-medium text-ivory">
+                <Link href="/category/dhol-bag" className="hover:text-[#D49542] transition-colors flex items-center gap-1.5 font-medium text-white">
                   <span>Dhol Bag</span>
-                  <span className="text-[9px] bg-mustard/20 text-mustard px-1 rounded-xs">Signature</span>
+                  <span className="text-[9px] bg-[#D49542]/20 text-[#D49542] px-1.5 py-0.5 rounded-full font-bold">Signature</span>
                 </Link>
               </li>
               <li>
-                <Link href="/category/phone-bag" className="hover:text-mustard transition-colors">
+                <Link href="/category/phone-bag" className="hover:text-[#D49542] transition-colors">
                   Phone Bag
                 </Link>
               </li>
               <li>
-                <Link href="/category/tote-bag" className="hover:text-mustard transition-colors">
+                <Link href="/category/tote-bag" className="hover:text-[#D49542] transition-colors">
                   Tote Bag
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Client Concierge */}
+          {/* Studio Navigation */}
           <div>
-            <h4 className="text-[11px] uppercase tracking-wideDisplay font-bold text-sand mb-4">
-              Studio Concierge
+            <h4 className="text-[11px] uppercase tracking-wideDisplay font-bold text-[#D49542] mb-4">
+              Atelier
             </h4>
-            <ul className="space-y-2.5 text-xs font-sans text-ivory/75">
+            <ul className="space-y-2.5 text-xs font-sans text-[#FAF6F0]/75">
               <li>
-                <Link href="/shipping-returns" className="hover:text-mustard transition-colors">
-                  Shipping & Courier
+                <Link href="/story" className="hover:text-[#D49542] transition-colors">
+                  Our Story
                 </Link>
               </li>
               <li>
-                <Link href="/shipping-returns" className="hover:text-mustard transition-colors">
-                  Returns & Exchange
+                <Link href="/shop" className="hover:text-[#D49542] transition-colors">
+                  All Collections
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-mustard transition-colors">
-                  Care & Maintenance
+                <Link href="/shipping-returns" className="hover:text-[#D49542] transition-colors">
+                  Shipping & Returns
                 </Link>
               </li>
               <li>
-                <Link href="/account/orders" className="hover:text-mustard transition-colors">
-                  Track Your Order
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-mustard transition-colors">
+                <Link href="/contact" className="hover:text-[#D49542] transition-colors">
                   Contact Studio
+                </Link>
+              </li>
+              <li>
+                <Link href="/account/orders" className="hover:text-[#D49542] transition-colors">
+                  Track Your Order
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Studio Dispatches */}
+          {/* Studio Contact Info */}
           <div>
-            <h4 className="text-[11px] uppercase tracking-wideDisplay font-bold text-sand mb-4">
-              Atelier Newsletter
+            <h4 className="text-[11px] uppercase tracking-wideDisplay font-bold text-[#D49542] mb-4">
+              Studio & Workshop
             </h4>
-            <p className="text-[11px] text-ivory/70 leading-relaxed mb-4">
-              Private previews of small-batch collections and loom stories.
-            </p>
-            {isSubscribed ? (
-              <p className="text-xs text-mustard font-medium flex items-center gap-1.5">
-                <Heart className="w-3.5 h-3.5 fill-mustard text-mustard" /> Subscribed to dispatches.
-              </p>
-            ) : (
-              <form onSubmit={handleSubscribe} className="space-y-2">
-                <div className="relative">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter email address"
-                    required
-                    className="w-full bg-charcoal-light/60 border border-charcoal-light focus:border-mustard rounded-xs px-3 py-2 text-xs text-ivory placeholder-ivory/40 focus:outline-none transition-colors"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1 text-sand hover:text-mustard transition-colors"
-                    aria-label="Subscribe"
-                  >
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </form>
-            )}
-
-            <div className="mt-4 pt-4 border-t border-charcoal-light/40 text-[10px] text-ivory/60 space-y-1">
-              <p className="flex items-center gap-1.5">
-                <Mail className="w-3 h-3 text-mustard" />
-                <span>ummetanzila264@gmail.com</span>
-              </p>
-              <p className="flex items-center gap-1.5">
-                <Phone className="w-3 h-3 text-mustard" />
-                <span>+880 1917-720875</span>
-              </p>
-              <p className="flex items-center gap-1.5">
-                <MapPin className="w-3 h-3 text-mustard" />
-                <span>Konabari, Gazipur, Bangladesh — 1702</span>
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Bottom Bar: Copyright & Payment Badges */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-ivory/60 gap-4">
-          <p>© {new Date().getFullYear()} UPONTIK. Tradition, Woven Into Modern Living. All rights reserved.</p>
-          <div className="flex items-center gap-4 text-ivory/70">
-            <span className="font-mono text-[10px] uppercase bg-charcoal-light px-2 py-0.5 rounded-xs">Cash on Delivery</span>
-            <span className="font-mono text-[10px] uppercase bg-charcoal-light px-2 py-0.5 rounded-xs">bKash</span>
-            <span className="font-mono text-[10px] uppercase bg-charcoal-light px-2 py-0.5 rounded-xs">Nagad</span>
-            <Link href="/privacy" className="hover:text-ivory transition-colors ml-2">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-ivory transition-colors">
-              Terms
-            </Link>
+            <ul className="space-y-3 text-xs font-sans text-[#FAF6F0]/75">
+              <li className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-[#D49542] shrink-0 mt-0.5" />
+                <span>Konabari, Gazipur, Gazipur, Bangladesh, 1702</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Phone className="w-4 h-4 text-[#D49542] shrink-0" />
+                <a href="tel:01917720875" className="hover:text-[#D49542] transition-colors font-mono">
+                  01917-720875
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Mail className="w-4 h-4 text-[#D49542] shrink-0" />
+                <a href="mailto:ummetanzila264@gmail.com" className="hover:text-[#D49542] transition-colors">
+                  ummetanzila264@gmail.com
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
+        {/* Bottom Floral Divider */}
+        <div className="py-6">
+          <FloralDivider className="text-[#D49542]" />
+        </div>
+
+        {/* Bottom Copyright */}
+        <div className="pt-4 flex flex-col sm:flex-row items-center justify-between text-xs text-[#FAF6F0]/50 font-sans gap-4">
+          <p>© {new Date().getFullYear()} UPONTIK Handicraft. All rights reserved. Handcrafted in Bangladesh.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/shipping-returns" className="hover:text-[#D49542] transition-colors">
+              Privacy & Studio Terms
+            </Link>
+            <span className="text-[#2C2620]">•</span>
+            <span className="text-[#D49542] font-mono text-[11px]">100% Authentic Handloom</span>
+          </div>
+        </div>
       </div>
     </footer>
   );

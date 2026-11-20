@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/utils";
 import { useStore } from "@/context/StoreContext";
 import { Eye, Heart, ShoppingBag, ArrowRight } from "lucide-react";
 import { QuickViewModal } from "../shop/QuickViewModal";
+import { FloralHeaderOrnament } from "../ui/FloralMotif";
 
 interface NewArrivalsSectionProps {
   products: any[];
@@ -19,24 +20,26 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
   const newArrivals = products.filter((p) => p.newArrival || p.status === "published").slice(0, 4);
 
   return (
-    <section className="py-20 lg:py-24 bg-[#FAF6F0] border-b border-sand/60">
+    <section className="py-20 lg:py-24 bg-[#FAF7F2] dark:bg-[#0E0C0A] border-b border-[#E8DFC8]/60 dark:border-[#2C2620] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4 pb-6 border-b border-sand">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4 pb-6 border-b border-[#E8DFC8]/70 dark:border-[#2C2620]">
           <div>
-            <span className="text-[11px] font-mono uppercase tracking-widest text-[#B87932] font-semibold block mb-1">
+            <FloralHeaderOrnament className="text-[#D49542] mb-1" />
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#B87932] dark:text-[#D49542] font-semibold block mb-1">
               LIMITED ATELIER RELEASES
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl text-[#211D1A] font-normal">
+            <h2 className="font-serif text-3xl sm:text-4xl text-[#211D1A] dark:text-[#F5EFE8] font-normal">
               Fresh From Our Studio
             </h2>
-            <p className="text-xs sm:text-sm font-sans text-[#80644B] mt-1">
-              Meet the latest additions to our collection, shaped from fresh looms and seasonal dyes.
+            <p className="text-xs sm:text-sm font-sans text-[#80644B] dark:text-[#A39789] mt-1">
+              Meet the latest additions to our collection, shaped from fresh looms and seasonal botanical dyes.
             </p>
           </div>
           <Link
             href="/shop?sort=newest"
-            className="text-xs uppercase tracking-editorial text-[#80644B] hover:text-[#B87932] font-semibold flex items-center gap-1.5 transition-colors self-start sm:self-auto"
+            className="text-xs uppercase tracking-editorial text-[#80644B] dark:text-[#D49542] hover:text-[#B87932] font-semibold flex items-center gap-1.5 transition-colors self-start sm:self-auto"
           >
             <span>View All New Releases</span>
             <ArrowRight className="w-4 h-4" />
@@ -52,10 +55,10 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
             return (
               <div
                 key={product._id || product.id}
-                className="group flex flex-col justify-between bg-ivory border border-sand/60 rounded-sm overflow-hidden hover:border-[#B87932]/60 hover:shadow-elevated transition-all duration-300"
+                className="group flex flex-col justify-between bg-ivory dark:bg-[#171411] border border-[#E8DFC8]/80 dark:border-[#2C2620] rounded-sm overflow-hidden hover:border-[#D49542] hover:shadow-xl transition-all duration-300"
               >
                 <div>
-                  <div className="relative aspect-[4/5] bg-sand/20 overflow-hidden">
+                  <div className="relative aspect-[4/5] bg-[#EAE0D0]/20 dark:bg-[#1E1A16] overflow-hidden">
                     <Image
                       src={mainImg}
                       alt={product.name}
@@ -65,7 +68,7 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
                     />
 
                     {/* New Badge */}
-                    <span className="absolute top-2.5 left-2.5 text-[9px] uppercase tracking-wider bg-[#B87932] text-white px-2 py-0.5 rounded-xs font-mono font-bold">
+                    <span className="absolute top-2.5 left-2.5 text-[9px] uppercase tracking-wider bg-[#B87932] dark:bg-[#D49542] text-white dark:text-[#0E0C0A] px-2.5 py-0.5 rounded-full font-mono font-bold shadow-sm">
                       New Release
                     </span>
 
@@ -73,14 +76,14 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
                     <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => toggleWishlist(product._id || product.id)}
-                        className="p-2 rounded-full bg-white/90 hover:bg-white text-charcoal shadow-sm transition-colors"
+                        className="p-2 rounded-full bg-white/90 dark:bg-[#1E1A16]/90 hover:bg-white dark:hover:bg-[#2A241F] text-charcoal dark:text-[#F5EFE8] shadow-md transition-colors"
                         aria-label="Wishlist"
                       >
-                        <Heart className={`w-3.5 h-3.5 ${isFav ? "fill-[#B87932] text-[#B87932]" : ""}`} />
+                        <Heart className={`w-3.5 h-3.5 ${isFav ? "fill-[#D49542] text-[#D49542]" : ""}`} />
                       </button>
                       <button
                         onClick={() => setSelectedProduct(product)}
-                        className="p-2 rounded-full bg-white/90 hover:bg-white text-charcoal shadow-sm transition-colors"
+                        className="p-2 rounded-full bg-white/90 dark:bg-[#1E1A16]/90 hover:bg-white dark:hover:bg-[#2A241F] text-charcoal dark:text-[#F5EFE8] shadow-md transition-colors"
                         aria-label="Quick view"
                       >
                         <Eye className="w-3.5 h-3.5" />
@@ -89,17 +92,17 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
                   </div>
 
                   <div className="p-4">
-                    <span className="text-[10px] uppercase tracking-wider text-[#80644B] font-mono block mb-1">
+                    <span className="text-[10px] uppercase tracking-wider text-[#80644B] dark:text-[#D49542] font-mono block mb-1">
                       {product.categorySlug?.replace("-", " ")}
                     </span>
                     <Link
                       href={`/product/${product.slug}`}
-                      className="font-serif text-base text-[#211D1A] font-medium line-clamp-1 group-hover:text-[#B87932] transition-colors"
+                      className="font-serif text-base text-[#211D1A] dark:text-[#F5EFE8] font-medium line-clamp-1 group-hover:text-[#D49542] transition-colors"
                     >
                       {product.name}
                     </Link>
                     <div className="mt-2 flex items-baseline gap-2">
-                      <span className="font-serif text-sm font-bold text-[#211D1A]">
+                      <span className="font-serif text-sm font-bold text-[#211D1A] dark:text-[#FAF6F0]">
                         {formatPrice(product.price)}
                       </span>
                       {product.salePrice && product.salePrice < product.price && (
@@ -124,7 +127,7 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
                         quantity: 1,
                       })
                     }
-                    className="w-full py-2.5 bg-[#211D1A] group-hover:bg-[#B87932] text-ivory text-xs uppercase tracking-editorial rounded font-medium flex items-center justify-center gap-1.5 transition-colors"
+                    className="w-full py-2.5 bg-[#211D1A] dark:bg-[#2A241F] group-hover:bg-[#B87932] dark:group-hover:bg-[#D49542] text-ivory dark:group-hover:text-[#0E0C0A] text-xs uppercase tracking-editorial rounded-full font-medium flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                   >
                     <ShoppingBag className="w-3.5 h-3.5" />
                     <span>Quick Add</span>

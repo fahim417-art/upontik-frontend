@@ -62,6 +62,11 @@ interface StoreContextType {
   // Search Modal
   isSearchOpen: boolean;
   setIsSearchOpen: (open: boolean) => void;
+
+  // Day & Night Mode Theme
+  theme: "light" | "dark";
+  toggleTheme: () => void;
+  setTheme: (theme: "light" | "dark") => void;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -83,6 +88,44 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   // Toasts
   const [toasts, setToasts] = useState<Toast[]>([]);
+
+  // Theme State (Day / Night Mode)
+  const [theme, setThemeState] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem("upontik_theme") as "light" | "dark" | null;
+      if (savedTheme === "dark" || savedTheme === "light") {
+        setThemeState(savedTheme);
+        if (savedTheme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        setThemeState("dark");
+        document.documentElement.classList.add("dark");
+      }
+    } catch {}
+  }, []);
+
+  const setTheme = (newTheme: "light" | "dark") => {
+    setThemeState(newTheme);
+    try {
+      localStorage.setItem("upontik_theme", newTheme);
+      if (newTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    } catch {}
+  };
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+    showToast(nextTheme === "dark" ? "Night Mode Activated • রাতের মোড চালু" : "Day Mode Activated • দিনের মোড চালু", "info");
+  };
 
   const showToast = (message: string, type: "success" | "error" | "info" = "success") => {
     const id = `${Date.now()}_${Math.random()}`;
@@ -268,6 +311,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         removeToast,
         isSearchOpen,
         setIsSearchOpen,
+        theme,
+        toggleTheme,
+        setTheme,
       }}
     >
       {children}
