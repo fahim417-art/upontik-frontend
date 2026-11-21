@@ -70,7 +70,7 @@ export default function AdminOrdersPage() {
       osc1.stop(ctx.currentTime + 0.15);
       osc2.start(ctx.currentTime + 0.15);
       osc2.stop(ctx.currentTime + 0.6);
-    } catch {}
+    } catch { }
   };
 
   const fetchOrders = async () => {
@@ -253,11 +253,10 @@ export default function AdminOrdersPage() {
               setIsChimeEnabled(!isChimeEnabled);
               playOrderChime();
             }}
-            className={`p-2 rounded-full border text-xs flex items-center gap-1.5 transition-colors ${
-              isChimeEnabled
-                ? "bg-[#FAF7F2] dark:bg-[#1E1A16] border-[#D49542] text-[#D49542]"
-                : "border-sand dark:border-[#2C2620] text-charcoal-muted"
-            }`}
+            className={`p-2 rounded-full border text-xs flex items-center gap-1.5 transition-colors ${isChimeEnabled
+              ? "bg-[#FAF7F2] dark:bg-[#1E1A16] border-[#D49542] text-[#D49542]"
+              : "border-sand dark:border-[#2C2620] text-charcoal-muted"
+              }`}
             title={isChimeEnabled ? "Chime Audio Enabled (Click to Mute)" : "Chime Muted (Click to Enable)"}
           >
             {isChimeEnabled ? <Bell className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
@@ -283,11 +282,10 @@ export default function AdminOrdersPage() {
               <button
                 key={st}
                 onClick={() => setStatusFilter(st)}
-                className={`px-3 py-1.5 rounded-full text-xs uppercase tracking-editorial font-bold capitalize transition-colors whitespace-nowrap ${
-                  statusFilter === st
-                    ? "bg-[#211D1A] dark:bg-[#D49542] text-ivory dark:text-[#0E0C0A] shadow-sm"
-                    : "text-[#80644B] dark:text-[#A39789] hover:text-[#211D1A] dark:hover:text-[#FAF6F0]"
-                }`}
+                className={`px-3 py-1.5 rounded-full text-xs uppercase tracking-editorial font-bold capitalize transition-colors whitespace-nowrap ${statusFilter === st
+                  ? "bg-[#211D1A] dark:bg-[#D49542] text-ivory dark:text-[#0E0C0A] shadow-sm"
+                  : "text-[#80644B] dark:text-[#A39789] hover:text-[#211D1A] dark:hover:text-[#FAF6F0]"
+                  }`}
               >
                 {st}
               </button>
@@ -395,9 +393,8 @@ export default function AdminOrdersPage() {
                   return (
                     <tr
                       key={ordId}
-                      className={`hover:bg-[#EAE0D0]/20 dark:hover:bg-[#1E1A16]/50 transition-colors ${
-                        isSelected ? "bg-[#FAF7F2] dark:bg-[#1E1A16]" : ""
-                      }`}
+                      className={`hover:bg-[#EAE0D0]/20 dark:hover:bg-[#1E1A16]/50 transition-colors ${isSelected ? "bg-[#FAF7F2] dark:bg-[#1E1A16]" : ""
+                        }`}
                     >
                       <td className="py-3.5 px-3">
                         <button onClick={() => toggleSelectOrder(ordId)} className="p-0.5">
@@ -412,8 +409,13 @@ export default function AdminOrdersPage() {
                         {ord.orderNumber}
                       </td>
                       <td className="py-3.5 px-3">
-                        <p className="font-medium text-[#211D1A] dark:text-[#F5EFE8]">
-                          {ord.customerInformation?.fullName}
+                        <p className="font-medium text-[#211D1A] dark:text-[#F5EFE8] flex items-center gap-1.5 flex-wrap">
+                          <span>{ord.customerInformation?.fullName}</span>
+                          {ord.userId && (
+                            <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 bg-[#D49542]/15 text-[#B87932] dark:text-[#D49542] rounded">
+                              #CUST-{String(ord.userId).slice(-5).toUpperCase()}
+                            </span>
+                          )}
                         </p>
                         <p className="text-[11px] text-[#80644B] dark:text-[#A39789]">
                           {ord.customerInformation?.phone} • {ord.shippingAddress?.district}
@@ -427,15 +429,14 @@ export default function AdminOrdersPage() {
                       </td>
                       <td className="py-3.5 px-3">
                         <span
-                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                            ord.orderStatus === "delivered"
-                              ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300"
-                              : ord.orderStatus === "pending"
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${ord.orderStatus === "delivered"
+                            ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300"
+                            : ord.orderStatus === "pending"
                               ? "bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300"
                               : ord.orderStatus === "cancelled"
-                              ? "bg-red-100 dark:bg-red-950/60 text-red-800 dark:text-red-300"
-                              : "bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300"
-                          }`}
+                                ? "bg-red-100 dark:bg-red-950/60 text-red-800 dark:text-red-300"
+                                : "bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300"
+                            }`}
                         >
                           {ord.orderStatus}
                         </span>

@@ -21,6 +21,12 @@ import {
   Lock,
   MapPin,
   Sparkles,
+  UserCheck,
+  UserPlus,
+  LogIn,
+  Eye,
+  EyeOff,
+  KeyRound,
 } from "lucide-react";
 
 const BD_DISTRICT_THANA_MAP: Record<string, string[]> = {
@@ -142,7 +148,7 @@ const ALL_BD_DISTRICTS = [
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart, cartSubtotal, clearCart, showToast, user } = useStore();
+  const { cart, cartSubtotal, clearCart, showToast, user, setUser, logout, refreshUser } = useStore();
 
   // Form State
   const [fullName, setFullName] = useState("");
@@ -154,6 +160,16 @@ export default function CheckoutPage() {
   const [postalCode, setPostalCode] = useState("");
   const [orderNotes, setOrderNotes] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "bkash" | "nagad" | "sslcommerz">("cod");
+
+  // Customer Account / Authentication State
+  const [authTab, setAuthTab] = useState<"register" | "login">("register");
+  const [accountPassword, setAccountPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [authError, setAuthError] = useState("");
 
   // Coupon state
   const [couponCode, setCouponCode] = useState("");
@@ -238,6 +254,105 @@ export default function CheckoutPage() {
     }
   };
 
+  const handleCreateCustomerAccount = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setAuthError("");
+
+    if (!fullName.trim() || !email.trim() || !phone.trim()) {
+      setAuthError("অনুগ্রহ করে আপনার পুরো নাম, ইমেইল এবং ১১ ডিজিটের ফোন নম্বর দিন।");
+      return;
+    }
+
+    if (!accountPassword || accountPassword.length < 6) {
+      setAuthError("কাস্টমার আইডির পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");
+      return;
+    }
+
+    if (confirmPassword && accountPassword !== confirmPassword) {
+      setAuthError("পাসওয়ার্ড দুটি মেলেনি। দয়া করে চেক করুন।");
+      return;
+    }
+
+    if (!validatePhone(phone)) {
+      setAuthError("সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (e.g. 01711223344)।");
+      return;
+    }
+
+    setIsAuthenticating(true);
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          name: fullName.trim(),
+          email: email.trim().toLowerCase(),
+          phone: phone.replace(/[\s-]/g, ""),
+          password: accountPassword,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (data.token || data.data?.token) {
+          try {
+            localStorage.setItem("upontik_token", data.token || data.data?.token);
+          } catch {}
+        }
+        setUser(data.data);
+        showToast("কাস্টমার আইডি সফলভাবে তৈরি হয়েছে! স্বাগতম।", "success");
+        setAuthError("");
+      } else {
+        setAuthError(data.error || "একাউন্ট তৈরি করা সম্ভব হয়নি।");
+      }
+    } catch {
+      setAuthError("সার্ভারের সাথে যোগাযোগ করা সম্ভব হয়নি। পুনরায় চেষ্টা করুন।");
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
+  const handleInlineLogin = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setAuthError("");
+
+    if (!loginEmail.trim() || !loginPassword) {
+      setAuthError("অনুগ্রহ করে আপনার নিবন্ধিত ইমেইল ও পাসওয়ার্ড প্রদান করুন।");
+      return;
+    }
+
+    setIsAuthenticating(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          email: loginEmail.trim().toLowerCase(),
+          password: loginPassword,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (data.token || data.data?.token) {
+          try {
+            localStorage.setItem("upontik_token", data.token || data.data?.token);
+          } catch {}
+        }
+        setUser(data.data);
+        showToast("লগইন সফল হয়েছে! স্বাগতম।", "success");
+        setAuthError("");
+      } else {
+        setAuthError(data.error || "ভুল ইমেইল বা পাসওয়ার্ড।");
+      }
+    } catch {
+      setAuthError("লগইন করতে সমস্যা হচ্ছে। পুনরায় চেষ্টা করুন।");
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return; // Prevent double-submission
@@ -246,6 +361,15 @@ export default function CheckoutPage() {
     if (cart.length === 0) {
       setFormError("Your shopping bag is empty.");
       return;
+    }
+
+    if (!user) {
+      if (!accountPassword || accountPassword.length < 6) {
+        setFormError("অর্ডার করার পূর্বে অনুগ্রহ করে আপনার কাস্টমার আইডি তৈরি করুন অথবা পাসওয়ার্ড দিন (সর্বনিম্ন ৬ অক্ষর)।");
+        const authSec = document.getElementById("customer-auth-section");
+        if (authSec) authSec.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
     }
 
     if (!fullName || !email || !phone || !address || !city) {
@@ -261,10 +385,10 @@ export default function CheckoutPage() {
 
     setIsSubmitting(true);
     try {
-      const payload = {
+      const payload: any = {
         customerInformation: {
           fullName,
-          email,
+          email: email.trim().toLowerCase(),
           phone: phone.replace(/[\s-]/g, ""),
         },
         shippingAddress: {
@@ -283,9 +407,19 @@ export default function CheckoutPage() {
         })),
       };
 
+      if (!user && accountPassword) {
+        payload.accountPassword = accountPassword;
+      }
+
+      const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         credentials: "include",
         body: JSON.stringify(payload),
       });
@@ -293,8 +427,14 @@ export default function CheckoutPage() {
       const data = await res.json();
 
       if (data.success) {
+        if (data.data?.token) {
+          try {
+            localStorage.setItem("upontik_token", data.data.token);
+          } catch {}
+          await refreshUser();
+        }
         clearCart();
-        showToast("Order placed successfully! Thank you for supporting artisan hands.", "success");
+        showToast("অর্ডার সফলভাবে গ্রহণ করা হয়েছে! ধন্যবাদ।", "success");
         router.push(`/order-confirmation/${data.data.orderNumber}`);
       } else {
         setFormError(data.error || "Failed to process order. Please check item availability.");
@@ -355,68 +495,290 @@ export default function CheckoutPage() {
           {/* Left Form: Patron & Delivery Information (7 Cols) */}
           <div className="lg:col-span-7 space-y-6 sm:space-y-7">
 
-            {/* Step 1: Patron Information */}
-            <div className="bg-ivory dark:bg-[#171411] border border-sand/70 dark:border-[#2C2620] rounded-sm p-4 sm:p-7 shadow-sm space-y-4">
-              <div className="flex items-center gap-2.5 pb-3 border-b border-sand/60 dark:border-[#2C2620]">
-                <span className="w-6 h-6 rounded-full bg-[#211D1A] dark:bg-[#D49542] text-ivory dark:text-[#0E0C0A] text-xs font-mono font-bold flex items-center justify-center">
-                  1
-                </span>
-                <h2 className="font-serif text-xl sm:text-2xl font-normal">
-                  Patron Details
-                </h2>
+            {/* Step 1: Patron Identity & Customer Account */}
+            <div id="customer-auth-section" className="bg-ivory dark:bg-[#171411] border border-sand/70 dark:border-[#2C2620] rounded-sm p-4 sm:p-7 shadow-sm space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-sand/60 dark:border-[#2C2620]">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-full bg-[#211D1A] dark:bg-[#D49542] text-ivory dark:text-[#0E0C0A] text-xs font-mono font-bold flex items-center justify-center">
+                    1
+                  </span>
+                  <div>
+                    <h2 className="font-serif text-xl sm:text-2xl font-normal">
+                      Patron Identity & Customer ID
+                    </h2>
+                    <p className="text-[11px] text-[#80644B] dark:text-[#A39789]">
+                      অর্ডার হিস্ট্রি ও লাইভ পার্সেল ট্র্যাকিংয়ের জন্য কাস্টমার আইডি আবশ্যক
+                    </p>
+                  </div>
+                </div>
+                {user && (
+                  <span className="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded-full text-[10px] font-mono font-bold flex items-center gap-1">
+                    <UserCheck className="w-3.5 h-3.5" />
+                    Verified ID
+                  </span>
+                )}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-semibold mb-1">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    placeholder="e.g. Samira Rahman"
-                    required
-                    className="w-full p-3 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold mb-1">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="e.g. samira@example.com"
-                    required
-                    className="w-full p-3 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold mb-1">
-                    Phone Number (১১ ডিজিট) *
-                  </label>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                      validatePhone(e.target.value);
+              {/* If user is ALREADY signed in: show verified patron card */}
+              {user ? (
+                <div className="bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/50 rounded-sm p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-start sm:items-center gap-3.5">
+                    <div className="w-11 h-11 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0">
+                      <UserCheck className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-serif text-base font-medium text-charcoal dark:text-ivory">
+                          {user.name}
+                        </span>
+                        <span className="px-2 py-0.5 bg-emerald-200/60 dark:bg-emerald-800/60 text-emerald-900 dark:text-emerald-100 font-mono text-[10px] font-bold rounded">
+                          ID: #UPK-CUST-{user.userId ? user.userId.slice(-6).toUpperCase() : "VERIFIED"}
+                        </span>
+                      </div>
+                      <p className="text-xs text-charcoal-muted dark:text-[#A39789] mt-0.5">
+                        {user.email} {user.phone && `• ${user.phone}`}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      setFullName("");
+                      setEmail("");
+                      setPhone("");
                     }}
-                    placeholder="e.g. 01711223344"
-                    required
-                    className={`w-full p-3 bg-ivory dark:bg-[#1E1A16] border rounded-sm text-xs sm:text-sm focus:outline-none font-mono ${
-                      phoneError ? "border-red-500" : "border-sand/80 dark:border-[#2C2620] focus:border-[#D49542]"
-                    }`}
-                  />
-                  {phoneError && (
-                    <span className="text-[11px] text-red-600 dark:text-red-400 block mt-1">
-                      {phoneError}
-                    </span>
+                    className="text-xs text-[#80644B] dark:text-[#D49542] hover:underline self-start sm:self-center font-medium"
+                  >
+                    Switch Account / সাইন-আউট
+                  </button>
+                </div>
+              ) : (
+                /* If user is NOT signed in: Tabbed Customer ID Creation / Sign In */
+                <div className="space-y-4 pt-1">
+                  {/* Mode Tabs */}
+                  <div className="flex border-b border-sand/60 dark:border-[#2C2620]">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAuthTab("register");
+                        setAuthError("");
+                      }}
+                      className={`pb-2.5 px-4 text-xs font-semibold uppercase tracking-wideDisplay transition-colors relative ${
+                        authTab === "register"
+                          ? "text-[#D49542] border-b-2 border-[#D49542]"
+                          : "text-charcoal-muted dark:text-[#A39789] hover:text-charcoal dark:hover:text-white"
+                      }`}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <UserPlus className="w-3.5 h-3.5" />
+                        নতুন কাস্টমার আইডি খুলুন (Create ID)
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAuthTab("login");
+                        setAuthError("");
+                      }}
+                      className={`pb-2.5 px-4 text-xs font-semibold uppercase tracking-wideDisplay transition-colors relative ${
+                        authTab === "login"
+                          ? "text-[#D49542] border-b-2 border-[#D49542]"
+                          : "text-charcoal-muted dark:text-[#A39789] hover:text-charcoal dark:hover:text-white"
+                      }`}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <LogIn className="w-3.5 h-3.5" />
+                        পূর্বের একাউন্টে সাইন-ইন (Sign In)
+                      </span>
+                    </button>
+                  </div>
+
+                  {authError && (
+                    <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded text-xs text-red-700 dark:text-red-300 flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{authError}</span>
+                    </div>
+                  )}
+
+                  {authTab === "register" ? (
+                    /* Tab 1: New Customer ID Registration */
+                    <div className="space-y-4">
+                      <div className="p-3 bg-[#FAF7F2] dark:bg-[#1E1A16] border border-[#D49542]/30 rounded text-xs text-[#80644B] dark:text-[#D49542] flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 shrink-0 text-[#D49542]" />
+                        <span>
+                          নাম, ইমেইল এবং একটি গোপন পাসওয়ার্ড দিয়ে আপনার <strong>কাস্টমার আইডি</strong> সক্রিয় করুন।
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="sm:col-span-2">
+                          <label className="block text-xs font-semibold mb-1">
+                            আপনার পুরো নাম (Full Name) *
+                          </label>
+                          <input
+                            type="text"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            placeholder="e.g. Samira Rahman"
+                            required
+                            className="w-full p-3 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold mb-1">
+                            ইমেইল ঠিকানা (Email Address) *
+                          </label>
+                          <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="e.g. samira@example.com"
+                            required
+                            className="w-full p-3 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold mb-1">
+                            মোবাইল নম্বর (১১ ডিজিট) *
+                          </label>
+                          <input
+                            type="tel"
+                            value={phone}
+                            onChange={(e) => {
+                              setPhone(e.target.value);
+                              validatePhone(e.target.value);
+                            }}
+                            placeholder="e.g. 01711223344"
+                            required
+                            className={`w-full p-3 bg-ivory dark:bg-[#1E1A16] border rounded-sm text-xs sm:text-sm focus:outline-none font-mono ${
+                              phoneError ? "border-red-500" : "border-sand/80 dark:border-[#2C2620] focus:border-[#D49542]"
+                            }`}
+                          />
+                          {phoneError && (
+                            <span className="text-[11px] text-red-600 dark:text-red-400 block mt-1">
+                              {phoneError}
+                            </span>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold mb-1">
+                            কাস্টমার আইডি পাসওয়ার্ড (Password) *
+                          </label>
+                          <div className="relative">
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              value={accountPassword}
+                              onChange={(e) => setAccountPassword(e.target.value)}
+                              placeholder="সর্বনিম্ন ৬ অক্ষর"
+                              required
+                              className="w-full p-3 pr-10 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-charcoal-muted hover:text-charcoal dark:hover:text-white"
+                            >
+                              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold mb-1">
+                            পাসওয়ার্ড নিশ্চিত করুন (Confirm) *
+                          </label>
+                          <input
+                            type={showPassword ? "text" : "password"}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            placeholder="পুনরায় পাসওয়ার্ড লিখুন"
+                            className="w-full p-3 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <button
+                          type="button"
+                          onClick={handleCreateCustomerAccount}
+                          disabled={isAuthenticating}
+                          className="w-full sm:w-auto px-6 py-2.5 bg-[#211D1A] dark:bg-[#D49542] hover:bg-[#B87932] text-ivory dark:text-[#0E0C0A] text-xs font-bold rounded-sm uppercase tracking-editorial transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50"
+                        >
+                          {isAuthenticating ? (
+                            <>
+                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                              <span>কাস্টমার আইডি তৈরি হচ্ছে...</span>
+                            </>
+                          ) : (
+                            <>
+                              <UserPlus className="w-3.5 h-3.5" />
+                              <span>কাস্টমার আইডি নিশ্চিত করুন (Create Customer ID)</span>
+                            </>
+                          )}
+                        </button>
+                        <span className="text-[11px] text-charcoal-muted dark:text-[#A39789]">
+                          অথবা নিচে তথ্য দিয়ে সরাসরি অর্ডার করতে পারেন
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Tab 2: Existing Customer Sign In */
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-semibold mb-1">
+                            নিবন্ধিত ইমেইল (Email) *
+                          </label>
+                          <input
+                            type="email"
+                            value={loginEmail}
+                            onChange={(e) => setLoginEmail(e.target.value)}
+                            placeholder="e.g. samira@example.com"
+                            className="w-full p-3 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold mb-1">
+                            পাসওয়ার্ড (Password) *
+                          </label>
+                          <input
+                            type="password"
+                            value={loginPassword}
+                            onChange={(e) => setLoginPassword(e.target.value)}
+                            placeholder="আপনার গোপন পাসওয়ার্ড"
+                            className="w-full p-3 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="pt-2">
+                        <button
+                          type="button"
+                          onClick={handleInlineLogin}
+                          disabled={isAuthenticating}
+                          className="w-full sm:w-auto px-6 py-2.5 bg-[#211D1A] dark:bg-[#D49542] hover:bg-[#B87932] text-ivory dark:text-[#0E0C0A] text-xs font-bold rounded-sm uppercase tracking-editorial transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50"
+                        >
+                          {isAuthenticating ? (
+                            <>
+                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                              <span>লগইন হচ্ছে...</span>
+                            </>
+                          ) : (
+                            <>
+                              <LogIn className="w-3.5 h-3.5" />
+                              <span>সাইন-ইন করুন (Sign In to Customer ID)</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Step 2: Studio Dispatch Address */}
@@ -712,7 +1074,12 @@ export default function CheckoutPage() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-white" />
-                    <span>অর্ডার রেজিস্টার হচ্ছে...</span>
+                    <span>কাস্টমার আইডি ও অর্ডার তৈরি হচ্ছে...</span>
+                  </>
+                ) : !user ? (
+                  <>
+                    <Lock className="w-4 h-4 text-white" />
+                    <span>কাস্টমার আইডি সহ অর্ডার সম্পন্ন করুন</span>
                   </>
                 ) : (
                   <>

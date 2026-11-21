@@ -45,11 +45,11 @@ export function ProductDetailsClient({
     product.images && product.images.length > 0
       ? product.images
       : [
-          {
-            url: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=85&w=800",
-            alt: product.name,
-          },
-        ];
+        {
+          url: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=85&w=800",
+          alt: product.name,
+        },
+      ];
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(
@@ -152,7 +152,7 @@ export function ProductDetailsClient({
 
   return (
     <div className="py-8 lg:py-16 pb-28 lg:pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
+
       {/* Top Editorial Breadcrumbs */}
       <nav className="flex items-center gap-2 text-[11px] font-sans text-charcoal-muted dark:text-[#A39789] uppercase tracking-wideDisplay mb-8">
         <Link href="/" className="hover:text-[#D49542] transition-colors">
@@ -173,21 +173,20 @@ export function ProductDetailsClient({
 
       {/* Main Two-Column Editorial Product Experience */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-        
+
         {/* Left Column: Gallery & Magnifier (7 Cols) */}
         <div className="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4 items-start">
-          
+
           {/* Thumbnails list */}
           <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible w-full sm:w-24 shrink-0 pb-2 sm:pb-0 scrollbar-none">
             {images.map((img: any, idx: number) => (
               <button
                 key={idx}
                 onClick={() => setSelectedImageIndex(idx)}
-                className={`relative w-16 h-20 sm:w-24 sm:h-28 rounded-xs overflow-hidden bg-sand/20 dark:bg-[#1E1A16] border transition-all ${
-                  selectedImageIndex === idx
-                    ? "border-[#D49542] ring-1 ring-[#D49542] shadow-sm"
-                    : "border-sand/60 dark:border-[#2C2620] opacity-70 hover:opacity-100"
-                }`}
+                className={`relative w-16 h-20 sm:w-24 sm:h-28 rounded-xs overflow-hidden bg-sand/20 dark:bg-[#1E1A16] border transition-all ${selectedImageIndex === idx
+                  ? "border-[#D49542] ring-1 ring-[#D49542] shadow-sm"
+                  : "border-sand/60 dark:border-[#2C2620] opacity-70 hover:opacity-100"
+                  }`}
                 aria-label={`View angle ${idx + 1}`}
               >
                 <Image
@@ -215,9 +214,8 @@ export function ProductDetailsClient({
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 55vw"
-              className={`object-cover transition-transform duration-200 ${
-                isZoomed ? "scale-150" : "scale-100"
-              }`}
+              className={`object-cover transition-transform duration-200 ${isZoomed ? "scale-150" : "scale-100"
+                }`}
               style={
                 isZoomed
                   ? { transformOrigin: `${zoomPos.x}% ${zoomPos.y}%` }
@@ -300,11 +298,10 @@ export function ProductDetailsClient({
                     <button
                       key={opt}
                       onClick={() => setSelectedVariant(opt)}
-                      className={`px-4 py-1.5 rounded-full text-xs font-sans transition-all ${
-                        selectedVariant === opt
-                          ? "bg-[#211D1A] dark:bg-[#D49542] text-white dark:text-[#0E0C0A] font-bold shadow-sm"
-                          : "bg-ivory dark:bg-[#171411] border border-sand dark:border-[#2C2620] text-charcoal dark:text-[#F5EFE8] hover:border-[#D49542]"
-                      }`}
+                      className={`px-4 py-1.5 rounded-full text-xs font-sans transition-all ${selectedVariant === opt
+                        ? "bg-[#211D1A] dark:bg-[#D49542] text-white dark:text-[#0E0C0A] font-bold shadow-sm"
+                        : "bg-ivory dark:bg-[#171411] border border-sand dark:border-[#2C2620] text-charcoal dark:text-[#F5EFE8] hover:border-[#D49542]"
+                        }`}
                     >
                       {opt}
                     </button>
@@ -429,9 +426,8 @@ export function ProductDetailsClient({
               >
                 <span>Materials & Craftsmanship</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-[#D49542] transition-transform duration-200 ${
-                    openAccordion === "craftsmanship" ? "rotate-180" : ""
-                  }`}
+                  className={`w-4 h-4 text-[#D49542] transition-transform duration-200 ${openAccordion === "craftsmanship" ? "rotate-180" : ""
+                    }`}
                 />
               </button>
               {openAccordion === "craftsmanship" && (
@@ -462,9 +458,8 @@ export function ProductDetailsClient({
               >
                 <span>Dimensions & Ergonomics</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-[#D49542] transition-transform duration-200 ${
-                    openAccordion === "dimensions" ? "rotate-180" : ""
-                  }`}
+                  className={`w-4 h-4 text-[#D49542] transition-transform duration-200 ${openAccordion === "dimensions" ? "rotate-180" : ""
+                    }`}
                 />
               </button>
               {openAccordion === "dimensions" && (
@@ -493,9 +488,8 @@ export function ProductDetailsClient({
               >
                 <span>Shipping & Studio Returns</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-[#D49542] transition-transform duration-200 ${
-                    openAccordion === "shipping" ? "rotate-180" : ""
-                  }`}
+                  className={`w-4 h-4 text-[#D49542] transition-transform duration-200 ${openAccordion === "shipping" ? "rotate-180" : ""
+                    }`}
                 />
               </button>
               {openAccordion === "shipping" && (
@@ -532,7 +526,7 @@ export function ProductDetailsClient({
             className="p-6 sm:p-8 bg-ivory dark:bg-[#171411] border border-sand/70 dark:border-[#2C2620] rounded-sm mb-12 space-y-4 shadow-sm"
           >
             <h3 className="font-serif text-xl text-charcoal dark:text-[#F5EFE8]">Write an Impression</h3>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-charcoal dark:text-[#F5EFE8] mb-1">
@@ -615,9 +609,8 @@ export function ProductDetailsClient({
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-3.5 h-3.5 ${
-                            i < r.rating ? "fill-[#D49542] text-[#D49542]" : "text-sand dark:text-[#383028]"
-                          }`}
+                          className={`w-3.5 h-3.5 ${i < r.rating ? "fill-[#D49542] text-[#D49542]" : "text-sand dark:text-[#383028]"
+                            }`}
                         />
                       ))}
                     </div>

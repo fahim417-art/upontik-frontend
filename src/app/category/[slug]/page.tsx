@@ -145,7 +145,7 @@ export default async function CategoryPage({
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Breadcrumb Path */}
           <nav className="flex items-center gap-2 text-[11px] font-sans tracking-wideDisplay uppercase text-sand mb-6">
             <Link href="/" className="hover:text-ivory transition-colors">
@@ -222,11 +222,10 @@ export default async function CategoryPage({
               <Link
                 key={c.slug}
                 href={`/category/${c.slug}`}
-                className={`text-xs font-sans uppercase tracking-wideDisplay py-1.5 px-4 rounded-xs transition-all whitespace-nowrap ${
-                  isActive
-                    ? "bg-charcoal text-ivory font-semibold shadow-subtle"
-                    : "text-charcoal-muted hover:text-charcoal bg-sand/20 hover:bg-sand/40 border border-sand/40"
-                }`}
+                className={`text-xs font-sans uppercase tracking-wideDisplay py-1.5 px-4 rounded-xs transition-all whitespace-nowrap ${isActive
+                  ? "bg-charcoal text-ivory font-semibold shadow-subtle"
+                  : "text-charcoal-muted hover:text-charcoal bg-sand/20 hover:bg-sand/40 border border-sand/40"
+                  }`}
               >
                 {c.name}
               </Link>

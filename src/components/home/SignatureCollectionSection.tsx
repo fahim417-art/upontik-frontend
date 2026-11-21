@@ -39,7 +39,7 @@ export function SignatureCollectionSection({ cms }: SignatureCollectionProps) {
     <section className="py-20 lg:py-28 bg-[#14110E] dark:bg-[#0A0908] text-[#FAF6F0] overflow-hidden relative transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
+
           {/* Left: Editorial Image Block (7 Cols) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -57,7 +57,7 @@ export function SignatureCollectionSection({ cms }: SignatureCollectionProps) {
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              
+
               {/* Corner Floral Motifs */}
               <FloralCorner position="top-left" className="text-[#D49542]/60 w-12 h-12 top-2 left-2 z-10" />
               <FloralCorner position="bottom-right" className="text-[#D49542]/60 w-12 h-12 bottom-2 right-2 z-10" />

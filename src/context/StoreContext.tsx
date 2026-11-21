@@ -173,7 +173,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const refreshUser = async () => {
     try {
       setIsLoadingUser(true);
-      const res = await fetch("/api/auth/me", { credentials: "include" });
+      const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+      const res = await fetch("/api/auth/me", { credentials: "include", headers });
       const data = await res.json();
       if (data.success && data.data) {
         setUser(data.data);
@@ -190,6 +195,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+      try {
+        localStorage.removeItem("upontik_token");
+      } catch {}
       setUser(null);
       showToast("You have been signed out.", "info");
     } catch {

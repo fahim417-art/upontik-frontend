@@ -193,7 +193,7 @@ export default function AccountOverviewPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] rounded-sm p-6 sm:p-8 shadow-sm relative">
             <FloralCorner position="top-right" className="text-[#D49542]/40 w-10 h-10 top-2 right-2" />
-            
+
             <h2 className="font-serif text-xl sm:text-2xl text-[#211D1A] dark:text-[#F5EFE8] mb-1">
               Personal Information & Shipping Address
             </h2>

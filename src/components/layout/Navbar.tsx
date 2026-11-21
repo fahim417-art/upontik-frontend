@@ -106,11 +106,10 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 transition-all duration-300 ${
-          isScrolled
-            ? "bg-[#211D1A]/95 backdrop-blur-md text-[#F3EBDD] shadow-luxury border-b border-sand/20 py-3.5"
-            : "bg-[#211D1A] text-[#F3EBDD] border-b border-sand/15 py-4 sm:py-5"
-        }`}
+        className={`sticky top-0 z-40 transition-all duration-300 ${isScrolled
+          ? "bg-[#211D1A]/95 backdrop-blur-md text-[#F3EBDD] shadow-luxury border-b border-sand/20 py-3.5"
+          : "bg-[#211D1A] text-[#F3EBDD] border-b border-sand/15 py-4 sm:py-5"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
@@ -132,9 +131,8 @@ export function Navbar() {
               {/* Home */}
               <Link
                 href="/"
-                className={`transition-colors relative py-1 hover:text-mustard ${
-                  pathname === "/" ? "text-[#F3EBDD] font-semibold" : "text-[#F3EBDD]/80"
-                }`}
+                className={`transition-colors relative py-1 hover:text-mustard ${pathname === "/" ? "text-[#F3EBDD] font-semibold" : "text-[#F3EBDD]/80"
+                  }`}
               >
                 Home
                 {pathname === "/" && (
@@ -150,17 +148,15 @@ export function Navbar() {
               >
                 <Link
                   href="/shop"
-                  className={`flex items-center gap-1 transition-colors relative py-1 hover:text-mustard ${
-                    pathname.startsWith("/shop") || pathname.startsWith("/category")
-                      ? "text-[#F3EBDD] font-semibold"
-                      : "text-[#F3EBDD]/80"
-                  }`}
+                  className={`flex items-center gap-1 transition-colors relative py-1 hover:text-mustard ${pathname.startsWith("/shop") || pathname.startsWith("/category")
+                    ? "text-[#F3EBDD] font-semibold"
+                    : "text-[#F3EBDD]/80"
+                    }`}
                 >
                   <span>Shop</span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      isShopMenuOpen ? "rotate-180 text-mustard" : "text-[#F3EBDD]/60"
-                    }`}
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${isShopMenuOpen ? "rotate-180 text-mustard" : "text-[#F3EBDD]/60"
+                      }`}
                   />
                   {(pathname.startsWith("/shop") || pathname.startsWith("/category")) && (
                     <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-mustard rounded-full" />
@@ -214,9 +210,8 @@ export function Navbar() {
               {/* Our Story */}
               <Link
                 href="/story"
-                className={`transition-colors relative py-1 hover:text-mustard ${
-                  pathname === "/story" ? "text-[#F3EBDD] font-semibold" : "text-[#F3EBDD]/80"
-                }`}
+                className={`transition-colors relative py-1 hover:text-mustard ${pathname === "/story" ? "text-[#F3EBDD] font-semibold" : "text-[#F3EBDD]/80"
+                  }`}
               >
                 Our Story
                 {pathname === "/story" && (
@@ -236,9 +231,8 @@ export function Navbar() {
                 >
                   <span>Collections</span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      isCollectionsOpen ? "rotate-180 text-mustard" : "text-[#F3EBDD]/60"
-                    }`}
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${isCollectionsOpen ? "rotate-180 text-mustard" : "text-[#F3EBDD]/60"
+                      }`}
                   />
                 </button>
 
@@ -285,9 +279,8 @@ export function Navbar() {
               {/* Blog */}
               <Link
                 href="/story"
-                className={`transition-colors relative py-1 hover:text-mustard ${
-                  pathname === "/blog" ? "text-[#F3EBDD] font-semibold" : "text-[#F3EBDD]/80"
-                }`}
+                className={`transition-colors relative py-1 hover:text-mustard ${pathname === "/blog" ? "text-[#F3EBDD] font-semibold" : "text-[#F3EBDD]/80"
+                  }`}
               >
                 Blog
               </Link>
@@ -295,9 +288,8 @@ export function Navbar() {
               {/* Contact */}
               <Link
                 href="/contact"
-                className={`transition-colors relative py-1 hover:text-mustard ${
-                  pathname === "/contact" ? "text-[#F3EBDD] font-semibold" : "text-[#F3EBDD]/80"
-                }`}
+                className={`transition-colors relative py-1 hover:text-mustard ${pathname === "/contact" ? "text-[#F3EBDD] font-semibold" : "text-[#F3EBDD]/80"
+                  }`}
               >
                 Contact
               </Link>

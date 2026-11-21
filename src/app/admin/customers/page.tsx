@@ -74,6 +74,7 @@ export default function AdminCustomersPage() {
             <table className="w-full text-left text-xs font-sans">
               <thead className="bg-ivory-light border-b border-sand text-charcoal-muted uppercase tracking-editorial text-[10px]">
                 <tr>
+                  <th className="py-3.5 px-4">Customer ID</th>
                   <th className="py-3.5 px-4">Patron Name</th>
                   <th className="py-3.5 px-4">Email</th>
                   <th className="py-3.5 px-4">Phone</th>
@@ -84,6 +85,9 @@ export default function AdminCustomersPage() {
               <tbody className="divide-y divide-sand/40">
                 {filtered.map((c) => (
                   <tr key={c._id || c.email} className="hover:bg-sand/10">
+                    <td className="py-3.5 px-4 font-mono font-bold text-xs text-[#D49542]">
+                      #UPK-CUST-{String(c._id).slice(-6).toUpperCase()}
+                    </td>
                     <td className="py-3.5 px-4 font-serif font-medium text-charcoal">
                       {c.name}
                     </td>

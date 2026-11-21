@@ -120,8 +120,8 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
       ? order.courierName?.toLowerCase().includes("steadfast")
         ? `https://steadfast.com.bd/t/${encodeURIComponent(order.trackingNumber)}`
         : order.courierName?.toLowerCase().includes("pathao")
-        ? `https://merchant.pathao.com/tracking?consignment_id=${encodeURIComponent(order.trackingNumber)}`
-        : `https://www.google.com/search?q=${encodeURIComponent((order.courierName || "courier") + " tracking " + order.trackingNumber)}`
+          ? `https://merchant.pathao.com/tracking?consignment_id=${encodeURIComponent(order.trackingNumber)}`
+          : `https://www.google.com/search?q=${encodeURIComponent((order.courierName || "courier") + " tracking " + order.trackingNumber)}`
       : undefined);
 
   // Delivery timeframe estimate
@@ -132,8 +132,8 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
     order.orderStatus === "delivered"
       ? "ডেলিভারি সফলভাবে সম্পন্ন হয়েছে"
       : isDhakaZone
-      ? "সম্ভাব্য ডেলিভারি: ২৪ থেকে ৪৮ ঘণ্টার মধ্যে"
-      : "সম্ভাব্য ডেলিভারি: ৪৮ থেকে ৭২ ঘণ্টার মধ্যে (Steadfast Express)";
+        ? "সম্ভাব্য ডেলিভারি: ২৪ থেকে ৪৮ ঘণ্টার মধ্যে"
+        : "সম্ভাব্য ডেলিভারি: ৪৮ থেকে ৭২ ঘণ্টার মধ্যে (Steadfast Express)";
 
   const whatsappInquiryUrl = `https://wa.me/8801917720875?text=${encodeURIComponent(
     `হ্যালো UPONTIK স্টুডিও, আমার অর্ডার #${order.orderNumber} সম্পর্কে সরাসরি আপডেট জানতে চাচ্ছি।`
@@ -155,7 +155,7 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
 
   return (
     <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8]/80 dark:border-[#2C2620] rounded-sm p-5 sm:p-7 shadow-sm transition-colors duration-300 space-y-6">
-      
+
       {/* Top Banner with Tracking Code & Courier */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-[#E8DFC8]/60 dark:border-[#2C2620] gap-4">
         <div>
@@ -226,10 +226,10 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
       {/* 5-Step Stepper - Desktop/Tablet Horizontal Layout */}
       <div className="py-4 hidden sm:block">
         <div className="grid grid-cols-5 gap-2 relative">
-          
+
           {/* Background Connecting Bar */}
           <div className="absolute top-5 left-[10%] right-[10%] h-[2px] bg-[#E8DFC8] dark:bg-[#2C2620] z-0" />
-          
+
           {/* Active Filled Connecting Bar */}
           <div
             className="absolute top-5 left-[10%] h-[2px] bg-[#D49542] z-0 transition-all duration-500"
@@ -245,21 +245,19 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
               <div key={step.key} className="flex flex-col items-center text-center relative z-10">
                 {/* Node Circle */}
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                    isCompleted
-                      ? "bg-[#D49542] text-[#0E0C0A] shadow-md"
-                      : isCurrent
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${isCompleted
+                    ? "bg-[#D49542] text-[#0E0C0A] shadow-md"
+                    : isCurrent
                       ? "bg-[#211D1A] dark:bg-[#D49542] text-white dark:text-[#0E0C0A] ring-4 ring-[#D49542]/30 scale-110 shadow-lg"
                       : "bg-[#EAE0D0] dark:bg-[#1E1A16] text-[#80644B] dark:text-[#A39789] border border-[#E8DFC8] dark:border-[#2C2620]"
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
 
                 {/* Step Labels */}
-                <span className={`text-[11px] sm:text-xs font-serif mt-2.5 font-medium leading-tight ${
-                  isCurrent ? "text-[#D49542] font-bold" : "text-[#211D1A] dark:text-[#F5EFE8]"
-                }`}>
+                <span className={`text-[11px] sm:text-xs font-serif mt-2.5 font-medium leading-tight ${isCurrent ? "text-[#D49542] font-bold" : "text-[#211D1A] dark:text-[#F5EFE8]"
+                  }`}>
                   {step.title}
                 </span>
                 <span className="text-[9px] uppercase tracking-wider text-[#80644B] dark:text-[#A39789] font-mono mt-0.5">

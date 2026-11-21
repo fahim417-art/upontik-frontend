@@ -141,11 +141,10 @@ export function ProductCard({ product }: ProductCardProps) {
               alt={product.name}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className={`object-cover transition-all duration-700 ease-luxury ${
-                isHovered && hoverImage !== mainImage
-                  ? "opacity-0 scale-105"
-                  : "opacity-100 scale-100 group-hover:scale-105"
-              }`}
+              className={`object-cover transition-all duration-700 ease-luxury ${isHovered && hoverImage !== mainImage
+                ? "opacity-0 scale-105"
+                : "opacity-100 scale-100 group-hover:scale-105"
+                }`}
             />
             {hoverImage !== mainImage && (
               <Image
@@ -153,9 +152,8 @@ export function ProductCard({ product }: ProductCardProps) {
                 alt={`${product.name} angle`}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                className={`object-cover transition-all duration-700 ease-luxury absolute inset-0 ${
-                  isHovered ? "opacity-100 scale-105" : "opacity-0 scale-100"
-                }`}
+                className={`object-cover transition-all duration-700 ease-luxury absolute inset-0 ${isHovered ? "opacity-100 scale-105" : "opacity-0 scale-100"
+                  }`}
               />
             )}
           </Link>
@@ -200,7 +198,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   : isOutOfStock
                   ? "bg-sand/30 dark:bg-[#1E1A16] text-[#A39789] cursor-not-allowed"
                   : "bg-[#211D1A] dark:bg-[#2A241F] text-ivory hover:bg-[#D49542] hover:text-[#0E0C0A] font-medium shadow-sm"
-              }`}
+                }`}
             >
               <ShoppingBag className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
               <span>{isAdded ? "Added" : isOutOfStock ? "Sold" : "Add"}</span>
