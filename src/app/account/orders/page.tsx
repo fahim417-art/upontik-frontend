@@ -48,7 +48,11 @@ export default function AccountOrdersPage() {
   const fetchOrders = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/account/orders", { credentials: "include" });
+      const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch("/api/account/orders", { credentials: "include", headers });
       const data = await res.json();
       if (data.success && Array.isArray(data.data)) {
         setOrders(data.data);

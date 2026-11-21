@@ -26,11 +26,6 @@ export function LiveChatWidget() {
   const [unreadCount, setUnreadCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // If on admin routes or if authenticated user is admin, completely hide customer support widget
-  if (pathname.startsWith("/admin") || user?.role === "admin") {
-    return null;
-  }
-
   // Consistent session ID based on authenticated Customer ID
   const sessionId = user ? `cust_${user.userId}` : "";
 
@@ -116,6 +111,11 @@ export function LiveChatWidget() {
       user?.name || "Guest"
     })`
   )}`;
+
+  // If on admin routes or if authenticated user is admin, completely hide customer support widget
+  if (pathname.startsWith("/admin") || user?.role === "admin") {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-5 right-5 z-50">
