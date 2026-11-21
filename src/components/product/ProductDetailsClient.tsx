@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -23,6 +23,7 @@ import {
   Eye,
   ZoomIn,
   Package,
+  Ticket,
 } from "lucide-react";
 
 interface ProductDetailsClientProps {
@@ -73,6 +74,23 @@ export function ProductDetailsClient({
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewComment, setReviewComment] = useState("");
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [activeCoupons, setActiveCoupons] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/coupons/active")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data)) {
+          // Filter coupons that apply to all or this product slug
+          const applicable = data.data.filter((c: any) => {
+            if (c.appliesTo === "all" || !c.appliesTo) return true;
+            return Array.isArray(c.productSlugs) && c.productSlugs.includes(product.slug);
+          });
+          setActiveCoupons(applicable);
+        }
+      })
+      .catch(() => {});
+  }, [product.slug]);
 
   const isSaved = isInWishlist(String(product._id));
   const activePrice =
@@ -265,19 +283,60 @@ export function ProductDetailsClient({
             </h1>
 
             {/* Price Badge */}
-            <div className="flex items-baseline gap-3 mb-6 pb-6 border-b border-sand/60 dark:border-[#2C2620]">
+            <div className="flex flex-wrap items-baseline gap-3 mb-4 pb-4 border-b border-sand/60 dark:border-[#2C2620]">
               <span className="font-serif text-2xl sm:text-3xl font-semibold text-charcoal dark:text-[#FAF6F0]">
                 {formatPrice(activePrice)}
               </span>
               {isDiscounted && (
-                <span className="font-serif text-lg text-charcoal-muted dark:text-[#A39789] line-through opacity-70">
-                  {formatPrice(product.price)}
+                <>
+                  <span className="font-serif text-lg text-charcoal-muted dark:text-[#A39789] line-through opacity-70">
+                    {formatPrice(product.price)}
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#D49542] text-[#0E0C0A] shadow-xs">
+                    {Math.round(((product.price - activePrice) / product.price) * 100)}% OFF
+                  </span>
+                </>
+              )}
+              {product.isFreeShipping && (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 flex items-center gap-1">
+                  <Truck className="w-3.5 h-3.5" /> ফ্রি ডেলিভারি (Free Shipping)
                 </span>
               )}
-              <span className="text-[11px] font-sans text-[#80644B] dark:text-[#D49542] ml-2 bg-[#EAE0D0]/40 dark:bg-[#1E1A16] px-2.5 py-0.5 rounded-full border border-[#D49542]/20">
+              <span className="text-[11px] font-sans text-[#80644B] dark:text-[#D49542] ml-auto bg-[#EAE0D0]/40 dark:bg-[#1E1A16] px-2.5 py-0.5 rounded-full border border-[#D49542]/20">
                 All Studio Taxes Included
               </span>
             </div>
+
+            {/* Active Coupon Promo Card */}
+            {activeCoupons.length > 0 && (
+              <div className="mb-6 p-3 sm:p-3.5 bg-[#FAF7F2] dark:bg-[#1E1A16] border border-dashed border-[#D49542] rounded-sm flex items-center justify-between gap-3 shadow-xs">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-[#D49542]/20 flex items-center justify-center text-[#D49542] shrink-0">
+                    <Ticket className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#211D1A] dark:text-[#F5EFE8]">
+                      {activeCoupons[0].discountType === "percentage"
+                        ? `${activeCoupons[0].discountValue}% অতিরিক্ত ছাড় পাচ্ছেন!`
+                        : `৳${activeCoupons[0].discountValue} ফ্ল্যাট ছাড় পাচ্ছেন!`}
+                    </p>
+                    <p className="text-[11px] text-[#80644B] dark:text-[#A39789]">
+                      চেকআউটে কুপন কোড ব্যবহার করুন: <span className="font-mono font-bold text-[#D49542]">{activeCoupons[0].code}</span>
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(activeCoupons[0].code);
+                    showToast(`Coupon "${activeCoupons[0].code}" copied to clipboard!`, "success");
+                  }}
+                  className="px-3 py-1.5 bg-[#D49542] hover:bg-[#B87932] text-[#0E0C0A] text-[10px] font-bold uppercase tracking-wider rounded transition-colors whitespace-nowrap"
+                >
+                  কপি কোড
+                </button>
+              </div>
+            )}
 
             {/* Short Description */}
             <p className="text-xs sm:text-sm font-sans text-charcoal-muted dark:text-[#A39789] leading-relaxed mb-6">

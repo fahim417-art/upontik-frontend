@@ -67,10 +67,17 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
                       className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
 
-                    {/* New Badge */}
-                    <span className="absolute top-2.5 left-2.5 text-[9px] uppercase tracking-wider bg-[#B87932] dark:bg-[#D49542] text-white dark:text-[#0E0C0A] px-2.5 py-0.5 rounded-full font-mono font-bold shadow-sm">
-                      New Release
-                    </span>
+                    {/* New & Discount Badges */}
+                    <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
+                      <span className="text-[9px] uppercase tracking-wider bg-[#B87932] dark:bg-[#D49542] text-white dark:text-[#0E0C0A] px-2.5 py-0.5 rounded-full font-mono font-bold shadow-sm">
+                        New Release
+                      </span>
+                      {product.salePrice && product.salePrice < product.price && (
+                        <span className="text-[9px] uppercase tracking-wider bg-[#D49542] text-[#0E0C0A] px-2 py-0.5 rounded-full font-mono font-bold shadow-sm">
+                          {Math.round(((product.price - product.salePrice) / product.price) * 100)}% OFF
+                        </span>
+                      )}
+                    </div>
 
                     {/* Action overlays */}
                     <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -103,12 +110,21 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
                     </Link>
                     <div className="mt-2 flex items-baseline gap-2">
                       <span className="font-serif text-sm font-bold text-[#211D1A] dark:text-[#FAF6F0]">
-                        {formatPrice(product.price)}
+                        {formatPrice(
+                          product.salePrice && product.salePrice > 0
+                            ? product.salePrice
+                            : product.price
+                        )}
                       </span>
                       {product.salePrice && product.salePrice < product.price && (
-                        <span className="font-serif text-xs text-charcoal-muted line-through">
-                          {formatPrice(product.salePrice)}
-                        </span>
+                        <>
+                          <span className="font-serif text-xs text-[#80644B] dark:text-[#A39789] line-through opacity-70">
+                            {formatPrice(product.price)}
+                          </span>
+                          <span className="text-[10px] bg-[#D49542] text-[#0E0C0A] font-bold px-1.5 py-0.2 rounded">
+                            {Math.round(((product.price - product.salePrice) / product.price) * 100)}% OFF
+                          </span>
+                        </>
                       )}
                     </div>
                   </div>

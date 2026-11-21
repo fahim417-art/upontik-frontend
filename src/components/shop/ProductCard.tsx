@@ -97,8 +97,8 @@ export function ProductCard({ product }: ProductCardProps) {
               </span>
             )}
             {isDiscounted && (
-              <span className="bg-[#D49542] text-[#0E0C0A] text-[8px] sm:text-[9px] font-sans font-bold uppercase tracking-wideDisplay px-2 py-0.5 rounded-full shadow-sm">
-                Artisan Price
+              <span className="bg-[#D49542] text-[#0E0C0A] text-[8px] sm:text-[9px] font-sans font-bold uppercase tracking-wideDisplay px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow-md">
+                {Math.round(((product.price - (product.salePrice || 0)) / product.price) * 100)}% OFF
               </span>
             )}
             {isOutOfStock && (

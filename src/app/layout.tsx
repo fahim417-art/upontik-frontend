@@ -5,6 +5,7 @@ import { StoreProvider } from "@/context/StoreContext";
 import { ToastContainer } from "@/components/ui/ToastContainer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { SearchModal } from "@/components/shop/SearchModal";
+import { LiveChatWidget } from "@/components/chat/LiveChatWidget";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -60,6 +61,7 @@ export default function RootLayout({
           <ToastContainer />
           <CartDrawer />
           <SearchModal />
+          <LiveChatWidget />
         </StoreProvider>
       </body>
     </html>

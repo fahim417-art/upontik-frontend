@@ -200,13 +200,60 @@ export default function CheckoutPage() {
     }
   }, [user]);
 
+  // Delivery settings from store
+  const [storeDeliverySettings, setStoreDeliverySettings] = useState<{
+    insideDhaka: number;
+    outsideDhaka: number;
+    isGlobalFree: boolean;
+    freeDistricts: string[];
+    freeThreshold: number;
+  }>({
+    insideDhaka: 80,
+    outsideDhaka: 120,
+    isGlobalFree: false,
+    freeDistricts: [],
+    freeThreshold: 5000,
+  });
+
+  useEffect(() => {
+    fetch("/api/store-settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          const s = data.data;
+          setStoreDeliverySettings({
+            insideDhaka: s.defaultDeliveryChargeInsideDhaka ?? 80,
+            outsideDhaka: s.defaultDeliveryChargeOutsideDhaka ?? 120,
+            isGlobalFree: !!s.isDeliveryFreeStorewide,
+            freeDistricts: Array.isArray(s.freeDeliveryDistricts) ? s.freeDeliveryDistricts : [],
+            freeThreshold: s.freeShippingThreshold ?? 5000,
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Delivery calculation based on district
-  const isInsideDhaka =
-    district.toLowerCase().includes("dhaka") ||
-    district.toLowerCase().includes("gazipur") ||
-    city.toLowerCase().includes("dhaka");
+  const districtLower = district.toLowerCase().trim();
+  const cityLower = city.toLowerCase().trim();
+  const isInsideDhaka = districtLower.includes("dhaka") || cityLower.includes("dhaka");
+
+  const isDistrictFree = storeDeliverySettings.freeDistricts.some((d) => {
+    const clean = d.toLowerCase().trim();
+    return clean && (districtLower.includes(clean) || cityLower.includes(clean));
+  });
+
+  const hasCartItemFreeShipping = cart.some((i: any) => i.isFreeShipping);
+
   const deliveryCharge =
-    cartSubtotal >= 3000 ? 0 : isInsideDhaka ? 80 : 130;
+    storeDeliverySettings.isGlobalFree ||
+    isDistrictFree ||
+    hasCartItemFreeShipping ||
+    cartSubtotal >= storeDeliverySettings.freeThreshold
+      ? 0
+      : isInsideDhaka
+      ? storeDeliverySettings.insideDhaka
+      : storeDeliverySettings.outsideDhaka;
   const discount = appliedCoupon ? appliedCoupon.discountAmount : 0;
   const grandTotal = Math.max(0, cartSubtotal - discount + deliveryCharge);
 

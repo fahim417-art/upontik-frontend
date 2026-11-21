@@ -422,7 +422,22 @@ export default function AdminOrdersPage() {
                         </p>
                       </td>
                       <td className="py-3.5 px-3 text-[#80644B] dark:text-[#A39789]">
-                        {ord.items?.length || 1} piece(s)
+                        <div className="flex items-center gap-2">
+                          <div className="flex -space-x-2 overflow-hidden shrink-0">
+                            {ord.items?.slice(0, 3).map((it: any, i: number) => (
+                              <img
+                                key={i}
+                                src={it.productImage || "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=85&w=100"}
+                                alt={it.productName || ""}
+                                title={it.productName}
+                                className="inline-block w-7 h-8 rounded-xs object-cover border border-[#E8DFC8] dark:border-[#2C2620] bg-sand/20 shadow-xs"
+                              />
+                            ))}
+                          </div>
+                          <span className="text-[11px] whitespace-nowrap">
+                            {ord.items?.length || 1} piece(s)
+                          </span>
+                        </div>
                       </td>
                       <td className="py-3.5 px-3 font-serif font-bold text-[#211D1A] dark:text-[#FAF6F0]">
                         {formatPrice(ord.total)}
@@ -503,6 +518,70 @@ export default function AdminOrdersPage() {
                 <p className="font-medium text-[#211D1A] dark:text-[#F5EFE8]">{selectedOrder.shippingAddress?.address}</p>
                 <p className="text-[#80644B] dark:text-[#A39789]">{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.district}</p>
                 <p className="font-serif font-bold text-[#D49542] mt-1">Total: {formatPrice(selectedOrder.total)} ({selectedOrder.paymentMethod || "COD"})</p>
+              </div>
+            </div>
+
+            {/* Ordered Products Ledger with Photos */}
+            <div className="mb-6">
+              <span className="font-bold uppercase tracking-wider text-[#80644B] dark:text-[#D49542] text-[10px] block mb-2">
+                Ordered Pieces & Specifications ({selectedOrder.items?.length || 0})
+              </span>
+              <div className="border border-[#E8DFC8]/60 dark:border-[#2C2620] rounded-sm divide-y divide-[#E8DFC8]/40 dark:divide-[#2C2620] overflow-hidden bg-[#FAF7F2] dark:bg-[#1E1A16]">
+                {selectedOrder.items?.map((item: any, idx: number) => {
+                  const fallbackImg = "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=85&w=200";
+                  const itemImg = item.productImage || fallbackImg;
+                  return (
+                    <div key={idx} className="p-3 flex items-center justify-between gap-3 text-xs">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="relative w-12 h-14 rounded overflow-hidden bg-[#EAE0D0]/30 shrink-0 border border-[#E8DFC8]/60 dark:border-[#2C2620]">
+                          <img
+                            src={itemImg}
+                            alt={item.productName || "Product"}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-serif font-bold text-[#211D1A] dark:text-[#F5EFE8] truncate">
+                            {item.productName}
+                          </p>
+                          <p className="text-[11px] text-[#80644B] dark:text-[#A39789]">
+                            {item.sku ? `SKU: ${item.sku}` : ""} {item.selectedVariant && `• ${item.selectedVariant}`}
+                          </p>
+                          <p className="text-[11px] text-[#80644B] dark:text-[#A39789]">
+                            {formatPrice(item.price)} × {item.quantity} piece(s)
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="font-serif font-bold text-[#211D1A] dark:text-[#FAF6F0]">
+                          {formatPrice(item.itemTotal || item.price * item.quantity)}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Order Financial Breakdown */}
+              <div className="mt-3 p-3 bg-[#FAF7F2]/60 dark:bg-[#1E1A16]/60 rounded-sm border border-[#E8DFC8]/40 dark:border-[#2C2620] text-xs space-y-1">
+                <div className="flex justify-between text-[#80644B] dark:text-[#A39789]">
+                  <span>Subtotal</span>
+                  <span>{formatPrice(selectedOrder.subtotal || selectedOrder.total)}</span>
+                </div>
+                {selectedOrder.couponCode && (
+                  <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-medium">
+                    <span>Coupon Applied ({selectedOrder.couponCode})</span>
+                    <span>- {formatPrice(selectedOrder.discount || 0)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between text-[#80644B] dark:text-[#A39789]">
+                  <span>Delivery Charge</span>
+                  <span>{selectedOrder.deliveryCharge ? formatPrice(selectedOrder.deliveryCharge) : "FREE"}</span>
+                </div>
+                <div className="flex justify-between font-serif font-bold text-[#211D1A] dark:text-[#FAF6F0] pt-1.5 border-t border-[#E8DFC8]/40 dark:border-[#2C2620] text-sm">
+                  <span>Total Amount</span>
+                  <span className="text-[#D49542]">{formatPrice(selectedOrder.total)}</span>
+                </div>
               </div>
             </div>
 

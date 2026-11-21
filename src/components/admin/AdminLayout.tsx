@@ -21,6 +21,7 @@ import {
   Sun,
   Moon,
   Sparkles,
+  MessageSquare,
 } from "lucide-react";
 
 interface AdminLayoutProps {
@@ -51,6 +52,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     { label: "Orders & Tracking", href: "/admin/orders", icon: ShoppingBag },
     { label: "Homepage CMS", href: "/admin/homepage", icon: Sliders },
     { label: "Customers", href: "/admin/customers", icon: Users },
+    { label: "Live Support", href: "/admin/support", icon: MessageSquare },
     { label: "Coupons", href: "/admin/coupons", icon: Ticket },
     { label: "Store Settings", href: "/admin/settings", icon: Settings },
   ];
