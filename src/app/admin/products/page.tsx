@@ -68,7 +68,11 @@ export default function AdminProductsPage() {
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/admin/products");
+      const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch("/api/admin/products", { credentials: "include", headers });
       const data = await res.json();
       if (data.success) {
         setProducts(data.data);
@@ -82,7 +86,11 @@ export default function AdminProductsPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch("/api/admin/categories");
+      const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch("/api/admin/categories", { credentials: "include", headers });
       const data = await res.json();
       if (data.success) {
         setCategories(data.data);
@@ -179,13 +187,51 @@ export default function AdminProductsPage() {
     imageFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onload = (loadEvent) => {
-        const base64 = loadEvent.target?.result as string;
-        if (base64) {
+        const rawUrl = loadEvent.target?.result as string;
+        if (!rawUrl) return;
+
+        // Compress image via canvas
+        const img = new (window as any).Image();
+        img.onload = () => {
+          const maxDim = 1600;
+          let width = img.width;
+          let height = img.height;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            const optimizedBase64 = canvas.toDataURL("image/jpeg", 0.88);
+            setImagesList((prev) => {
+              const isFirst = prev.length === 0;
+              return [...prev, { url: optimizedBase64, alt: file.name, isMain: isFirst }];
+            });
+            return;
+          }
+
           setImagesList((prev) => {
             const isFirst = prev.length === 0;
-            return [...prev, { url: base64, alt: file.name, isMain: isFirst }];
+            return [...prev, { url: rawUrl, alt: file.name, isMain: isFirst }];
           });
-        }
+        };
+        img.onerror = () => {
+          setImagesList((prev) => {
+            const isFirst = prev.length === 0;
+            return [...prev, { url: rawUrl, alt: file.name, isMain: isFirst }];
+          });
+        };
+        img.src = rawUrl;
       };
       reader.readAsDataURL(file);
     });
@@ -280,17 +326,23 @@ export default function AdminProductsPage() {
         })),
       };
 
+      const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
       let res;
       if (editingProduct) {
         res = await fetch(`/api/admin/products/${editingProduct._id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          method: "PUT",
+          headers,
+          credentials: "include",
           body: JSON.stringify(payload),
         });
       } else {
         res = await fetch("/api/admin/products", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
+          credentials: "include",
           body: JSON.stringify(payload),
         });
       }
@@ -321,8 +373,14 @@ export default function AdminProductsPage() {
     }
 
     try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
       const res = await fetch(`/api/admin/products/${id}`, {
         method: "DELETE",
+        headers,
+        credentials: "include",
       });
       const data = await res.json();
       if (data.success) {
