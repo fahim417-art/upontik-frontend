@@ -15,7 +15,6 @@ import { NewArrivalsSection } from "@/components/home/NewArrivalsSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { Footer } from "@/components/layout/Footer";
-import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
 
 export const revalidate = 60; // ISR cache revalidation every minute
 
@@ -93,12 +92,6 @@ export default async function HomePage() {
 
       {/* Global: Luxury Multi-Column Footer */}
       <Footer />
-
-      {/* Global: Floating WhatsApp Contact Widget */}
-      <FloatingWhatsApp
-        phoneNumber={cms?.socialLinks?.whatsappNumber}
-        defaultMessage={cms?.socialLinks?.defaultMessage}
-      />
     </main>
   );
 }

@@ -144,7 +144,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     try {
       const savedCart = localStorage.getItem("upontik_cart");
       if (savedCart) {
-        setCart(JSON.parse(savedCart));
+        const parsed = JSON.parse(savedCart);
+        if (Array.isArray(parsed)) {
+          const sanitized = parsed.map((item: any) => ({
+            ...item,
+            productId: item.productId && item.productId !== "undefined" ? item.productId : (item.slug || item.sku || `prod_${Date.now()}`),
+          }));
+          setCart(sanitized);
+        }
       }
       const savedWishlist = localStorage.getItem("upontik_wishlist");
       if (savedWishlist) {
@@ -206,7 +213,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Cart Handlers
-  const addToCart = (newItem: CartItem) => {
+  const addToCart = (incomingItem: CartItem) => {
+    const newItem = {
+      ...incomingItem,
+      productId:
+        incomingItem.productId && incomingItem.productId !== "undefined"
+          ? incomingItem.productId
+          : incomingItem.slug || incomingItem.sku || `prod_${Date.now()}`,
+    };
     setCart((prev) => {
       const existingIndex = prev.findIndex(
         (i) =>
@@ -227,7 +241,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const removeFromCart = (productId: string, variant?: string) => {
     setCart((prev) =>
       prev.filter(
-        (i) => !(i.productId === productId && i.selectedVariant === variant)
+        (i) =>
+          !(
+            (i.productId === productId || (i.slug && i.slug === productId)) &&
+            (!variant || i.selectedVariant === variant)
+          )
       )
     );
   };

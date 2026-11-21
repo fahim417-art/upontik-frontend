@@ -67,7 +67,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-[#F6F1E9] dark:bg-[#0A0908] text-[#211D1A] dark:text-[#F5EFE8] flex flex-col lg:flex-row transition-colors duration-300">
-      
+
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex w-64 bg-[#14110E] dark:bg-[#070605] text-[#FAF6F0] flex-col justify-between shrink-0 min-h-screen p-6 border-r border-[#2C2620] shadow-2xl">
         <div>
@@ -103,11 +103,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-sans font-medium transition-all ${
-                    isActive
-                      ? "bg-[#D49542] text-[#0E0C0A] font-bold shadow-md"
-                      : "text-[#FAF6F0]/70 hover:text-white hover:bg-[#1E1A16]"
-                  }`}
+                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-sans font-medium transition-all ${isActive
+                    ? "bg-[#D49542] text-[#0E0C0A] font-bold shadow-md"
+                    : "text-[#FAF6F0]/70 hover:text-white hover:bg-[#1E1A16]"
+                    }`}
                 >
                   <Icon className="w-4 h-4 shrink-0" />
                   <span>{item.label}</span>

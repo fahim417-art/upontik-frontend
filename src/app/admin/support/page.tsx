@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import {
   MessageSquare,
@@ -12,9 +13,13 @@ import {
   CheckCircle2,
   RefreshCw,
   Search,
+  CheckCheck,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 
 export default function AdminSupportPage() {
+  const searchParams = useSearchParams();
   const { user, showToast } = useStore();
   const [conversations, setConversations] = useState<any[]>([]);
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
@@ -25,6 +30,7 @@ export default function AdminSupportPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Check URL query parameters for direct messaging a customer
   useEffect(() => {
     fetchConversations();
     const interval = setInterval(fetchConversations, 5000);
@@ -50,10 +56,39 @@ export default function AdminSupportPage() {
       });
       const data = await res.json();
       if (data.success && Array.isArray(data.data)) {
-        setConversations(data.data);
-        if (!selectedSessionId && data.data.length > 0) {
-          setSelectedSessionId(data.data[0]._id);
+        let list = data.data;
+
+        // Check if direct customer initiated via query params
+        const targetSessionId = searchParams.get("sessionId");
+        const targetName = searchParams.get("name");
+        const targetEmail = searchParams.get("email");
+        const targetPhone = searchParams.get("phone");
+        const targetCustomerId = searchParams.get("customerId");
+
+        if (targetSessionId && !list.some((c: any) => c._id === targetSessionId)) {
+          const newThread = {
+            _id: targetSessionId,
+            customerId: targetCustomerId || targetSessionId.replace("cust_", ""),
+            customerName: targetName || "Patron",
+            customerEmail: targetEmail || "",
+            customerPhone: targetPhone || "",
+            lastMessage: "Direct message thread initiated by admin",
+            lastSender: "admin",
+            lastUpdated: new Date().toISOString(),
+            unreadCount: 0,
+            totalMessages: 0,
+          };
+          list = [newThread, ...list];
+          setSelectedSessionId(targetSessionId);
+        } else if (!selectedSessionId) {
+          if (targetSessionId) {
+            setSelectedSessionId(targetSessionId);
+          } else if (list.length > 0) {
+            setSelectedSessionId(list[0]._id);
+          }
         }
+
+        setConversations(list);
       }
     } catch {} finally {
       setIsLoading(false);
@@ -78,12 +113,14 @@ export default function AdminSupportPage() {
 
     setIsSending(true);
     try {
+      const selectedThread = conversations.find((c) => c._id === selectedSessionId);
       const res = await fetch("/api/support/admin/reply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
           sessionId: selectedSessionId,
+          customerId: selectedThread?.customerId || selectedSessionId.replace("cust_", ""),
           message: replyText.trim(),
         }),
       });
@@ -109,6 +146,7 @@ export default function AdminSupportPage() {
     (c) =>
       c.customerName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.customerPhone?.includes(searchQuery) ||
+      c.customerEmail?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.lastMessage?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -118,10 +156,10 @@ export default function AdminSupportPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-[#E8DFC8]/70 dark:border-[#2C2620] gap-4">
         <div>
           <h1 className="font-serif text-3xl sm:text-4xl text-[#211D1A] dark:text-[#FAF6F0] font-normal">
-            Customer Support & Live Messenger
+            Customer Support & Direct Inboxes
           </h1>
           <p className="text-xs text-[#80644B] dark:text-[#A39789] mt-1">
-            Real-time inquiries from store visitors. Replies synchronize directly with the customer chat widget.
+            Real-time inquiries and direct message inboxes for every patron. See live read receipts (Seen / পঠিত).
           </p>
         </div>
 
@@ -139,7 +177,7 @@ export default function AdminSupportPage() {
       </div>
 
       {/* Main Two-Pane Chat Container */}
-      <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] rounded-sm shadow-sm overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[580px]">
+      <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] rounded-sm shadow-sm overflow-hidden grid grid-cols-1 md:grid-cols-12 min-h-[600px]">
         {/* Left Pane: Conversations List (5 Cols) */}
         <div className="md:col-span-5 border-r border-[#E8DFC8]/60 dark:border-[#2C2620] flex flex-col bg-[#FAF7F2]/40 dark:bg-[#12100E]">
           {/* Search box */}
@@ -150,7 +188,7 @@ export default function AdminSupportPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search inquiries..."
+                placeholder="Search patron by name, phone, or message..."
                 className="w-full bg-transparent text-xs text-[#211D1A] dark:text-[#FAF6F0] focus:outline-none placeholder-[#80644B]/60 dark:placeholder-[#A39789]/60"
               />
             </div>
@@ -160,11 +198,11 @@ export default function AdminSupportPage() {
           <div className="flex-1 overflow-y-auto divide-y divide-[#E8DFC8]/40 dark:divide-[#2C2620]">
             {isLoading ? (
               <div className="p-8 text-center text-xs text-[#80644B] dark:text-[#A39789]">
-                Loading inquiries...
+                Loading patron inboxes...
               </div>
             ) : filteredConversations.length === 0 ? (
               <div className="p-8 text-center text-xs text-[#80644B] dark:text-[#A39789]">
-                No customer inquiries found.
+                No customer conversations found.
               </div>
             ) : (
               filteredConversations.map((conv) => {
@@ -179,13 +217,13 @@ export default function AdminSupportPage() {
                         : "hover:bg-[#EAE0D0]/20 dark:hover:bg-[#1E1A16]/50"
                     }`}
                   >
-                    <div className="w-9 h-9 rounded-full bg-[#D49542]/15 text-[#B87932] dark:text-[#D49542] flex items-center justify-center shrink-0 font-bold text-xs uppercase">
-                      {conv.customerName ? conv.customerName.charAt(0) : "C"}
+                    <div className="w-10 h-10 rounded-full bg-[#D49542]/15 text-[#B87932] dark:text-[#D49542] flex items-center justify-center shrink-0 font-bold text-xs uppercase border border-[#D49542]/30">
+                      {conv.customerName ? conv.customerName.charAt(0) : "P"}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-1 mb-1">
                         <span className="font-serif font-bold text-xs text-[#211D1A] dark:text-[#F5EFE8] truncate">
-                          {conv.customerName || "Visitor"}
+                          {conv.customerName || "Patron"}
                         </span>
                         <span className="text-[10px] text-[#80644B] dark:text-[#A39789] shrink-0 font-mono">
                           {new Date(conv.lastUpdated).toLocaleTimeString([], {
@@ -197,11 +235,18 @@ export default function AdminSupportPage() {
                       <p className="text-[11px] text-[#80644B] dark:text-[#A39789] truncate">
                         {conv.lastMessage}
                       </p>
-                      {conv.customerPhone && (
-                        <span className="text-[9px] font-mono text-[#D49542] block mt-0.5">
-                          {conv.customerPhone}
-                        </span>
-                      )}
+                      <div className="flex items-center gap-2 mt-1">
+                        {conv.customerPhone && (
+                          <span className="text-[9px] font-mono text-[#D49542]">
+                            📞 {conv.customerPhone}
+                          </span>
+                        )}
+                        {conv.customerId && (
+                          <span className="text-[9px] font-mono bg-[#D49542]/10 text-[#B87932] dark:text-[#D49542] px-1 rounded">
+                            #CUST-{String(conv.customerId).slice(-5).toUpperCase()}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     {conv.unreadCount > 0 && (
                       <span className="w-5 h-5 rounded-full bg-[#D49542] text-[#0E0C0A] text-[10px] font-bold flex items-center justify-center shrink-0">
@@ -222,29 +267,39 @@ export default function AdminSupportPage() {
               {/* Header */}
               <div className="p-3.5 border-b border-[#E8DFC8]/60 dark:border-[#2C2620] flex items-center justify-between bg-[#FAF7F2]/60 dark:bg-[#1E1A16]/60">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#D49542] text-[#0E0C0A] flex items-center justify-center font-bold text-xs uppercase">
-                    {selectedConv.customerName ? selectedConv.customerName.charAt(0) : "C"}
+                  <div className="w-9 h-9 rounded-full bg-[#D49542] text-[#0E0C0A] flex items-center justify-center font-serif font-bold text-xs uppercase shadow-sm">
+                    {selectedConv.customerName ? selectedConv.customerName.charAt(0) : "P"}
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-sm text-[#211D1A] dark:text-[#F5EFE8]">
-                      {selectedConv.customerName || "Visitor"}
+                    <h3 className="font-serif font-bold text-sm text-[#211D1A] dark:text-[#F5EFE8] flex items-center gap-2">
+                      <span>{selectedConv.customerName || "Patron"}</span>
+                      {selectedConv.customerId && (
+                        <span className="text-[10px] font-mono font-normal text-[#D49542] bg-[#D49542]/15 px-1.5 py-0.5 rounded">
+                          #UPK-CUST-{String(selectedConv.customerId).slice(-6).toUpperCase()}
+                        </span>
+                      )}
                     </h3>
-                    <p className="text-[10px] text-[#80644B] dark:text-[#A39789] flex items-center gap-2">
+                    <p className="text-[10px] text-[#80644B] dark:text-[#A39789] flex items-center gap-3 mt-0.5">
                       {selectedConv.customerPhone && <span>📞 {selectedConv.customerPhone}</span>}
                       {selectedConv.customerEmail && <span>✉️ {selectedConv.customerEmail}</span>}
                     </p>
                   </div>
                 </div>
-                <span className="text-[10px] font-mono bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 px-2 py-0.5 rounded font-bold">
-                  Active Session
+                <span className="text-[10px] font-mono bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Direct Customer Inbox</span>
                 </span>
               </div>
 
               {/* Message thread */}
-              <div className="flex-1 p-4 overflow-y-auto space-y-3 min-h-[360px] max-h-[460px]">
+              <div className="flex-1 p-4 overflow-y-auto space-y-3 min-h-[380px] max-h-[460px]">
                 {messages.length === 0 ? (
                   <div className="py-20 text-center text-xs text-[#80644B] dark:text-[#A39789]">
-                    No messages in this inquiry thread yet.
+                    <MessageSquare className="w-8 h-8 mx-auto mb-2 text-[#D49542]/60" />
+                    <p className="font-serif text-sm text-[#211D1A] dark:text-[#FAF6F0]">
+                      No previous messages with this customer.
+                    </p>
+                    <p className="mt-1">Type below to send a direct message to this patron.</p>
                   </div>
                 ) : (
                   messages.map((m, idx) => {
@@ -255,7 +310,7 @@ export default function AdminSupportPage() {
                         className={`flex flex-col ${isAdmin ? "items-end" : "items-start"}`}
                       >
                         <div
-                          className={`max-w-[80%] rounded-md px-3.5 py-2 text-xs shadow-xs leading-relaxed ${
+                          className={`max-w-[80%] rounded-lg px-4 py-2.5 text-xs shadow-xs leading-relaxed ${
                             isAdmin
                               ? "bg-[#211D1A] dark:bg-[#D49542] text-[#FAF6F0] dark:text-[#0E0C0A] rounded-br-none"
                               : "bg-[#FAF7F2] dark:bg-[#1E1A16] border border-[#E8DFC8] dark:border-[#2C2620] text-[#211D1A] dark:text-[#FAF6F0] rounded-bl-none"
@@ -263,13 +318,44 @@ export default function AdminSupportPage() {
                         >
                           <p>{m.message}</p>
                         </div>
-                        <span className="text-[9px] text-[#80644B] dark:text-[#A39789] mt-0.5 font-mono px-1">
-                          {isAdmin ? "Studio Support" : m.senderName || "Customer"} •{" "}
-                          {new Date(m.createdAt).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </span>
+                        {isAdmin ? (
+                          <span className="flex items-center gap-1.5 text-[9px] text-[#80644B] dark:text-[#A39789] mt-0.5 font-mono px-1">
+                            <span>
+                              Studio Support •{" "}
+                              {new Date(m.createdAt).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </span>
+                            {m.isRead ? (
+                              <span className="text-blue-500 font-bold flex items-center gap-0.5 ml-1">
+                                <CheckCheck className="w-3.5 h-3.5" />
+                                <span>
+                                  Seen{" "}
+                                  {m.readAt
+                                    ? new Date(m.readAt).toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })
+                                    : "পঠিত"}
+                                </span>
+                              </span>
+                            ) : (
+                              <span className="text-gray-400 flex items-center gap-0.5 ml-1">
+                                <CheckCheck className="w-3.5 h-3.5" />
+                                <span>Delivered (অদেখা)</span>
+                              </span>
+                            )}
+                          </span>
+                        ) : (
+                          <span className="text-[9px] text-[#80644B] dark:text-[#A39789] mt-0.5 font-mono px-1">
+                            {m.senderName || "Customer"} •{" "}
+                            {new Date(m.createdAt).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </span>
+                        )}
                       </div>
                     );
                   })
@@ -286,16 +372,16 @@ export default function AdminSupportPage() {
                   type="text"
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
-                  placeholder="Type your response to the customer..."
+                  placeholder={`Send message to ${selectedConv.customerName || "customer"}...`}
                   className="flex-1 p-2.5 bg-ivory dark:bg-[#1E1A16] border border-[#E8DFC8] dark:border-[#2C2620] rounded text-xs text-[#211D1A] dark:text-[#FAF6F0] focus:border-[#D49542] focus:outline-none"
                 />
                 <button
                   type="submit"
                   disabled={isSending || !replyText.trim()}
-                  className="px-4 py-2.5 bg-[#211D1A] dark:bg-[#D49542] text-[#FAF6F0] dark:text-[#0E0C0A] text-xs font-bold rounded flex items-center gap-1.5 hover:bg-[#80644B] disabled:opacity-50 transition-colors shadow-sm"
+                  className="px-5 py-2.5 bg-[#211D1A] dark:bg-[#D49542] text-[#FAF6F0] dark:text-[#0E0C0A] text-xs font-bold rounded flex items-center gap-1.5 hover:bg-[#80644B] disabled:opacity-50 transition-colors shadow-sm"
                 >
                   <Send className="w-3.5 h-3.5" />
-                  <span>{isSending ? "Sending..." : "Reply"}</span>
+                  <span>{isSending ? "Sending..." : "Send Message"}</span>
                 </button>
               </form>
             </>

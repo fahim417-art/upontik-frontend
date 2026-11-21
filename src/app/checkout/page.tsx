@@ -27,6 +27,7 @@ import {
   Eye,
   EyeOff,
   KeyRound,
+  Trash2,
 } from "lucide-react";
 
 const BD_DISTRICT_THANA_MAP: Record<string, string[]> = {
@@ -148,7 +149,7 @@ const ALL_BD_DISTRICTS = [
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart, cartSubtotal, clearCart, showToast, user, setUser, logout, refreshUser } = useStore();
+  const { cart, cartSubtotal, clearCart, showToast, user, setUser, logout, refreshUser, removeFromCart } = useStore();
 
   // Form State
   const [fullName, setFullName] = useState("");
@@ -442,21 +443,21 @@ export default function CheckoutPage() {
     try {
       const payload: any = {
         customerInformation: {
-          fullName,
+          fullName: fullName.trim(),
           email: email.trim().toLowerCase(),
           phone: phone.replace(/[\s-]/g, ""),
         },
         shippingAddress: {
-          address,
-          city,
-          district,
-          postalCode,
+          address: address.trim(),
+          city: city.trim(),
+          district: district.trim(),
+          postalCode: postalCode.trim(),
         },
         paymentMethod,
         couponCode: appliedCoupon?.code,
         orderNotes,
         items: cart.map((i) => ({
-          productId: i.productId,
+          productId: i.productId && i.productId !== "undefined" ? i.productId : (i.slug || "prod_item"),
           slug: i.slug,
           sku: i.sku,
           name: i.name,
@@ -476,34 +477,45 @@ export default function CheckoutPage() {
         headers["Authorization"] = `Bearer ${token}`;
       }
 
-      let res: Response;
       let data: any = null;
 
-      try {
-        res = await fetch("/api/checkout", {
-          method: "POST",
-          headers,
-          credentials: "include",
-          body: JSON.stringify(payload),
-        });
-
-        if (!res.ok && (res.status === 502 || res.status === 504 || res.status === 500)) {
-          throw new Error("Proxy error, attempting direct backend");
-        }
-        data = await res.json();
-      } catch {
-        // Direct backend fallback
-        const fallbackEndpoint = "http://127.0.0.1:5000/api/checkout";
+      // Resilient checkout dispatch with auto-retry
+      for (let attempt = 0; attempt < 2; attempt++) {
         try {
-          res = await fetch(fallbackEndpoint, {
+          const res = await fetch("/api/checkout", {
             method: "POST",
             headers,
             credentials: "include",
             body: JSON.stringify(payload),
           });
+
+          if (res.status === 502 || res.status === 504) {
+            if (attempt === 0) {
+              await new Promise((r) => setTimeout(r, 1000));
+              continue;
+            }
+          }
+
           data = await res.json();
+          break;
         } catch {
-          // If direct call also failed, fallback to generic
+          if (attempt === 0) {
+            await new Promise((r) => setTimeout(r, 1000));
+            continue;
+          }
+          // Direct local host fallback for dev environments
+          if (typeof window !== "undefined") {
+            try {
+              const fallbackUrl = `${window.location.protocol}//${window.location.hostname}:5000/api/checkout`;
+              const fbRes = await fetch(fallbackUrl, {
+                method: "POST",
+                headers,
+                credentials: "include",
+                body: JSON.stringify(payload),
+              });
+              data = await fbRes.json();
+            } catch {}
+          }
         }
       }
 
@@ -566,9 +578,18 @@ export default function CheckoutPage() {
         </div>
 
         {formError && (
-          <div className="mb-6 p-3.5 sm:p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-sm text-xs text-red-700 dark:text-red-300 flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{formError}</span>
+          <div className="mb-6 p-3.5 sm:p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-sm text-xs text-red-700 dark:text-red-300 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{formError}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setFormError("")}
+              className="text-[11px] text-red-600 dark:text-red-400 hover:underline shrink-0 font-medium"
+            >
+              বন্ধ করুন (Dismiss)
+            </button>
           </div>
         )}
 
@@ -1128,9 +1149,19 @@ export default function CheckoutPage() {
                         </p>
                       </div>
                     </div>
-                    <span className="font-serif text-xs sm:text-sm font-semibold shrink-0 text-[#D49542]">
-                      {formatPrice(item.price * item.quantity)}
-                    </span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="font-serif text-xs sm:text-sm font-semibold text-[#D49542]">
+                        {formatPrice(item.price * item.quantity)}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeFromCart(item.productId, item.selectedVariant)}
+                        className="p-1 text-charcoal-muted hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 rounded transition-colors"
+                        title="Remove piece"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

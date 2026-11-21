@@ -112,17 +112,15 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-10 flex flex-col gap-1.5">
             <button
               onClick={handleWishlistToggle}
-              className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
-                isSaved
-                  ? "bg-[#D49542] text-[#0E0C0A] shadow-md scale-105"
-                  : "bg-white/85 dark:bg-[#1E1A16]/85 text-[#211D1A] dark:text-[#F5EFE8] backdrop-blur-sm hover:bg-white dark:hover:bg-[#2A241F]"
-              }`}
+              className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${isSaved
+                ? "bg-[#D49542] text-[#0E0C0A] shadow-md scale-105"
+                : "bg-white/85 dark:bg-[#1E1A16]/85 text-[#211D1A] dark:text-[#F5EFE8] backdrop-blur-sm hover:bg-white dark:hover:bg-[#2A241F]"
+                }`}
               aria-label={isSaved ? "Remove from wishlist" : "Add to wishlist"}
             >
               <Heart
-                className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform ${
-                  isSaved ? "fill-[#0E0C0A] dark:fill-[#0E0C0A]" : ""
-                }`}
+                className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform ${isSaved ? "fill-[#0E0C0A] dark:fill-[#0E0C0A]" : ""
+                  }`}
               />
             </button>
             <button
@@ -192,10 +190,9 @@ export function ProductCard({ product }: ProductCardProps) {
             <button
               onClick={handleQuickAdd}
               disabled={isOutOfStock}
-              className={`py-1 sm:py-1.5 px-2 sm:px-3 rounded-full text-[10px] sm:text-[11px] font-sans uppercase tracking-editorial transition-all flex items-center gap-1 shrink-0 ${
-                isAdded
-                  ? "bg-emerald-600 text-white font-bold"
-                  : isOutOfStock
+              className={`py-1 sm:py-1.5 px-2 sm:px-3 rounded-full text-[10px] sm:text-[11px] font-sans uppercase tracking-editorial transition-all flex items-center gap-1 shrink-0 ${isAdded
+                ? "bg-emerald-600 text-white font-bold"
+                : isOutOfStock
                   ? "bg-sand/30 dark:bg-[#1E1A16] text-[#A39789] cursor-not-allowed"
                   : "bg-[#211D1A] dark:bg-[#2A241F] text-ivory hover:bg-[#D49542] hover:text-[#0E0C0A] font-medium shadow-sm"
                 }`}

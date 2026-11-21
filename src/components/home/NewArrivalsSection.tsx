@@ -22,7 +22,7 @@ export function NewArrivalsSection({ products = [] }: NewArrivalsSectionProps) {
   return (
     <section className="py-20 lg:py-24 bg-[#FAF7F2] dark:bg-[#0E0C0A] border-b border-[#E8DFC8]/60 dark:border-[#2C2620] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4 pb-6 border-b border-[#E8DFC8]/70 dark:border-[#2C2620]">
           <div>
