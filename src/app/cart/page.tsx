@@ -391,7 +391,7 @@ export default function CartPage() {
                           type="text"
                           value={couponCode}
                           onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                          placeholder="e.g. HERITAGE10"
+                          placeholder="COUPON CODE"
                           className="flex-1 p-2.5 bg-ivory border border-sand rounded text-xs uppercase font-sans text-charcoal focus:outline-none focus:border-mustard"
                         />
                         <button
@@ -403,7 +403,7 @@ export default function CartPage() {
                         </button>
                       </div>
                       <p className="text-[11px] text-charcoal-muted">
-                        Use voucher code &ldquo;HERITAGE10&rdquo; for 10% discount on orders above ৳2,000.
+                        Enter any active promotional discount voucher code at checkout.
                       </p>
                     </form>
                   )}

@@ -25,6 +25,13 @@ export default function AdminCouponsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  const getAuthHeaders = () => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
+    const headers: Record<string, string> = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return headers;
+  };
+
   useEffect(() => {
     fetchCoupons();
   }, []);
@@ -32,10 +39,13 @@ export default function AdminCouponsPage() {
   const fetchCoupons = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/admin/coupons");
+      const res = await fetch("/api/admin/coupons", {
+        headers: getAuthHeaders(),
+        credentials: "include",
+      });
       const data = await res.json();
       if (data.success) {
-        setCoupons(data.data);
+        setCoupons(data.data || []);
       }
     } catch {
       showToast("Failed to fetch coupons", "error");
@@ -72,7 +82,11 @@ export default function AdminCouponsPage() {
 
       const res = await fetch("/api/admin/coupons", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeaders(),
+        },
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
@@ -100,10 +114,24 @@ export default function AdminCouponsPage() {
 
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/admin/coupons/${id}`, {
+      // Try deleting by _id first or by couponCode
+      let res = await fetch(`/api/admin/coupons/${encodeURIComponent(id)}`, {
         method: "DELETE",
+        headers: getAuthHeaders(),
+        credentials: "include",
       });
-      const data = await res.json();
+      let data = await res.json();
+
+      if (!data.success && couponCode && couponCode !== id) {
+        // Fallback: delete by coupon code directly
+        res = await fetch(`/api/admin/coupons/${encodeURIComponent(couponCode)}`, {
+          method: "DELETE",
+          headers: getAuthHeaders(),
+          credentials: "include",
+        });
+        data = await res.json();
+      }
+
       if (data.success) {
         showToast(`Coupon "${couponCode}" deleted immediately.`, "success");
         setCoupons((prev) => prev.filter((c) => (c._id || c.code) !== id && c.code !== couponCode));

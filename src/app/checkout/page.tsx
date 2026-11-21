@@ -1173,7 +1173,7 @@ export default function CheckoutPage() {
                     type="text"
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
-                    placeholder="COUPON (e.g. HERITAGE10)"
+                    placeholder="COUPON CODE"
                     className="flex-1 p-2.5 bg-[#FAF7F2] dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs uppercase tracking-wider focus:outline-none focus:border-[#D49542] font-mono"
                   />
                   <button
