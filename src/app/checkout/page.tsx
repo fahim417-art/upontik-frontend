@@ -425,16 +425,38 @@ export default function CheckoutPage() {
         headers["Authorization"] = `Bearer ${token}`;
       }
 
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers,
-        credentials: "include",
-        body: JSON.stringify(payload),
-      });
+      let res: Response;
+      let data: any = null;
 
-      const data = await res.json();
+      try {
+        res = await fetch("/api/checkout", {
+          method: "POST",
+          headers,
+          credentials: "include",
+          body: JSON.stringify(payload),
+        });
 
-      if (data.success) {
+        if (!res.ok && (res.status === 502 || res.status === 504 || res.status === 500)) {
+          throw new Error("Proxy error, attempting direct backend");
+        }
+        data = await res.json();
+      } catch {
+        // Direct backend fallback
+        const fallbackEndpoint = "http://127.0.0.1:5000/api/checkout";
+        try {
+          res = await fetch(fallbackEndpoint, {
+            method: "POST",
+            headers,
+            credentials: "include",
+            body: JSON.stringify(payload),
+          });
+          data = await res.json();
+        } catch {
+          // If direct call also failed, fallback to generic
+        }
+      }
+
+      if (data && data.success) {
         if (data.data?.token) {
           try {
             localStorage.setItem("upontik_token", data.data.token);
@@ -445,12 +467,13 @@ export default function CheckoutPage() {
         showToast("অর্ডার সফলভাবে গ্রহণ করা হয়েছে! ধন্যবাদ।", "success");
         router.push(`/order-confirmation/${data.data.orderNumber}`);
       } else {
-        setFormError(data.error || "Failed to process order. Please check item availability.");
-        showToast(data.error || "Order failed", "error");
+        const errorMsg = data?.error || "অর্ডার প্রসেস করা সম্ভব হয়নি। অনুগ্রহ করে প্রাপকের তথ্য ও আইটেম প্রাপ্যতা যাচাই করুন।";
+        setFormError(errorMsg);
+        showToast(errorMsg, "error");
         setIsSubmitting(false);
       }
     } catch {
-      setFormError("Network error. Please try placing your order again.");
+      setFormError("সার্ভারের সাথে সংযোগ বিচ্ছিন্ন। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।");
       showToast("Order placement failed", "error");
       setIsSubmitting(false);
     }
