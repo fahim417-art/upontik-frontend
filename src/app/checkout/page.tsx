@@ -410,6 +410,10 @@ export default function CheckoutPage() {
         orderNotes,
         items: cart.map((i) => ({
           productId: i.productId,
+          slug: i.slug,
+          sku: i.sku,
+          name: i.name,
+          productName: i.name,
           quantity: i.quantity,
           selectedVariant: i.selectedVariant,
         })),
