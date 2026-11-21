@@ -373,13 +373,21 @@ export default function CheckoutPage() {
     }
 
     if (!fullName || !email || !phone || !address || !city) {
-      setFormError("Please fill in all mandatory customer and delivery fields.");
+      if (!phone) {
+        setFormError("অনুগ্রহ করে আপনার ১১ ডিজিটের মোবাইল নম্বর দিন। কুরিয়ার ডেলিভারির জন্য এটি আবশ্যক।");
+      } else if (!address) {
+        setFormError("অনুগ্রহ করে আপনার সম্পূর্ণ ডেলিভারি ঠিকানা (বাসা/রোড/এলাকা) লিখুন।");
+      } else if (!fullName) {
+        setFormError("অনুগ্রহ করে প্রাপকের পুরো নাম দিন।");
+      } else {
+        setFormError("অনুগ্রহ করে গ্রাহক ও ডেলিভারির সমস্ত আবশ্যক তথ্য পূরণ করুন।");
+      }
       return;
     }
 
     const isPhoneValid = validatePhone(phone);
     if (!isPhoneValid) {
-      setFormError("Please provide a valid 11-digit Bangladeshi mobile number.");
+      setFormError("অনুগ্রহ করে সঠিক ১১ ডিজিটের বাংলাদেশি মোবাইল নম্বর দিন (যেমন: 01711223344)।");
       return;
     }
 
@@ -519,39 +527,88 @@ export default function CheckoutPage() {
                 )}
               </div>
 
-              {/* If user is ALREADY signed in: show verified patron card */}
+              {/* If user is ALREADY signed in: show verified patron card + delivery contact fields */}
               {user ? (
-                <div className="bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/50 rounded-sm p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-start sm:items-center gap-3.5">
-                    <div className="w-11 h-11 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0">
-                      <UserCheck className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-serif text-base font-medium text-charcoal dark:text-ivory">
-                          {user.name}
-                        </span>
-                        <span className="px-2 py-0.5 bg-emerald-200/60 dark:bg-emerald-800/60 text-emerald-900 dark:text-emerald-100 font-mono text-[10px] font-bold rounded">
-                          ID: #UPK-CUST-{user.userId ? user.userId.slice(-6).toUpperCase() : "VERIFIED"}
-                        </span>
+                <div className="space-y-4">
+                  <div className="bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/50 rounded-sm p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-start sm:items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0">
+                        <UserCheck className="w-6 h-6" />
                       </div>
-                      <p className="text-xs text-charcoal-muted dark:text-[#A39789] mt-0.5">
-                        {user.email} {user.phone && `• ${user.phone}`}
-                      </p>
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-serif text-base font-medium text-charcoal dark:text-ivory">
+                            {user.name}
+                          </span>
+                          <span className="px-2 py-0.5 bg-emerald-200/60 dark:bg-emerald-800/60 text-emerald-900 dark:text-emerald-100 font-mono text-[10px] font-bold rounded">
+                            ID: #UPK-CUST-{user.userId ? user.userId.slice(-6).toUpperCase() : "VERIFIED"}
+                          </span>
+                        </div>
+                        <p className="text-xs text-charcoal-muted dark:text-[#A39789] mt-0.5">
+                          {user.email}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        logout();
+                        setFullName("");
+                        setEmail("");
+                        setPhone("");
+                      }}
+                      className="text-xs text-[#80644B] dark:text-[#D49542] hover:underline self-start sm:self-center font-medium"
+                    >
+                      Switch Account / সাইন-আউট
+                    </button>
+                  </div>
+
+                  {/* Delivery Contact Details for Signed-in Patron */}
+                  <div className="pt-2 border-t border-sand/60 dark:border-[#2C2620]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold mb-1">
+                          প্রাপকের পুরো নাম (Recipient Name) *
+                        </label>
+                        <input
+                          type="text"
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          placeholder="আপনার পুরো নাম"
+                          required
+                          className="w-full p-3 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold mb-1">
+                          কুরিয়ার ডেলিভারি মোবাইল নম্বর (১১ ডিজিট) *
+                        </label>
+                        <input
+                          type="tel"
+                          value={phone}
+                          onChange={(e) => {
+                            setPhone(e.target.value);
+                            validatePhone(e.target.value);
+                          }}
+                          placeholder="e.g. 01711223344"
+                          required
+                          className={`w-full p-3 bg-ivory dark:bg-[#1E1A16] border rounded-sm text-xs sm:text-sm focus:outline-none font-mono ${
+                            phoneError ? "border-red-500" : !phone ? "border-amber-400 bg-amber-50/20" : "border-sand/80 dark:border-[#2C2620] focus:border-[#D49542]"
+                          }`}
+                        />
+                        {phoneError ? (
+                          <span className="text-[11px] text-red-600 dark:text-red-400 block mt-1">
+                            {phoneError}
+                          </span>
+                        ) : !phone ? (
+                          <span className="text-[11px] text-[#B87932] dark:text-[#D49542] block mt-1 font-medium animate-pulse">
+                            ⚠️ কুরিয়ার পার্সেল ডেলিভারির জন্য মোবাইল নম্বরটি আবশ্যক।
+                          </span>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      logout();
-                      setFullName("");
-                      setEmail("");
-                      setPhone("");
-                    }}
-                    className="text-xs text-[#80644B] dark:text-[#D49542] hover:underline self-start sm:self-center font-medium"
-                  >
-                    Switch Account / সাইন-আউট
-                  </button>
                 </div>
               ) : (
                 /* If user is NOT signed in: Tabbed Customer ID Creation / Sign In */
