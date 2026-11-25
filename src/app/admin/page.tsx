@@ -61,10 +61,10 @@ export default function AdminOverviewPage() {
         </p>
       </div>
 
-      {/* Metric Cards Row */}
+      {/* Metric Cards Row (Glass Frame UI) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Revenue */}
-        <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] p-6 rounded-sm shadow-sm flex items-start justify-between hover:border-[#D49542] transition-colors">
+        <div className="bg-white/65 dark:bg-[#171411]/70 backdrop-blur-xl border border-white/60 dark:border-white/10 p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.05)] flex items-start justify-between hover:border-[#D49542]/70 transition-all">
           <div>
             <span className="text-[11px] uppercase tracking-editorial text-[#80644B] dark:text-[#D49542] font-bold block mb-1">
               Total Revenue
@@ -76,13 +76,13 @@ export default function AdminOverviewPage() {
               <TrendingUp className="w-3 h-3" /> Excludes cancelled
             </span>
           </div>
-          <div className="w-10 h-10 rounded-full bg-[#EAE0D0]/50 dark:bg-[#1E1A16] flex items-center justify-center text-[#D49542] border border-[#D49542]/20">
+          <div className="w-10 h-10 rounded-full bg-[#EAE0D0]/60 dark:bg-[#1E1A16]/80 backdrop-blur-md flex items-center justify-center text-[#D49542] border border-[#D49542]/30">
             <DollarSign className="w-5 h-5" />
           </div>
         </div>
 
         {/* Total Orders */}
-        <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] p-6 rounded-sm shadow-sm flex items-start justify-between hover:border-[#D49542] transition-colors">
+        <div className="bg-white/65 dark:bg-[#171411]/70 backdrop-blur-xl border border-white/60 dark:border-white/10 p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.05)] flex items-start justify-between hover:border-[#D49542]/70 transition-all">
           <div>
             <span className="text-[11px] uppercase tracking-editorial text-[#80644B] dark:text-[#D49542] font-bold block mb-1">
               Total Orders
@@ -94,13 +94,13 @@ export default function AdminOverviewPage() {
               Across all 64 districts
             </span>
           </div>
-          <div className="w-10 h-10 rounded-full bg-[#EAE0D0]/50 dark:bg-[#1E1A16] flex items-center justify-center text-[#B87932] dark:text-[#D49542] border border-[#D49542]/20">
+          <div className="w-10 h-10 rounded-full bg-[#EAE0D0]/60 dark:bg-[#1E1A16]/80 backdrop-blur-md flex items-center justify-center text-[#B87932] dark:text-[#D49542] border border-[#D49542]/30">
             <ShoppingBag className="w-5 h-5" />
           </div>
         </div>
 
         {/* Pending Orders */}
-        <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] p-6 rounded-sm shadow-sm flex items-start justify-between hover:border-[#D49542] transition-colors">
+        <div className="bg-white/65 dark:bg-[#171411]/70 backdrop-blur-xl border border-white/60 dark:border-white/10 p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.05)] flex items-start justify-between hover:border-[#D49542]/70 transition-all">
           <div>
             <span className="text-[11px] uppercase tracking-editorial text-[#80644B] dark:text-[#D49542] font-bold block mb-1">
               Pending Orders
@@ -112,13 +112,13 @@ export default function AdminOverviewPage() {
               Awaiting studio review
             </span>
           </div>
-          <div className="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-950/40 flex items-center justify-center text-amber-600 dark:text-amber-400 border border-amber-500/20">
+          <div className="w-10 h-10 rounded-full bg-amber-50/80 dark:bg-amber-950/40 backdrop-blur-md flex items-center justify-center text-amber-600 dark:text-amber-400 border border-amber-500/30">
             <Clock className="w-5 h-5" />
           </div>
         </div>
 
         {/* Low Stock Alerts */}
-        <div className="bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] p-6 rounded-sm shadow-sm flex items-start justify-between hover:border-[#D49542] transition-colors">
+        <div className="bg-white/65 dark:bg-[#171411]/70 backdrop-blur-xl border border-white/60 dark:border-white/10 p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.05)] flex items-start justify-between hover:border-[#D49542]/70 transition-all">
           <div>
             <span className="text-[11px] uppercase tracking-editorial text-[#80644B] dark:text-[#D49542] font-bold block mb-1">
               Low Stock Warnings
@@ -130,7 +130,7 @@ export default function AdminOverviewPage() {
               Pieces requiring weaving
             </span>
           </div>
-          <div className="w-10 h-10 rounded-full bg-red-50 dark:bg-red-950/40 flex items-center justify-center text-red-500 border border-red-500/20">
+          <div className="w-10 h-10 rounded-full bg-red-50/80 dark:bg-red-950/40 backdrop-blur-md flex items-center justify-center text-red-500 border border-red-500/30">
             <AlertTriangle className="w-5 h-5" />
           </div>
         </div>
@@ -139,7 +139,7 @@ export default function AdminOverviewPage() {
       {/* Grid: Recent Orders (8 Cols) & Inventory Telemetry (4 Cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Recent Orders Table */}
-        <div className="lg:col-span-8 bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] rounded-sm p-6 shadow-sm">
+        <div className="lg:col-span-8 bg-white/65 dark:bg-[#171411]/70 backdrop-blur-xl border border-white/60 dark:border-white/10 rounded-xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.05)]">
           <div className="flex items-center justify-between pb-4 border-b border-[#E8DFC8]/60 dark:border-[#2C2620] mb-4">
             <h2 className="font-serif text-xl text-[#211D1A] dark:text-[#F5EFE8] font-medium">
               Recent Studio Orders
@@ -218,7 +218,7 @@ export default function AdminOverviewPage() {
         </div>
 
         {/* Low Stock Watchlist */}
-        <div className="lg:col-span-4 bg-ivory dark:bg-[#171411] border border-[#E8DFC8] dark:border-[#2C2620] rounded-sm p-6 shadow-sm space-y-4">
+        <div className="lg:col-span-4 bg-white/65 dark:bg-[#171411]/70 backdrop-blur-xl border border-white/60 dark:border-white/10 rounded-xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.05)] space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-[#E8DFC8]/60 dark:border-[#2C2620]">
             <h2 className="font-serif text-lg text-[#211D1A] dark:text-[#F5EFE8] font-medium">
               Inventory Watchlist

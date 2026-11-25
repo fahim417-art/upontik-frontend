@@ -19,7 +19,7 @@ export function SocialMediaFollowSection({ socialLinks }: SocialMediaFollowSecti
     facebook: socialLinks?.facebook || "https://facebook.com/upontik",
     instagram: socialLinks?.instagram || "https://instagram.com/upontik",
     youtube: socialLinks?.youtube || "https://youtube.com/@upontik",
-    whatsapp: socialLinks?.whatsapp || "https://wa.me/8801700000000",
+    whatsapp: socialLinks?.whatsapp || "https://wa.me/8801981315294",
   };
 
   const platforms = [

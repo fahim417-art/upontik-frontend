@@ -764,8 +764,8 @@ export const DEFAULT_HOMEPAGE_CMS = {
     facebook: "https://www.facebook.com/share/1CYhYuFu83/",
     instagram: "https://instagram.com/upontik",
     youtube: "https://youtube.com/@upontik",
-    whatsapp: "https://wa.me/8801917720875",
-    whatsappNumber: "+8801917720875",
+    whatsapp: "https://wa.me/8801981315294",
+    whatsappNumber: "+8801981315294",
     defaultMessage: "Hello UPONTIK! I would like to inquire about your handcrafted bag collection.",
   },
   finalCta: {

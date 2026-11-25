@@ -66,62 +66,59 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F6F1E9] dark:bg-[#0A0908] text-[#211D1A] dark:text-[#F5EFE8] flex flex-col lg:flex-row transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-[#F7F2EA] via-[#F3ECE0] to-[#EAE0D0] dark:from-[#0A0908] dark:via-[#110E0B] dark:to-[#080706] text-[#211D1A] dark:text-[#F5EFE8] flex flex-col lg:flex-row transition-colors duration-300">
 
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-64 bg-[#14110E] dark:bg-[#070605] text-[#FAF6F0] flex-col justify-between shrink-0 min-h-screen p-6 border-r border-[#2C2620] shadow-2xl">
-        <div>
-          {/* Brand Header */}
-          <div className="pb-6 border-b border-[#2C2620] mb-6">
-            <Link href="/" className="flex items-center gap-2 group">
-              <svg className="w-6 h-6 text-[#D49542] transition-transform group-hover:scale-110" viewBox="0 0 32 32" fill="none" stroke="currentColor">
-                <path d="M16 4C16 11 11 16 11 22C11 25.5 13.5 28 16 28C18.5 28 21 25.5 21 22C21 16 16 4 16 4Z" fill="currentColor" fillOpacity="0.25" strokeWidth="1.6" />
-                <path d="M16 12C12 14 6 18 6 22C6 25 8.5 27 12 27C15 27 16 24 16 22" strokeWidth="1.6" strokeLinecap="round" />
-                <path d="M16 12C20 14 26 18 26 22C26 25 23.5 27 20 27C17 27 16 24 16 22" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
-              <div>
-                <span className="font-serif text-2xl tracking-wideDisplay text-[#FAF6F0] block">
-                  UPONTIK
-                </span>
-                <span className="block text-[8px] uppercase tracking-[0.25em] text-[#D49542] font-sans font-bold">
-                  Master Administration
-                </span>
-              </div>
-            </Link>
-          </div>
-
-          {/* Navigation Items */}
-          <nav className="space-y-1.5">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive =
-                item.href === "/admin"
-                  ? pathname === "/admin"
-                  : pathname.startsWith(item.href);
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-sm text-xs font-sans font-medium transition-all ${isActive
-                    ? "bg-[#D49542] text-[#0E0C0A] font-bold shadow-md"
-                    : "text-[#FAF6F0]/70 hover:text-white hover:bg-[#1E1A16]"
-                    }`}
-                >
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
+      {/* Desktop Sidebar (Always Fixed, Top & Bottom Always Visible) */}
+      <aside className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 w-64 h-screen z-40 bg-[#14110E]/95 dark:bg-[#070605]/95 backdrop-blur-xl text-[#FAF6F0] flex-col justify-between p-5 border-r border-white/10 shadow-2xl">
+        {/* Brand Header (Fixed Top) */}
+        <div className="pb-4 border-b border-white/10 shrink-0">
+          <Link href="/" className="flex items-center gap-2 group">
+            <svg className="w-6 h-6 text-[#D49542] transition-transform group-hover:scale-110" viewBox="0 0 32 32" fill="none" stroke="currentColor">
+              <path d="M16 4C16 11 11 16 11 22C11 25.5 13.5 28 16 28C18.5 28 21 25.5 21 22C21 16 16 4 16 4Z" fill="currentColor" fillOpacity="0.25" strokeWidth="1.6" />
+              <path d="M16 12C12 14 6 18 6 22C6 25 8.5 27 12 27C15 27 16 24 16 22" strokeWidth="1.6" strokeLinecap="round" />
+              <path d="M16 12C20 14 26 18 26 22C26 25 23.5 27 20 27C17 27 16 24 16 22" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+            <div>
+              <span className="font-serif text-2xl tracking-wideDisplay text-[#FAF6F0] block">
+                UPONTIK
+              </span>
+              <span className="block text-[8px] uppercase tracking-[0.25em] text-[#D49542] font-sans font-bold">
+                Master Administration
+              </span>
+            </div>
+          </Link>
         </div>
 
-        {/* Bottom Actions */}
-        <div className="pt-6 border-t border-[#2C2620] space-y-2">
-          {/* Day / Night Mode Toggle */}
+        {/* Navigation Items (Scrollable middle so Top & Bottom never disappear) */}
+        <nav className="flex-1 overflow-y-auto py-4 space-y-1 scrollbar-none">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive =
+              item.href === "/admin"
+                ? pathname === "/admin"
+                : pathname.startsWith(item.href);
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-sans font-medium transition-all ${isActive
+                  ? "bg-gradient-to-r from-[#D49542] to-[#C28435] text-[#0E0C0A] font-bold shadow-lg shadow-[#D49542]/20"
+                  : "text-[#FAF6F0]/75 hover:text-white hover:bg-white/10"
+                  }`}
+              >
+                <Icon className="w-4 h-4 shrink-0" />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Bottom Actions (Fixed Bottom) */}
+        <div className="pt-4 border-t border-white/10 space-y-1.5 shrink-0">
           <button
             onClick={toggleTheme}
-            className="w-full flex items-center justify-between px-3.5 py-2 rounded-sm text-xs text-[#FAF6F0]/70 hover:text-white hover:bg-[#1E1A16] transition-colors"
+            className="w-full flex items-center justify-between px-3.5 py-2 rounded-lg text-xs text-[#FAF6F0]/75 hover:text-white hover:bg-white/10 transition-colors"
           >
             <span className="flex items-center gap-2">
               {theme === "dark" ? <Sun className="w-4 h-4 text-[#D49542]" /> : <Moon className="w-4 h-4 text-[#D49542]" />}
@@ -133,14 +130,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <Link
             href="/"
             target="_blank"
-            className="flex items-center justify-between px-3.5 py-2 rounded-sm text-xs text-[#FAF6F0]/70 hover:text-white hover:bg-[#1E1A16] transition-colors"
+            className="flex items-center justify-between px-3.5 py-2 rounded-lg text-xs text-[#FAF6F0]/75 hover:text-white hover:bg-white/10 transition-colors"
           >
             <span>Live Storefront</span>
             <ExternalLink className="w-3.5 h-3.5 text-[#D49542]" />
           </Link>
           <button
             onClick={logout}
-            className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-sm text-xs text-red-400 hover:text-red-200 hover:bg-red-950/40 transition-colors"
+            className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-lg text-xs text-red-400 hover:text-red-200 hover:bg-red-950/40 transition-colors"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Sign Out</span>
@@ -212,10 +209,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         </div>
       )}
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        {/* Top Header Bar */}
-        <header className="bg-ivory dark:bg-[#120F0C] border-b border-[#E8DFC8]/70 dark:border-[#2C2620] px-4 sm:px-10 py-3 sm:py-4 flex items-center justify-between shrink-0 transition-colors">
+      {/* Main Content Area (Offset by fixed sidebar on desktop) */}
+      <div className="flex-1 lg:pl-64 flex flex-col min-w-0">
+        {/* Glassmorphic Sticky Top Header Bar */}
+        <header className="sticky top-0 z-30 bg-white/70 dark:bg-[#120F0C]/75 backdrop-blur-xl border-b border-white/50 dark:border-white/10 px-4 sm:px-10 py-3 sm:py-4 flex items-center justify-between shrink-0 transition-colors shadow-xs">
           <div>
             <span className="text-[10px] sm:text-[11px] font-mono text-[#80644B] dark:text-[#D49542] uppercase tracking-editorial font-bold">
               UPONTIK Atelier Portal

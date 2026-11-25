@@ -135,7 +135,7 @@ export function OrderTracker({ order, compact = false }: OrderTrackerProps) {
         ? "সম্ভাব্য ডেলিভারি: ২৪ থেকে ৪৮ ঘণ্টার মধ্যে"
         : "সম্ভাব্য ডেলিভারি: ৪৮ থেকে ৭২ ঘণ্টার মধ্যে (Steadfast Express)";
 
-  const whatsappInquiryUrl = `https://wa.me/8801917720875?text=${encodeURIComponent(
+  const whatsappInquiryUrl = `https://wa.me/8801981315294?text=${encodeURIComponent(
     `হ্যালো UPONTIK স্টুডিও, আমার অর্ডার #${order.orderNumber} সম্পর্কে সরাসরি আপডেট জানতে চাচ্ছি।`
   )}`;
 

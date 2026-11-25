@@ -26,7 +26,7 @@ export function AnnouncementBar({
     facebook: "https://www.facebook.com/share/1CYhYuFu83/",
     instagram: "https://instagram.com/upontik",
     youtube: "https://youtube.com/@upontik",
-    whatsapp: "https://wa.me/8801917720875",
+    whatsapp: "https://wa.me/8801981315294",
   },
 }: AnnouncementBarProps) {
   const [isDismissed, setIsDismissed] = useState(false);

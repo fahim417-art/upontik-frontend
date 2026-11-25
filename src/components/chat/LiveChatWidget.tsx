@@ -106,7 +106,7 @@ export function LiveChatWidget() {
     }
   };
 
-  const whatsappUrl = `https://wa.me/8801917720875?text=${encodeURIComponent(
+  const whatsappUrl = `https://wa.me/8801981315294?text=${encodeURIComponent(
     `Hello UPONTIK Team! I need assistance with handcrafted bags and atelier orders. (Patron: ${
       user?.name || "Guest"
     })`

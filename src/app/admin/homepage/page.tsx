@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useStore } from "@/context/StoreContext";
+import { CmsImageUploader } from "@/components/admin/CmsImageUploader";
 import {
   Sliders,
   Save,
@@ -92,6 +93,13 @@ export default function AdminHomepageCMSPage() {
   const [finalCtaBtnText, setFinalCtaBtnText] = useState("");
   const [finalCtaImage, setFinalCtaImage] = useState("");
 
+  const getAuthHeaders = () => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
+    const headers: Record<string, string> = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return headers;
+  };
+
   useEffect(() => {
     fetchCMS();
   }, []);
@@ -99,7 +107,10 @@ export default function AdminHomepageCMSPage() {
   const fetchCMS = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/admin/homepage");
+      const res = await fetch("/api/admin/homepage", {
+        headers: getAuthHeaders(),
+        credentials: "include",
+      });
       const data = await res.json();
       if (data.success && data.data) {
         const d = data.data;
@@ -172,7 +183,7 @@ export default function AdminHomepageCMSPage() {
         setFacebookLink(d.socialLinks?.facebook || "");
         setInstagramLink(d.socialLinks?.instagram || "");
         setYoutubeLink(d.socialLinks?.youtube || "");
-        setWhatsappNumber(d.socialLinks?.whatsappNumber || "+8801700000000");
+        setWhatsappNumber(d.socialLinks?.whatsappNumber || "+8801981315294");
         setWhatsappDefaultMessage(d.socialLinks?.defaultMessage || "");
 
         // Final CTA
@@ -252,7 +263,11 @@ export default function AdminHomepageCMSPage() {
 
       const res = await fetch("/api/admin/homepage", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeaders(),
+        },
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
@@ -672,59 +687,21 @@ export default function AdminHomepageCMSPage() {
                         </div>
                       </div>
 
-                      {/* Desktop Image with Live Preview */}
-                      <div>
-                        <label className="block text-xs font-medium text-charcoal mb-1">
-                          Desktop Image URL / Path (16:9)
-                        </label>
-                        <input
-                          type="text"
-                          value={slide.desktopImage}
-                          onChange={(e) => handleUpdateSlide(sIdx, "desktopImage", e.target.value)}
-                          placeholder="/images/hero/hero-slide-1.jpg or https://..."
-                          className="w-full p-2 bg-ivory border border-sand rounded text-xs text-charcoal focus:outline-none focus:border-mustard font-mono"
-                        />
-                        {slide.desktopImage && (
-                          <div className="mt-2 relative w-full h-24 bg-charcoal/10 rounded overflow-hidden border border-sand">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={slide.desktopImage}
-                              alt="Desktop Preview"
-                              className="w-full h-full object-cover"
-                            />
-                            <span className="absolute bottom-1 right-1 bg-charcoal/80 text-ivory text-[9px] px-1.5 py-0.5 rounded font-mono">
-                              Desktop
-                            </span>
-                          </div>
-                        )}
-                      </div>
+                      {/* Desktop Image Uploader */}
+                      <CmsImageUploader
+                        label="Desktop Image (16:9)"
+                        value={slide.desktopImage || ""}
+                        onChange={(val) => handleUpdateSlide(sIdx, "desktopImage", val)}
+                        aspectClass="h-28"
+                      />
 
-                      {/* Mobile Image with Live Preview */}
-                      <div>
-                        <label className="block text-xs font-medium text-charcoal mb-1">
-                          Mobile Image URL / Path (Portrait 9:16)
-                        </label>
-                        <input
-                          type="text"
-                          value={slide.mobileImage || ""}
-                          onChange={(e) => handleUpdateSlide(sIdx, "mobileImage", e.target.value)}
-                          placeholder="/images/hero/hero-slide-1-mobile.jpg"
-                          className="w-full p-2 bg-ivory border border-sand rounded text-xs text-charcoal focus:outline-none focus:border-mustard font-mono"
-                        />
-                        {slide.mobileImage && (
-                          <div className="mt-2 relative w-20 h-24 bg-charcoal/10 rounded overflow-hidden border border-sand">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={slide.mobileImage}
-                              alt="Mobile Preview"
-                              className="w-full h-full object-cover"
-                            />
-                            <span className="absolute bottom-1 right-1 bg-charcoal/80 text-ivory text-[9px] px-1.5 py-0.5 rounded font-mono">
-                              Mobile
-                            </span>
-                          </div>
-                        )}
-                      </div>
+                      {/* Mobile Image Uploader */}
+                      <CmsImageUploader
+                        label="Mobile Image (Portrait 9:16)"
+                        value={slide.mobileImage || ""}
+                        onChange={(val) => handleUpdateSlide(sIdx, "mobileImage", val)}
+                        aspectClass="h-28"
+                      />
                     </div>
                   </div>
                 ))}
@@ -856,15 +833,12 @@ export default function AdminHomepageCMSPage() {
                     className="w-full p-2.5 bg-ivory-light border border-sand rounded text-xs text-charcoal"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-charcoal mb-1">Workbench Image URL</label>
-                  <input
-                    type="text"
-                    value={storyImage}
-                    onChange={(e) => setStoryImage(e.target.value)}
-                    className="w-full p-2.5 bg-ivory-light border border-sand rounded text-xs text-charcoal font-mono"
-                  />
-                </div>
+                <CmsImageUploader
+                  label="Workbench Image"
+                  value={storyImage}
+                  onChange={setStoryImage}
+                  aspectClass="h-32"
+                />
                 <div>
                   <label className="block text-xs font-medium text-charcoal mb-1">Studio Video Embed URL</label>
                   <input
@@ -926,19 +900,16 @@ export default function AdminHomepageCMSPage() {
                           className="w-full p-2 bg-ivory border border-sand rounded text-xs text-charcoal font-mono"
                         />
                       </div>
-                      <div>
-                        <label className="block text-[11px] font-bold text-charcoal mb-1">Thumbnail URL</label>
-                        <input
-                          type="text"
-                          value={vid.thumbnailUrl}
-                          onChange={(e) => {
-                            const updated = [...videos];
-                            updated[vIdx].thumbnailUrl = e.target.value;
-                            setVideos(updated);
-                          }}
-                          className="w-full p-2 bg-ivory border border-sand rounded text-xs text-charcoal font-mono"
-                        />
-                      </div>
+                      <CmsImageUploader
+                        label="Thumbnail Image"
+                        value={vid.thumbnailUrl || ""}
+                        onChange={(val) => {
+                          const updated = [...videos];
+                          updated[vIdx].thumbnailUrl = val;
+                          setVideos(updated);
+                        }}
+                        aspectClass="h-24"
+                      />
                     </div>
                   </div>
                 ))}
@@ -991,15 +962,12 @@ export default function AdminHomepageCMSPage() {
                     className="w-full p-2.5 bg-ivory-light border border-sand rounded text-xs text-charcoal"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-charcoal mb-1">Campaign Image URL</label>
-                  <input
-                    type="text"
-                    value={sigImage}
-                    onChange={(e) => setSigImage(e.target.value)}
-                    className="w-full p-2.5 bg-ivory-light border border-sand rounded text-xs text-charcoal font-mono"
-                  />
-                </div>
+                <CmsImageUploader
+                  label="Campaign Image"
+                  value={sigImage}
+                  onChange={setSigImage}
+                  aspectClass="h-32"
+                />
               </div>
             </div>
 
@@ -1085,7 +1053,7 @@ export default function AdminHomepageCMSPage() {
                     type="text"
                     value={whatsappNumber}
                     onChange={(e) => setWhatsappNumber(e.target.value)}
-                    placeholder="+8801700000000"
+                    placeholder="+8801981315294"
                     className="w-full p-2.5 bg-ivory-light border border-sand rounded text-xs text-charcoal"
                   />
                 </div>
@@ -1135,12 +1103,11 @@ export default function AdminHomepageCMSPage() {
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-medium text-charcoal mb-1">Atmospheric Image URL</label>
-                  <input
-                    type="text"
+                  <CmsImageUploader
+                    label="Atmospheric Image"
                     value={finalCtaImage}
-                    onChange={(e) => setFinalCtaImage(e.target.value)}
-                    className="w-full p-2.5 bg-ivory-light border border-sand rounded text-xs text-charcoal font-mono"
+                    onChange={setFinalCtaImage}
+                    aspectClass="h-32"
                   />
                 </div>
               </div>
