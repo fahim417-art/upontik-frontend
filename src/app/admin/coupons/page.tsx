@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { formatPrice } from "@/lib/utils";
 import { useStore } from "@/context/StoreContext";
-import { Ticket, Plus, Save, X, Trash2, Calendar, Percent, Sparkles } from "lucide-react";
+import { Ticket, Plus, Save, X, Trash2, Calendar, Percent, Sparkles, Power } from "lucide-react";
 
 export default function AdminCouponsPage() {
   const { showToast } = useStore();
@@ -24,6 +24,7 @@ export default function AdminCouponsPage() {
   const [appliesTo, setAppliesTo] = useState<"all" | "selective">("all");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
 
   const getAuthHeaders = () => {
     const token = typeof window !== "undefined" ? localStorage.getItem("upontik_token") : null;
@@ -104,6 +105,38 @@ export default function AdminCouponsPage() {
       showToast("Failed to create coupon", "error");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleToggleCouponStatus = async (id: string, couponCode: string, currentActive: boolean) => {
+    setTogglingId(id);
+    try {
+      const nextActive = !currentActive;
+      const res = await fetch(`/api/admin/coupons/${encodeURIComponent(id)}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeaders(),
+        },
+        credentials: "include",
+        body: JSON.stringify({ isActive: nextActive }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCoupons((prev) =>
+          prev.map((c) => ((c._id || c.code) === id || c.code === couponCode ? { ...c, isActive: nextActive } : c))
+        );
+        showToast(
+          `Coupon "${couponCode}" ${nextActive ? "activated" : "deactivated"} successfully.`,
+          "success"
+        );
+      } else {
+        showToast(data.error || "Failed to update coupon status", "error");
+      }
+    } catch {
+      showToast("Failed to update coupon status", "error");
+    } finally {
+      setTogglingId(null);
     }
   };
 
@@ -222,7 +255,11 @@ export default function AdminCouponsPage() {
                         {c.minOrderValue > 0 ? formatPrice(c.minOrderValue) : "No minimum"}
                       </td>
                       <td className="py-3.5 px-4">
-                        {isExpired ? (
+                        {!c.isActive ? (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-gray-200 dark:bg-zinc-800 text-gray-700 dark:text-zinc-400">
+                            Inactive
+                          </span>
+                        ) : isExpired ? (
                           <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-100 dark:bg-red-950/60 text-red-800 dark:text-red-300">
                             Expired
                           </span>
@@ -237,14 +274,29 @@ export default function AdminCouponsPage() {
                         )}
                       </td>
                       <td className="py-3.5 px-4 text-right">
-                        <button
-                          onClick={() => handleDeleteCoupon(id, c.code)}
-                          disabled={deletingId === id}
-                          title="Delete Coupon"
-                          className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 dark:hover:bg-red-950/40 rounded transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                        <div className="inline-flex items-center gap-1.5">
+                          <button
+                            onClick={() => handleToggleCouponStatus(id, c.code, c.isActive !== false)}
+                            disabled={togglingId === id}
+                            title={c.isActive !== false ? "Deactivate Coupon" : "Activate Coupon"}
+                            className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider inline-flex items-center gap-1 border transition-colors ${
+                              c.isActive !== false
+                                ? "border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-300 dark:hover:bg-amber-950/40"
+                                : "border-emerald-300 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300 dark:hover:bg-emerald-950/40"
+                            }`}
+                          >
+                            <Power className="w-3 h-3" />
+                            <span>{c.isActive !== false ? "Deactivate" : "Activate"}</span>
+                          </button>
+                          <button
+                            onClick={() => handleDeleteCoupon(id, c.code)}
+                            disabled={deletingId === id}
+                            title="Delete Coupon"
+                            className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 dark:hover:bg-red-950/40 rounded transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
