@@ -683,6 +683,25 @@ export function ProductDetailsClient({
                   <p className="text-xs sm:text-sm text-charcoal-muted dark:text-[#A39789] font-sans leading-relaxed">
                     {r.comment}
                   </p>
+                  {Array.isArray(r.images) && r.images.length > 0 && (
+                    <div className="flex flex-wrap gap-2.5 mt-3">
+                      {r.images.map((imgUrl: string, imgIdx: number) => (
+                        <a
+                          key={imgIdx}
+                          href={imgUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-16 h-16 rounded overflow-hidden border border-[#E8DFC8] dark:border-[#2C2620] block hover:opacity-90"
+                        >
+                          <img
+                            src={imgUrl}
+                            alt={`Customer photo ${imgIdx + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                   <p className="text-xs font-semibold text-charcoal dark:text-[#F5EFE8] mt-3 flex items-center gap-1.5">
                     <span>— {r.customerName}</span>
                     <span className="text-[10px] text-[#D49542] font-mono font-normal">

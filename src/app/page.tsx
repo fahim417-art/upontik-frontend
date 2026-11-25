@@ -85,7 +85,7 @@ export default async function HomePage() {
       <NewArrivalsSection products={allProducts} />
 
       {/* SECTION 08: Real Stories. Real UPONTIK. (Customer Testimonials) */}
-      <TestimonialsSection />
+      <TestimonialsSection reviews={data.reviews} />
 
       {/* SECTION 09: Letters From UPONTIK (Newsletter Sign-up) */}
       <NewsletterSection cms={cms?.newsletter} />

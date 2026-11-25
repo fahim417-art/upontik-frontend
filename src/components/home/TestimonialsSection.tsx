@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Star, CheckCircle, Quote } from "lucide-react";
 import { FloralHeaderOrnament, FloralDivider } from "../ui/FloralMotif";
 
@@ -11,8 +12,10 @@ interface TestimonialsSectionProps {
     rating: number;
     title: string;
     comment: string;
+    images?: string[];
     isVerifiedPurchase?: boolean;
     productName?: string;
+    productId?: { name?: string; slug?: string } | string;
     location?: string;
   }>;
 }
@@ -103,9 +106,41 @@ export function TestimonialsSection({ reviews }: TestimonialsSectionProps) {
                 </h3>
 
                 {/* Review Body */}
-                <p className="text-xs sm:text-sm font-sans text-[#80644B] dark:text-[#A39789] leading-relaxed mb-6">
+                <p className="text-xs sm:text-sm font-sans text-[#80644B] dark:text-[#A39789] leading-relaxed mb-4">
                   {rev.comment}
                 </p>
+
+                {/* Customer Uploaded Review Photos */}
+                {Array.isArray((rev as any).images) && (rev as any).images.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {(rev as any).images.slice(0, 3).map((imgUrl: string, idx: number) => (
+                      <div
+                        key={idx}
+                        className="w-14 h-14 rounded overflow-hidden border border-[#E8DFC8] dark:border-[#2C2620]"
+                      >
+                        <img
+                          src={imgUrl}
+                          alt={`Review photo ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Product Link if populated */}
+                {typeof (rev as any).productId === "object" && (rev as any).productId?.slug ? (
+                  <Link
+                    href={`/product/${(rev as any).productId.slug}`}
+                    className="inline-block text-[11px] font-mono text-[#B87932] dark:text-[#D49542] hover:underline mb-4"
+                  >
+                    Piece: {(rev as any).productId.name} →
+                  </Link>
+                ) : rev.productName ? (
+                  <span className="inline-block text-[11px] font-mono text-[#B87932] dark:text-[#D49542] mb-4">
+                    Piece: {rev.productName}
+                  </span>
+                ) : null}
               </div>
 
               {/* Reviewer Meta Footer */}

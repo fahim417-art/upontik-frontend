@@ -8,6 +8,7 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Lock, Mail, ArrowRight, AlertCircle, Loader2, Sparkles, ShieldCheck } from "lucide-react";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -141,6 +142,16 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+
+          {/* Google OAuth Sign-In */}
+          <div className="my-5 flex items-center gap-3">
+            <div className="h-px flex-1 bg-sand/70" />
+            <span className="text-[10px] uppercase tracking-wider text-charcoal-muted font-mono">
+              OR
+            </span>
+            <div className="h-px flex-1 bg-sand/70" />
+          </div>
+          <GoogleSignInButton label="Continue with Google" redirectTo="/account" />
 
           {/* Quick Demo Credentials 1-Click Autofill */}
           <div className="mt-6 p-4 bg-sand/20 border border-sand/60 rounded text-xs text-charcoal-muted space-y-2">

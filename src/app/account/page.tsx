@@ -8,6 +8,7 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { OrderTracker } from "@/components/orders/OrderTracker";
+import { PendingReviewPopup } from "@/components/reviews/PendingReviewPopup";
 import {
   User,
   Package,
@@ -103,6 +104,7 @@ export default function AccountOverviewPage() {
 
   return (
     <main className="min-h-screen flex flex-col bg-ivory dark:bg-[#0E0C0A] text-[#211D1A] dark:text-[#F5EFE8] transition-colors duration-300">
+      <PendingReviewPopup />
       <AnnouncementBar />
       <Navbar />
 

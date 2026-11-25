@@ -7,6 +7,7 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { OrderTracker } from "@/components/orders/OrderTracker";
+import { GuestDashboardCTA } from "@/components/orders/GuestDashboardCTA";
 import {
   CheckCircle2,
   Package,
@@ -60,6 +61,9 @@ export default async function OrderConfirmationPage({
             <span className="font-bold text-mustard">{order.orderNumber}</span>
           </div>
         </div>
+
+        {/* Guest Bangla CTA for Google Sign-In & Live Tracking / Cancel */}
+        <GuestDashboardCTA orderId={String(order._id || id)} orderNumber={order.orderNumber} />
 
         {/* Live Milestone Tracker */}
         <div className="py-6">

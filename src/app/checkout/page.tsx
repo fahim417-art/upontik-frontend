@@ -29,6 +29,7 @@ import {
   KeyRound,
   Trash2,
 } from "lucide-react";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 
 const BD_DISTRICT_THANA_MAP: Record<string, string[]> = {
   Dhaka: [
@@ -411,16 +412,7 @@ export default function CheckoutPage() {
       return;
     }
 
-    if (!user) {
-      if (!accountPassword || accountPassword.length < 6) {
-        setFormError("অর্ডার করার পূর্বে অনুগ্রহ করে আপনার কাস্টমার আইডি তৈরি করুন অথবা পাসওয়ার্ড দিন (সর্বনিম্ন ৬ অক্ষর)।");
-        const authSec = document.getElementById("customer-auth-section");
-        if (authSec) authSec.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
-    }
-
-    if (!fullName || !email || !phone || !address || !city) {
+    if (!fullName || !phone || !address || !city) {
       if (!phone) {
         setFormError("অনুগ্রহ করে আপনার ১১ ডিজিটের মোবাইল নম্বর দিন। কুরিয়ার ডেলিভারির জন্য এটি আবশ্যক।");
       } else if (!address) {
@@ -525,6 +517,17 @@ export default function CheckoutPage() {
             localStorage.setItem("upontik_token", data.data.token);
           } catch {}
           await refreshUser();
+        } else if (!user && data.data?.orderId) {
+          try {
+            const raw = localStorage.getItem("upontik_guest_orders");
+            const list: string[] = raw ? JSON.parse(raw) : [];
+            if (!list.includes(data.data.orderId)) {
+              localStorage.setItem(
+                "upontik_guest_orders",
+                JSON.stringify([data.data.orderId, ...list].slice(0, 10))
+              );
+            }
+          } catch {}
         }
         clearCart();
         showToast("অর্ডার সফলভাবে গ্রহণ করা হয়েছে! ধন্যবাদ।", "success");
@@ -756,11 +759,16 @@ export default function CheckoutPage() {
                   {authTab === "register" ? (
                     /* Tab 1: New Customer ID Registration */
                     <div className="space-y-4">
-                      <div className="p-3 bg-[#FAF7F2] dark:bg-[#1E1A16] border border-[#D49542]/30 rounded text-xs text-[#80644B] dark:text-[#D49542] flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 shrink-0 text-[#D49542]" />
-                        <span>
-                          নাম, ইমেইল এবং একটি গোপন পাসওয়ার্ড দিয়ে আপনার <strong>কাস্টমার আইডি</strong> সক্রিয় করুন।
-                        </span>
+                      <div className="p-3 bg-[#FAF7F2] dark:bg-[#1E1A16] border border-[#D49542]/30 rounded text-xs text-[#80644B] dark:text-[#D49542] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="w-4 h-4 shrink-0 text-[#D49542]" />
+                          <span>
+                            লগইন ছাড়াই সরাসরি অর্ডার করতে নিচে আপনার নাম ও মোবাইল নম্বর দিন, অথবা চাইলে <strong>Google Sign-In</strong> করুন।
+                          </span>
+                        </div>
+                        <div className="w-full sm:w-56 shrink-0">
+                          <GoogleSignInButton label="Google দিয়ে সাইন-ইন" redirectTo="" />
+                        </div>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -780,14 +788,13 @@ export default function CheckoutPage() {
 
                         <div>
                           <label className="block text-xs font-semibold mb-1">
-                            ইমেইল ঠিকানা (Email Address) *
+                            ইমেইল ঠিকানা (Email - ঐচ্ছিক)
                           </label>
                           <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="e.g. samira@example.com"
-                            required
                             className="w-full p-3 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
                           />
                         </div>
@@ -818,15 +825,14 @@ export default function CheckoutPage() {
 
                         <div>
                           <label className="block text-xs font-semibold mb-1">
-                            কাস্টমার আইডি পাসওয়ার্ড (Password) *
+                            কাস্টমার আইডি পাসওয়ার্ড (ঐচ্ছিক - একাউন্ট খুলতে চাইলে)
                           </label>
                           <div className="relative">
                             <input
                               type={showPassword ? "text" : "password"}
                               value={accountPassword}
                               onChange={(e) => setAccountPassword(e.target.value)}
-                              placeholder="সর্বনিম্ন ৬ অক্ষর"
-                              required
+                              placeholder="সর্বনিম্ন ৬ অক্ষর (গেস্ট অর্ডারে দরকার নেই)"
                               className="w-full p-3 pr-10 bg-ivory dark:bg-[#1E1A16] border border-sand/80 dark:border-[#2C2620] rounded-sm text-xs sm:text-sm focus:outline-none focus:border-[#D49542]"
                             />
                             <button

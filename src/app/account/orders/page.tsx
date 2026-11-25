@@ -10,6 +10,7 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { OrderTracker } from "@/components/orders/OrderTracker";
+import { PendingReviewPopup } from "@/components/reviews/PendingReviewPopup";
 import {
   Package,
   Clock,
@@ -138,6 +139,7 @@ export default function AccountOrdersPage() {
       <Navbar />
 
       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        <PendingReviewPopup />
         {/* Navigation Tabs */}
         <div className="flex overflow-x-auto scrollbar-none border-b border-[#E8DFC8]/70 dark:border-[#2C2620] mb-8 gap-4 sm:gap-6 text-xs uppercase tracking-editorial font-bold whitespace-nowrap">
           <Link
